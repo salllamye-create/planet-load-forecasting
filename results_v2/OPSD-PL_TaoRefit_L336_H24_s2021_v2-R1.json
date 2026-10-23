@@ -1,0 +1,119 @@
+{
+  "dataset": "OPSD-PL",
+  "model": "TaoRefit",
+  "L": 336,
+  "H": 24,
+  "seed": 2021,
+  "lr": 0.0,
+  "batch": 0,
+  "params": 180,
+  "epochs_run": 0,
+  "n_year_slow": null,
+  "train_stride": 1,
+  "val_mse": 0.08621707829890031,
+  "setting": "MS",
+  "regime": "R1",
+  "size": 1.0,
+  "basis_time": "local",
+  "exo_mode": null,
+  "backbone": null,
+  "l_selected": false,
+  "E": 8,
+  "K": 0,
+  "train_frac": 1.0,
+  "train_first": false,
+  "eval_data": null,
+  "bad_steps": 0,
+  "train_time_s": 1.1,
+  "infer_time_s": 0.06,
+  "amp": false,
+  "tag": "_v2-R1",
+  "extra": {},
+  "history": [
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.10341050589979423,
+      "recency_days": 0,
+      "recency_hours": 0,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.10834236857283099,
+      "recency_days": 0,
+      "recency_hours": 0,
+      "trend": false
+    },
+    {
+      "epoch": 1,
+      "train": NaN,
+      "val": 0.09776296161093825,
+      "window_months": 0,
+      "trend": true
+    },
+    {
+      "epoch": 1,
+      "train": NaN,
+      "val": 0.10818562680248266,
+      "window_months": 0,
+      "trend": false
+    },
+    {
+      "epoch": 1,
+      "train": NaN,
+      "val": 0.08990413245174879,
+      "window_months": 36,
+      "trend": true
+    },
+    {
+      "epoch": 1,
+      "train": NaN,
+      "val": 0.09344255640536399,
+      "window_months": 36,
+      "trend": false
+    },
+    {
+      "epoch": 1,
+      "train": NaN,
+      "val": 0.09480211411424314,
+      "window_months": 24,
+      "trend": true
+    },
+    {
+      "epoch": 1,
+      "train": NaN,
+      "val": 0.08621707829890031,
+      "window_months": 24,
+      "trend": false
+    }
+  ],
+  "recency": {
+    "days": 0,
+    "hours": 0
+  },
+  "n_train": 35206,
+  "ridge": 1e-06,
+  "trend": false,
+  "refit": {
+    "kind": "monthly",
+    "window_months": 24,
+    "window": "24 months"
+  },
+  "n_refits": 14,
+  "mse": 0.1689766374873741,
+  "mae": 0.2953501100441691,
+  "n_windows": 10058,
+  "per_channel_mse": [
+    0.168977
+  ],
+  "rmse_orig": 1284.144722471805,
+  "mae_orig": 922.6516790480836,
+  "wape": 4.942246266705105,
+  "mape": 5.241885138817041,
+  "ramp_mae": 215.76361776506135,
+  "peak_mae": 848.7167606456137,
+  "peak_mape": 4.148244173738245,
+  "peak_time_err": 4.5025850069596345
+}

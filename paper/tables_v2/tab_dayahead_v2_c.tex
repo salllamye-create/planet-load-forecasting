@@ -1,0 +1,49 @@
+\begin{table}[!t]
+\centering
+\caption{Day-ahead forecasts against the operators, continued (Table~\ref{tab:dayahead-v2}; same protocol and notation).}
+\label{tab:dayahead-v2-c}
+\setlength{\tabcolsep}{2.5pt}\footnotesize
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrr}
+\toprule
+ & & \multicolumn{2}{c}{WAPE ens. (\%)} & & \\
+\cmidrule(lr){3-4}
+Method & WAPE (\%) & 11:00 & 08:00 & Peak (\%) & Bias (\%) \\
+\midrule
+\multicolumn{6}{l}{\textit{PL} (418 days, leads 13--36\,h)} \\
+\quad Operator (published) & 2.40 & 2.40 & 2.40 & 2.08 & +1.5 \\
+\quad N-BEATS & 1.85{\scriptsize\color{gray}(0.15)} & 1.75$^{\dagger}$ & 1.78$^{\dagger}$ & 1.89 & -0.1 \\
+\quad DLinear & 1.89{\scriptsize\color{gray}(0.02)} & 1.84$^{\dagger}$ & 1.85$^{\dagger}$ & 1.89 & +0.2 \\
+\quad PatchTST & 1.85{\scriptsize\color{gray}(0.02)} & 1.81$^{\dagger}$ & 1.82$^{\dagger}$ & 1.84 & -0.2 \\
+\quad PatchTST+Cal & 1.69{\scriptsize\color{gray}(0.02)} & 1.64$^{\dagger}$ & 1.63$^{\dagger}$ & \underline{1.65} & -0.2 \\
+\quad \textbf{PLANET} & 1.78{\scriptsize\color{gray}(0.04)} & 1.73$^{\dagger}$ & 1.78$^{\dagger}$ & 1.81 & -0.2 \\
+\quad \textbf{PLANET} (monthly refit) & 1.78$^{\dagger}$ & -- & -- & 1.83 & +0.0 \\
+\quad TFT & 2.19{\scriptsize\color{gray}(0.04)} & 2.09 & 2.14 & 2.18 & -0.1 \\
+\quad TiDE & 1.70{\scriptsize\color{gray}(0.22)} & \underline{1.54}$^{\dagger}$ & \underline{1.57}$^{\dagger}$ & 1.71 & -0.3 \\
+\quad TiDE (monthly refit) & 1.61$^{\dagger}$ & -- & -- & \textbf{1.60} & +0.0 \\
+\quad TimeXer & 2.01{\scriptsize\color{gray}(0.07)} & 1.92$^{\dagger}$ & 1.92$^{\dagger}$ & 1.94 & -0.1 \\
+\quad N-HiTS & 2.00{\scriptsize\color{gray}(0.02)} & 1.97$^{\dagger}$ & 2.06$^{\dagger}$ & 1.95 & -0.2 \\
+\quad PLANET-X & 1.94{\scriptsize\color{gray}(0.06)} & 1.84$^{\dagger}$ & 1.87$^{\dagger}$ & 1.94 & +0.1 \\
+\quad Comb. (PLANET, TiDE) & \underline{1.59}{\scriptsize\color{gray}(0.07)} & \textbf{1.54}$^{\dagger}$ & 1.58$^{\dagger}$ & 1.66 & -0.3 \\
+\quad Comb. (all ten) & \textbf{1.57}{\scriptsize\color{gray}(0.00)} & 1.56$^{\dagger}$ & \textbf{1.57}$^{\dagger}$ & 1.66 & -0.1 \\
+\midrule
+\multicolumn{6}{l}{\textit{BE} (418 days, leads 13--36\,h)} \\
+\quad Operator (published) & 3.22 & 3.22 & 3.22 & 3.24 & +0.1 \\
+\quad N-BEATS & 2.30{\scriptsize\color{gray}(0.08)} & 2.18$^{\dagger}$ & 2.20$^{\dagger}$ & 2.27 & -0.3 \\
+\quad DLinear & 2.61{\scriptsize\color{gray}(0.10)} & 2.46$^{\dagger}$ & 2.44$^{\dagger}$ & 2.49 & +1.4 \\
+\quad PatchTST & 2.33{\scriptsize\color{gray}(0.09)} & 2.25$^{\dagger}$ & 2.29$^{\dagger}$ & 2.27 & -0.4 \\
+\quad PatchTST+Cal & 2.05{\scriptsize\color{gray}(0.02)} & 1.99$^{\dagger}$ & 2.05$^{\dagger}$ & 2.00 & -0.3 \\
+\quad \textbf{PLANET} & 2.08{\scriptsize\color{gray}(0.04)} & 2.01$^{\dagger}$ & 2.05$^{\dagger}$ & 2.03 & -0.4 \\
+\quad \textbf{PLANET} (monthly refit) & 2.06$^{\dagger}$ & -- & -- & 2.02 & +0.0 \\
+\quad TFT & 2.45{\scriptsize\color{gray}(0.09)} & 2.32$^{\dagger}$ & 2.36$^{\dagger}$ & 2.42 & -0.4 \\
+\quad TiDE & 1.92{\scriptsize\color{gray}(0.04)} & \underline{1.77}$^{\dagger}$ & \underline{1.86}$^{\dagger}$ & 1.88 & +0.1 \\
+\quad TiDE (monthly refit) & 1.89$^{\dagger}$ & -- & -- & \underline{1.86} & -0.1 \\
+\quad TimeXer & 2.35{\scriptsize\color{gray}(0.03)} & 2.26$^{\dagger}$ & 2.31$^{\dagger}$ & 2.28 & -0.4 \\
+\quad N-HiTS & 2.38{\scriptsize\color{gray}(0.01)} & 2.35$^{\dagger}$ & 2.25$^{\dagger}$ & 2.23 & +0.0 \\
+\quad PLANET-X & 2.43{\scriptsize\color{gray}(0.03)} & 2.26$^{\dagger}$ & 2.29$^{\dagger}$ & 2.36 & -0.1 \\
+\quad Comb. (PLANET, TiDE) & \textbf{1.82}{\scriptsize\color{gray}(0.03)} & \textbf{1.77}$^{\dagger}$ & \textbf{1.83}$^{\dagger}$ & \textbf{1.82} & -0.2 \\
+\quad Comb. (all ten) & \underline{1.87}{\scriptsize\color{gray}(0.01)} & 1.86$^{\dagger}$ & 1.89$^{\dagger}$ & 1.88 & -0.1 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

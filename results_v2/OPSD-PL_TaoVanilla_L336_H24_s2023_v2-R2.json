@@ -1,0 +1,313 @@
+{
+  "dataset": "OPSD-PL",
+  "model": "TaoVanilla",
+  "L": 336,
+  "H": 24,
+  "seed": 2023,
+  "lr": 0.0,
+  "batch": 0,
+  "params": 285,
+  "epochs_run": 0,
+  "n_year_slow": null,
+  "train_stride": 1,
+  "val_mse": 0.0728842393139395,
+  "setting": "MS",
+  "regime": "R2",
+  "size": 1.0,
+  "basis_time": "local",
+  "exo_mode": "noisy",
+  "backbone": null,
+  "l_selected": false,
+  "E": 9,
+  "K": 0,
+  "train_frac": 1.0,
+  "train_first": false,
+  "eval_data": null,
+  "bad_steps": 0,
+  "train_time_s": 17.2,
+  "infer_time_s": 0.06,
+  "amp": false,
+  "tag": "_v2-R2",
+  "extra": {},
+  "history": [
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.0728842393139395,
+      "recency_days": 0,
+      "recency_hours": 0,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.09968199426984499,
+      "recency_days": 0,
+      "recency_hours": 0,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.08531413351915068,
+      "recency_days": 0,
+      "recency_hours": 6,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.1269218363258584,
+      "recency_days": 0,
+      "recency_hours": 6,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.09044008489589118,
+      "recency_days": 0,
+      "recency_hours": 12,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.1430353482149197,
+      "recency_days": 0,
+      "recency_hours": 12,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.097394660910146,
+      "recency_days": 0,
+      "recency_hours": 24,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.15634075659465343,
+      "recency_days": 0,
+      "recency_hours": 24,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.0737399492356856,
+      "recency_days": 1,
+      "recency_hours": 0,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.10801264710064665,
+      "recency_days": 1,
+      "recency_hours": 0,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.08586301522736758,
+      "recency_days": 1,
+      "recency_hours": 6,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.13224672716556704,
+      "recency_days": 1,
+      "recency_hours": 6,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.089229610892846,
+      "recency_days": 1,
+      "recency_hours": 12,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.14247566493073888,
+      "recency_days": 1,
+      "recency_hours": 12,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.09676902641181703,
+      "recency_days": 1,
+      "recency_hours": 24,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.15119980922334014,
+      "recency_days": 1,
+      "recency_hours": 24,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07444077147037596,
+      "recency_days": 2,
+      "recency_hours": 0,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.11178444295035445,
+      "recency_days": 2,
+      "recency_hours": 0,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.08738337494788458,
+      "recency_days": 2,
+      "recency_hours": 6,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.13546728628873575,
+      "recency_days": 2,
+      "recency_hours": 6,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.092144528434537,
+      "recency_days": 2,
+      "recency_hours": 12,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.14633592397527442,
+      "recency_days": 2,
+      "recency_hours": 12,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.10007184157085341,
+      "recency_days": 2,
+      "recency_hours": 24,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.15564143925963608,
+      "recency_days": 2,
+      "recency_hours": 24,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07620280094554575,
+      "recency_days": 3,
+      "recency_hours": 0,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.1156914126042425,
+      "recency_days": 3,
+      "recency_hours": 0,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.088492042658568,
+      "recency_days": 3,
+      "recency_hours": 6,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.13543449766503474,
+      "recency_days": 3,
+      "recency_hours": 6,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.09320272395361165,
+      "recency_days": 3,
+      "recency_hours": 12,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.14541360617958066,
+      "recency_days": 3,
+      "recency_hours": 12,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.10270474137292368,
+      "recency_days": 3,
+      "recency_hours": 24,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.15697685700524452,
+      "recency_days": 3,
+      "recency_hours": 24,
+      "trend": false
+    }
+  ],
+  "recency": {
+    "days": 0,
+    "hours": 0
+  },
+  "n_train": 35206,
+  "ridge": 1e-06,
+  "trend": true,
+  "refit": null,
+  "n_refits": 0,
+  "mse": 0.27107451441646757,
+  "mae": 0.4049562643838956,
+  "n_windows": 10058,
+  "per_channel_mse": [
+    0.271075
+  ],
+  "rmse_orig": 1626.4659794771626,
+  "mae_orig": 1265.053116854992,
+  "wape": 6.776342780203633,
+  "mape": 7.317151580340362,
+  "ramp_mae": 212.4574036168296,
+  "peak_mae": 1134.9606754258646,
+  "peak_mape": 5.6411728434418205,
+  "peak_time_err": 3.364684827997614
+}

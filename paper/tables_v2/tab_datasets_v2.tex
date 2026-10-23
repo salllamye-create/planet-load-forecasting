@@ -1,0 +1,27 @@
+\begin{table*}[!t]
+\centering
+\caption{Benchmark corpus v2. $T$ rows at the stated frequency, $C$ channels (target last); holidays per year are distinct national public-holiday dates in the span; TSO cov.\ is the coverage of the operator's published day-ahead forecast used in Table~\ref{tab:dayahead-v2}. \textsc{ms} scores the load channel from all inputs; \textsc{m} scores every channel. Splits are chronological.}
+\label{tab:datasets-v2}
+\setlength{\tabcolsep}{3.5pt}\footnotesize
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lccrclcccc}
+\toprule
+Dataset & Freq. & $C$ & $T$ & Span & Zone & Hol./yr & TSO cov. & Train/Val/Test & Setting \\
+\midrule
+DE & 1h & 7 & 50{,}393 & 2015-01--2020-09 & Europe/Berlin & 9.0 & 100.0\% & 35275/5039/10079 & MS \\
+FR & 1h & 7 & 50{,}391 & 2015-01--2020-09 & Europe/Paris & 11.0 & 100.0\% & 35273/5039/10079 & MS \\
+GB & 1h & 7 & 50{,}391 & 2015-01--2020-09 & Europe/London & 8.5 & 99.8\% & 35273/5039/10079 & MS \\
+ES & 1h & 7 & 50{,}398 & 2015-01--2020-09 & Europe/Madrid & 8.3 & 100.0\% & 35278/5039/10081 & MS \\
+IT & 1h & 6 & 43{,}817 & 2015-10--2020-09 & Europe/Rome & 12.8 & 99.9\% & 30671/4381/8765 & MS \\
+NL & 1h & 6 & 50{,}400 & 2015-01--2020-09 & Europe/Amsterdam & 10.4 & 100.0\% & 35280/5040/10080 & MS \\
+PL & 1h & 6 & 50{,}398 & 2015-01--2020-09 & Europe/Warsaw & 13.0 & 99.9\% & 35278/5039/10081 & MS \\
+BE & 1h & 7 & 50{,}392 & 2015-01--2020-09 & Europe/Brussels & 12.0 & 100.0\% & 35274/5039/10079 & MS \\
+Electricity & 1h & 321 & 26{,}304 & 2012-01--2014-12 & Europe/Lisbon & 10.3 & -- & 18412/2630/5262 & M \\
+ETTh1 & 1h & 7 & 14{,}400 & 2016-07--2018-02 & Asia/Shanghai & 21.9 & -- & 8640/2880/2880 & M \\
+ETTh2 & 1h & 7 & 14{,}400 & 2016-07--2018-02 & Asia/Shanghai & 21.9 & -- & 8640/2880/2880 & M \\
+ETTm1 & 15min & 7 & 57{,}600 & 2016-07--2018-02 & Asia/Shanghai & 21.9 & -- & 34560/11520/11520 & M \\
+ETTm2 & 15min & 7 & 57{,}600 & 2016-07--2018-02 & Asia/Shanghai & 21.9 & -- & 34560/11520/11520 & M \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table*}

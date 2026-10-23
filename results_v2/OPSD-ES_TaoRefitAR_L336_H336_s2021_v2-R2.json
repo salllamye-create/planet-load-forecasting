@@ -1,0 +1,401 @@
+{
+  "dataset": "OPSD-ES",
+  "model": "TaoRefitAR",
+  "L": 336,
+  "H": 336,
+  "seed": 2021,
+  "lr": 0.0,
+  "batch": 0,
+  "params": 840,
+  "epochs_run": 0,
+  "n_year_slow": null,
+  "train_stride": 1,
+  "val_mse": 0.02342215330373949,
+  "setting": "MS",
+  "regime": "R2",
+  "size": 1.0,
+  "basis_time": "local",
+  "exo_mode": "noisy",
+  "backbone": null,
+  "l_selected": false,
+  "E": 9,
+  "K": 0,
+  "train_frac": 1.0,
+  "train_first": false,
+  "eval_data": null,
+  "bad_steps": 0,
+  "train_time_s": 73.0,
+  "infer_time_s": 5.51,
+  "amp": false,
+  "tag": "_v2-R2",
+  "extra": {},
+  "history": [
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07380742482304403,
+      "recency_days": 0,
+      "recency_hours": 0,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.05960973432278739,
+      "recency_days": 0,
+      "recency_hours": 0,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.0817032210543443,
+      "recency_days": 0,
+      "recency_hours": 6,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07220839022217818,
+      "recency_days": 0,
+      "recency_hours": 6,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.08138117292573163,
+      "recency_days": 0,
+      "recency_hours": 12,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07384117021903777,
+      "recency_days": 0,
+      "recency_hours": 12,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07966209604753632,
+      "recency_days": 0,
+      "recency_hours": 24,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07361690057487295,
+      "recency_days": 0,
+      "recency_hours": 24,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.06719391590315994,
+      "recency_days": 1,
+      "recency_hours": 0,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.05526247694912249,
+      "recency_days": 1,
+      "recency_hours": 0,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07438495498830695,
+      "recency_days": 1,
+      "recency_hours": 6,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.06614841977853032,
+      "recency_days": 1,
+      "recency_hours": 6,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.0773037205420092,
+      "recency_days": 1,
+      "recency_hours": 12,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.070494104873102,
+      "recency_days": 1,
+      "recency_hours": 12,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.0829992363967052,
+      "recency_days": 1,
+      "recency_hours": 24,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07510288594271133,
+      "recency_days": 1,
+      "recency_hours": 24,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.06279640464113163,
+      "recency_days": 2,
+      "recency_hours": 0,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.05259262377299362,
+      "recency_days": 2,
+      "recency_hours": 0,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.0688563587724572,
+      "recency_days": 2,
+      "recency_hours": 6,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.06168037828226758,
+      "recency_days": 2,
+      "recency_hours": 6,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07160108758854944,
+      "recency_days": 2,
+      "recency_hours": 12,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.06509706063298193,
+      "recency_days": 2,
+      "recency_hours": 12,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07860398641622723,
+      "recency_days": 2,
+      "recency_hours": 24,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07121419484568449,
+      "recency_days": 2,
+      "recency_hours": 24,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.061595302845223465,
+      "recency_days": 3,
+      "recency_hours": 0,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.05222283040906888,
+      "recency_days": 3,
+      "recency_hours": 0,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.06792007608135438,
+      "recency_days": 3,
+      "recency_hours": 6,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.06138027192581031,
+      "recency_days": 3,
+      "recency_hours": 6,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07062884903282414,
+      "recency_days": 3,
+      "recency_hours": 12,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.0645697473950034,
+      "recency_days": 3,
+      "recency_hours": 12,
+      "trend": false
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07784699363118477,
+      "recency_days": 3,
+      "recency_hours": 24,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.07035774244738903,
+      "recency_days": 3,
+      "recency_hours": 24,
+      "trend": false
+    },
+    {
+      "epoch": 1,
+      "train": NaN,
+      "val": 0.05975969237920604,
+      "window_months": 0,
+      "trend": true
+    },
+    {
+      "epoch": 1,
+      "train": NaN,
+      "val": 0.05207944443840209,
+      "window_months": 0,
+      "trend": false
+    },
+    {
+      "epoch": 1,
+      "train": NaN,
+      "val": 0.06288240622724989,
+      "window_months": 36,
+      "trend": true
+    },
+    {
+      "epoch": 1,
+      "train": NaN,
+      "val": 0.058640687791957566,
+      "window_months": 36,
+      "trend": false
+    },
+    {
+      "epoch": 1,
+      "train": NaN,
+      "val": 0.05414666823608047,
+      "window_months": 24,
+      "trend": true
+    },
+    {
+      "epoch": 1,
+      "train": NaN,
+      "val": 0.059273740318123394,
+      "window_months": 24,
+      "trend": false
+    },
+    {
+      "epoch": 2,
+      "train": NaN,
+      "val": 0.05207944443840209,
+      "ar_order": 0
+    },
+    {
+      "epoch": 2,
+      "train": NaN,
+      "val": 0.02899541782068315,
+      "ar_order": 24
+    },
+    {
+      "epoch": 2,
+      "train": NaN,
+      "val": 0.025591604199233592,
+      "ar_order": 48
+    },
+    {
+      "epoch": 2,
+      "train": NaN,
+      "val": 0.023663758384896025,
+      "ar_order": 168
+    },
+    {
+      "epoch": 2,
+      "train": NaN,
+      "val": 0.02342215330373949,
+      "ar_order": 240
+    }
+  ],
+  "recency": {
+    "days": 3,
+    "hours": 0
+  },
+  "n_train": 35206,
+  "ridge": 1e-06,
+  "trend": false,
+  "refit": {
+    "kind": "monthly",
+    "window_months": 0,
+    "window": "expanding"
+  },
+  "n_refits": 14,
+  "ar": {
+    "order": 240,
+    "orders": [
+      0,
+      24,
+      48,
+      168,
+      240
+    ],
+    "ridge": 1e-06,
+    "fitted_on": "training residuals of the train-only fit"
+  },
+  "mse": 0.21244768648147044,
+  "mae": 0.3213181676979137,
+  "n_windows": 9746,
+  "per_channel_mse": [
+    0.212448
+  ],
+  "rmse_orig": 2112.1824914247,
+  "mae_orig": 1472.4505446684298,
+  "wape": 5.389534769693869,
+  "mape": 5.769897233688613,
+  "ramp_mae": 517.5050884528565,
+  "peak_mae": 1829.7300246457073,
+  "peak_mape": 6.041858964776279,
+  "peak_time_err": 2.5676394711383423
+}

@@ -1,0 +1,97 @@
+{
+  "dataset": "OPSD-FR",
+  "model": "PLANET",
+  "L": 168,
+  "H": 336,
+  "seed": 2021,
+  "lr": 0.003,
+  "batch": 64,
+  "params": 1238003,
+  "epochs_run": 9,
+  "n_year_slow": 3,
+  "train_stride": 5,
+  "val_mse": 0.04760153708840106,
+  "setting": "MS",
+  "regime": "R2",
+  "size": 0.5,
+  "basis_time": "local",
+  "exo_mode": "noisy",
+  "backbone": "basis",
+  "E": 14,
+  "K": 34,
+  "train_frac": 1.0,
+  "train_first": false,
+  "eval_data": null,
+  "bad_steps": 0,
+  "train_time_s": 62.7,
+  "infer_time_s": 3.56,
+  "amp": false,
+  "tag": "_v2-R2-abl-lean-basis",
+  "extra": {
+    "use_slow": false,
+    "trend": false,
+    "daytype": "weekend+holiday",
+    "learn_w": false
+  },
+  "history": [
+    {
+      "epoch": 0,
+      "train": 0.11998514334360759,
+      "val": 0.07492645140610585
+    },
+    {
+      "epoch": 1,
+      "train": 0.06377094152762934,
+      "val": 0.058410104756959444
+    },
+    {
+      "epoch": 2,
+      "train": 0.05411513077302112,
+      "val": 0.05081113349316883
+    },
+    {
+      "epoch": 3,
+      "train": 0.050255455145681346,
+      "val": 0.04760153708840106
+    },
+    {
+      "epoch": 4,
+      "train": 0.04739688581752556,
+      "val": 0.04978007740866976
+    },
+    {
+      "epoch": 5,
+      "train": 0.04541783486665399,
+      "val": 0.049500762275895296
+    },
+    {
+      "epoch": 6,
+      "train": 0.04304447100946197,
+      "val": 0.04875518505771955
+    },
+    {
+      "epoch": 7,
+      "train": 0.0415171781140897,
+      "val": 0.047630148185860546
+    },
+    {
+      "epoch": 8,
+      "train": 0.04119273047480318,
+      "val": 0.0606577986483874
+    }
+  ],
+  "mse": 0.06569387519973742,
+  "mae": 0.1725680893180014,
+  "n_windows": 9744,
+  "per_channel_mse": [
+    0.065694
+  ],
+  "rmse_orig": 3018.0696588051032,
+  "mae_orig": 2032.016858054285,
+  "wape": 4.0655385944200555,
+  "mape": 4.066557024425483,
+  "ramp_mae": 850.0193611682964,
+  "peak_mae": 2257.4892578125,
+  "peak_mape": 3.686187043786049,
+  "peak_time_err": 3.108139753341675
+}

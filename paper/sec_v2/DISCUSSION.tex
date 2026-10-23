@@ -1,0 +1,169 @@
+% ======================================================================
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{What the evidence supports}
+The three contributions were stated as claims that an experiment could falsify, and the
+results section reports the outcome of each. The phase-locked tier is a component, not a
+model: it is worth \nv{abl.patch.no_pl.mean_dwape_pct} and
+\nv{abl.basis.no_pl.mean_dwape_pct} in WAPE to two residual backbones that share nothing but
+the interface, averaged over the reference cells, and \nv{abl.patch.OPSD-DE.no_pl.H24.dwape_pct}
+and \nv{abl.basis.OPSD-DE.no_pl.H24.dwape_pct} on the German system at one day, and it moves both backbones in the same direction in every cell but two, where its effect on
+one backbone is within a point of zero. On the eight-system benchmark
+the model built around it is retained by the Model Confidence Set in
+\nv{mcs.grid.PLANET.n_in} of \nv{mcs.grid.n_cells} cells and has the second mean rank of
+\nv{grid.n_models} methods; it is significantly worse than a compared method in
+\nv{dm.total.losses} of \nv{dm.n_tests} tests, \nv{dm.TiDE.losses} of them against TiDE, which
+is the strongest form of accuracy claim the data support and the only one we make. The
+mechanism claim held where the mechanism says it should, against the learned-calendar
+control: per-window estimation pays when the model is moved to a system it has never seen,
+and with one quarter to one half of the history, where it keeps PLANET ahead of TiDE on
+Germany and carries it past TiDE on Spain with a quarter of the history but not on France, and the size of both effects is
+consistent with the explanation, that a calendar map must be learned from examples of every
+day-type while a calendar basis need not. The protocol claim is supported by its own data:
+handing a fixed architecture the calendar and the weather forecast changes its error by
+\nv{info.grid.R2_vs_R0.mean_dwape_pct}, more than the gap between the proposed model and the
+median architecture given the same inputs, so that comparisons which do not control the
+information set are comparisons of interfaces.
+
+\subsection{What the evidence does not support}
+Four findings go against hypotheses that motivated the design, and we report them as results
+rather than drop them. The first is that a closed-form calendar fit is more accurate than a
+learned calendar map when training data are plentiful: on the full training split
+PatchTST+Cal, which is handed the same design matrix as tokens, is statistically
+indistinguishable from PLANET in \nv{dm.CalTST.ties} of \nv{dm.CalTST.n_cells} cells, and
+N-BEATS, which has no calendar input beyond the shared head, is indistinguishable in
+\nv{dm.NBEATS.ties}. A reader who has four years of clean history and no intention of moving
+the model may reasonably prefer whichever of the three is simplest to maintain. The second is
+that gradient-free adaptation alone delivers robustness to regime shift: under temporal drift
+every method degrades by a comparable amount once it has half the history, because what
+drifts is the residual, not the seasonal state that the solve re-estimates. A model deployed
+across a structural break still needs to be retrained or to carry an adaptive residual, and
+the tier does not remove that need. The third is that the two defining choices of the basis,
+locking it to the calendar rather than the window and evaluating it on local civil time, are
+where its value lies: the first is worth \nv{abl.patch.relative.mean_dwape_pct} and
+\nv{abl.basis.relative.mean_dwape_pct} on average and the second nothing measurable, so the
+tier's value is in the per-window solve of a calendar basis as such, not in those two
+refinements. The fourth, and the one a reader will weigh most, is that the proposed model is
+not the most accurate forecaster in its own benchmark. TiDE is significantly ahead of it in
+\nv{dm.TiDE.losses} cells and behind in none, with a mean rank of \nv{grid.TiDE.meanrank_wape}
+against \nv{grid.PLANET.meanrank_wape}; the next paragraph says why, and the reason is
+specific enough to be useful.
+
+\paragraph{Where the calendar tier pays, and where the weather pathway does}
+\tabv{tab_weather_v2}
+The natural explanation of the headline table is a contrast between
+calendar-driven and weather-driven systems: German load is a calendar signal (daily mean load
+correlates with daily temperature at \nv{data.OPSD-DE.wx_corr}, winter exceeds summer by a
+factor \nv{data.OPSD-DE.wx_winter_summer}, and the weather block changes the four-day error of
+the gradient-boosted trees by \nv{info.OPSD-DE.GBRT.H96.R2_vs_R1.dwape_pct}), French load a
+weather signal (electric heating; correlation \nv{data.OPSD-FR.wx_corr}, factor
+\nv{data.OPSD-FR.wx_winter_summer}, weather gain \nv{info.OPSD-FR.GBRT.H96.R2_vs_R1.dwape_pct}
+for the same trees); PLANET leads every model at every horizon on the first and trails TiDE on
+the second. Table~\ref{tab:weather-v2} puts that explanation beside all eight systems, ordered
+by the share of daily load that temperature explains, and it does not hold as a rule: the Dutch
+and Polish systems are as weakly weather-dependent as the German one, the Italian one less so,
+and TiDE leads PLANET on all three. What the
+table does support is narrower: the tier is worth most on Germany
+(\nv{abl.patch.OPSD-DE.no_pl.H96.dwape_pct} at four days on the same backbone against
+\nv{abl.patch.OPSD-FR.no_pl.H96.dwape_pct} on France), PLANET's standing against the
+learned-calendar control is favourable on six of the eight systems, within a point on Great Britain and unfavourable
+on Poland (last column), and its deficit to TiDE is a property of the pair, not of the weather. The pathway control of Section~\ref{sec:mech}
+puts a number on that pair: routing TiDE's covariates through the shared head instead of its
+per-step encoder changes TiDE's WAPE by \nv{path.grid.TiDEh.mean_dwape_vs_TiDE_pct} on
+average, and once both models read the covariates through the same head the remaining
+difference to PLANET is \nv{path.grid.TiDEh.mean_dwape_vs_PLANET_pct}. PLANET-X, which gives
+the tier a native pathway of its own, was pre-registered as the direct test of the pathway
+explanation and failed it: its four-day WAPE relative to PLANET is
+\nv{ref.OPSD-FR.H96.vs.PLANETX.gain_wape_pct} on France and
+\nv{ref.OPSD-DE.H96.vs.PLANETX.gain_wape_pct} on Germany (positive: PLANET better), a marginal
+gain on the weather-driven system and a clear loss on the calendar-driven one. A dense encoding
+of the covariate block concatenated to the residual input is therefore not the pathway that
+TiDE's per-step temporal decoder is. We did not iterate on further variants, since a variant
+chosen after seeing the test grid would be worth nothing; the per-step pathway is the obvious
+next design, and we leave it to be tested under the same pre-registration.
+
+The paper also does not show that the operator can be replaced. The learned models beat the
+published day-ahead forecast on \nv{da.grid.any.n_beats_tso_unbiased} of the
+\nv{da.grid.n_unbiased} systems whose published series is unbiased, PLANET on
+\nv{da.grid.PLANET.n_beats_tso_unbiased} and TiDE on \nv{da.grid.TiDE.n_beats_tso_unbiased},
+under a like-for-like cut-off, but they hold degraded reanalysis rather than an archived
+operational weather forecast, and the operator's forecast is a product of a process, including
+manual correction, that a single model does not reproduce. The like-for-like result shows that
+the protocol is fair, and that the accuracy an operator obtains is reachable by a model trained
+under it; it does not show more than that.
+
+\subsection{Threats to validity}
+\paragraph{The weather proxy} We did not have access to an archive of the operational
+day-ahead weather forecasts issued for the eight systems over 2015--2020 at hourly resolution
+(archived global forecasts exist at coarser time steps and would be a natural extension), so
+the future weather block is reanalysis degraded by a lead-dependent error model whose
+parameters are set at the level of published day-ahead skill: for temperature the error
+model reaches about two kelvin at 72\,h, the error standard deviation that ECMWF reports for
+its 60--72\,h two-metre temperature forecasts against European surface stations
+\cite{haiden2022ecmwf}, and for wind and solar generation it uses the typical day-ahead error
+of national aggregates, several percent of installed capacity
+\cite{hodge2012wind,lorenz2011pv}, whose real distributions are heavier-tailed than the
+Gaussian assumed here. The error model is unbiased and Gaussian, which is kinder than a real forecast in every respect that matters here: no systematic
+errors, no missed fronts, and errors that are independent across hours and variables where a
+real forecast's persist, a difference the correlated-noise check of
+Section~\ref{sec:sensitivity} prices at \nv{exo.ar.grid.TiDE.mean_dwape_pct} and
+\nv{exo.ar.grid.PLANET.mean_dwape_pct}. Every method receives
+the same proxy, so the comparison between methods is unaffected; the absolute level of R2
+error, and the comparison with the operator, should be read with this caveat.
+
+\paragraph{The training budget} Every model is trained with a cosine schedule to early stopping
+on validation loss under a cap of thirty epochs; \nv{proto.epochs.frac_capped} of the
+\nv{proto.epochs.n_runs} headline runs ran to the cap, which a cosine schedule makes expected
+rather than alarming, since the validation loss keeps improving slowly until the schedule ends.
+The relevant question is whether the budget shapes the ordering. We re-trained the ten
+headline models on the German system with three times the cap (ninety epochs, patience ten,
+three seeds): their WAPE changed by \nv{budget.OPSD-DE.mean_dwape_pct} on average (between
+\nv{budget.OPSD-DE.min_dwape_pct} and \nv{budget.OPSD-DE.max_dwape_pct} over
+\nv{budget.OPSD-DE.n_cells} cells), the Spearman correlation between the rankings under the
+two budgets is \nv{budget.OPSD-DE.mean_spearman} averaged over horizons, and the best model
+changed in \nv{budget.OPSD-DE.n_best_changed} of \nv{budget.OPSD-DE.n_horizons} horizons.
+The longer budget does not help: most cells are slightly less accurate under it, so the cap is
+acting as a regulariser rather than a constraint, the ordering is preserved, and the one change
+at the top of the German table runs against the proposed model, since at two weeks \nv{budget.OPSD-DE.H336.best_large} edges past
+\nv{budget.OPSD-DE.H336.best_small} once both train three times longer, by a small margin
+(\nv{budget.OPSD-DE.TiDE.H336.wape} against \nv{budget.OPSD-DE.PLANET.H336.wape} WAPE). The French check (Section~\ref{sec:sensitivity}) reads the same way:
+the best model changes at one horizon there too, and again away from the proposed model, with
+\nv{budget.OPSD-FR.H24.best_large} overtaking \nv{budget.OPSD-FR.H24.best_small} at one day.
+The budget therefore does not shape the ordering in the proposed model's favour.
+
+\paragraph{The test span} The test period, August 2019 to September 2020, contains one
+year-end holiday period, which favours a method with a holiday basis, and the spring-2020
+lockdowns, which favour nothing that was trained before them. Both are in the test span of
+every method and the per-window error files released with the paper allow either to be
+excluded. We chose not to exclude them: an operational forecaster is scored on the year it
+gets.
+
+\paragraph{Foundation-model contamination} The pre-training corpora of the two zero-shot
+models include public electricity series and may include the systems studied here. We have
+reported them as references and drawn no conclusion from their absolute accuracy.
+
+\paragraph{Scope} Eight European national systems with a shared regulatory environment and
+similar load composition are not the world. The mechanism does not depend on Europe, but the
+size of the holiday effect, the weather response and the value of the weekly cycle do, and a
+system with a different working week or a different climate is a different experiment.
+
+\subsection{Implications for practice}
+For an operator or a forecasting team the results reduce to five points. The information set
+matters more than the architecture: any competent model given calendar, holidays and the
+weather forecast will outperform a better model without them, and the shared head of
+Section~\ref{sec:head} is a cheap way to give any model that interface. Among models with the same inputs, a model whose main encoder reads the covariates, TiDE in
+this study, is the most accurate point and probabilistic forecaster on most systems and among
+the cheapest to train, so it, or its equal-weight mean with PLANET, is the default; the
+closed-form calendar tier is the choice where the history is short or the model must be moved
+between systems, and it costs \nv{cost.PLANET_vs_backbone.infer_pct} in inference against its
+backbone, a small linear solve per window. The two are complementary: their equal-weight mean is more accurate than
+either alone in nearly every cell of the grid (Section~\ref{sec:sensitivity}), and under the
+operator protocol the combined ensemble improves on PLANET's ensemble on every system and on
+TiDE's on most, tying it on the rest (Table~\ref{tab:dayahead-v2}), so a team that can afford
+to run both should average them. A
+model that must survive a structural break needs retraining or an adaptive residual, whatever
+its seasonal representation. And calibrated intervals are a property of the calibrator, not the
+forecaster: conformalised quantile regression followed by adaptive conformal inference brought
+every method here to nominal coverage, after which the choice of forecaster is a choice of
+sharpness.

@@ -1,0 +1,144 @@
+% ======================================================================
+\section{PLANET}
+\label{sec:method}
+
+\begin{figure*}[!t]
+\centering
+\figv{fig_arch_v2}{\textwidth}
+\caption{PLANET. \textbf{(a)} The design matrix is a function of absolute local wall-clock
+time, so it continues across the forecast origin without interruption: the phase of every
+harmonic and the position of every weekend and holiday at horizon step $h$ are known exactly
+before the forecast is made. \textbf{(b)} The phase-locked tier is solved in closed form per
+window; a residual network models what it leaves behind, conditioned on the solved
+coefficients; the shared exogenous head adds the covariate response. Gradients flow through
+the solve.}
+\label{fig:arch}
+\end{figure*}
+
+PLANET forecasts the load as the sum of a \emph{phase-locked} seasonal component re-estimated
+for every window in closed form, a learned \emph{residual}, and a covariate \emph{response}
+(Fig.~\ref{fig:arch}). The first is the contribution; the second is a backbone chosen on
+validation; the third is the head every model in the study shares.
+
+\subsection{Absolute-time bases}
+\label{sec:basis}
+For a local civil timestamp $\tau^{\ell}$ (hours) define the design vector
+$\vv{\phi}(\tau^{\ell})\in\R^{K}$ by stacking an intercept; daily harmonics
+$\{\sin,\cos\}(2\pi k\tau^{\ell}/24)$, $k=1{:}K_d$; weekly harmonics
+$\{\sin,\cos\}(2\pi k\tau^{\ell}/168)$, $k=1{:}K_w$; and day-type terms---Saturday, Sunday and
+public-holiday indicators, each alone and multiplied by the first two daily harmonic
+pairs. The day-type group is what makes this a load-forecasting basis rather than a generic
+Fourier basis: weekend and holiday demand is not weekday demand scaled down, it has a
+different shape, and the interactions let the solver represent that at no extra cost. Two
+optional components complete the seasonal representation: a local trend column of
+$\vv{\phi}$, and a climatological tier $\vv{\Psi}\vv{\beta}^{g}_c$ of annual harmonics (with
+an intercept and a multi-year trend) whose coefficients are learned globally and which is
+removed from each channel before normalisation. The ablation of Section~\ref{sec:ablation}
+measures what each contributes.
+
+Two properties of $\vv{\phi}$ carry the method. It is a function of \emph{absolute} time: two
+windows that end at the same wall-clock hour receive identical basis values wherever they
+began, and a horizon step three weeks out is evaluated at its true calendar position, not at
+an extrapolated offset. And it is evaluated on the \emph{local} clock: human schedules follow
+civil time, so a basis on UTC is out of phase by one hour for half of every year in every
+system studied here. Section~\ref{sec:ablation} measures both choices against their
+alternatives---a window-relative basis, and a UTC basis---with everything else held fixed.
+
+\subsection{The phase-locked least-squares solver}
+Let $\vv{\Phi}_L\in\R^{L\times K}$ and $\vv{\Phi}_H\in\R^{H\times K}$ stack $\vv{\phi}$ over
+the lookback and the horizon. The lookback, after removal of the climatological tier, is
+instance-normalised per window and channel, $\hat{\mm{X}}=(\mm{X}-\vv{\mu})/\vv{\sigma}$,
+which absorbs level and scale drift
+\cite{kim2022revin}. For each window and channel $c$ the seasonal state is the solution of a
+weighted ridge problem,
+\begin{equation}
+\begin{split}
+\vv{\beta}_c&=\argmin_{\vv{b}}\;\sum_{i=1}^{L} w_{ic}\bigl(\hat{x}_{ic}-\vv{\phi}_i^\top\vv{b}\bigr)^2
++\sum_{k=1}^{K}\lambda_{ck}b_k^2\\
+&=\bigl(\vv{\Phi}_L^\top\mm{W}_c\vv{\Phi}_L+\vv{\Lambda}_c\bigr)^{-1}\vv{\Phi}_L^\top\mm{W}_c\hat{\vv{x}}_c,
+\end{split}
+\label{eq:solution}
+\end{equation}
+with $\mm{W}_c=\operatorname{diag}(\vv{w}_{:c})$ and $\vv{\Lambda}_c=\operatorname{diag}(\vv{\lambda}_c)$,
+and the seasonal forecast and its in-sample counterpart are
+$\hat{\vv{s}}^{\text{fut}}_c=\vv{\Phi}_H\vv{\beta}_c$ and
+$\hat{\vv{s}}^{\text{hist}}_c=\vv{\Phi}_L\vv{\beta}_c$.
+
+Equation~\eqref{eq:solution} is a batch of symmetric positive-definite $K\times K$ systems with
+$K\approx 35$, solved by Cholesky factorisation: there is no inner loop, no convergence
+criterion and no possibility of divergence. The coefficients depend only on the current
+window, so when the daily profile changes the very next forecast reflects it with the network
+weights untouched---test-time adaptation obtained by solving a convex problem rather than by
+continuing to train. And the solve is differentiable, so the weights $\vv{w}$, the penalties
+$\vv{\lambda}$ and the residual network are trained for forecast error rather than for
+in-sample fit.
+
+The penalty is indexed by channel and basis function and parameterised multiplicatively,
+$\lambda_{ck}=L\,(e^{\rho_{ck}}+10^{-3})$, with a larger step size on $\vv{\rho}$ than on the
+network weights: its useful range spans several orders of magnitude, from almost none on a
+clean daily profile to enough to erase the seasonal component of an aperiodic channel
+entirely. The observation weights $\vv{w}_{:c}$ are either uniform or produced by a small
+convolutional network with a learnable recency prior, normalised to $\sum_i w_{ic}=L$; the
+headline model uses the learned weights and the ablation reports the uniform alternative.
+
+\subsection{Residual network}
+\label{sec:backbone}
+What the tier leaves behind, $\mm{R}=\hat{\mm{X}}-\hat{\mm{S}}^{\text{hist}}$, is modelled by a
+channel-independent network conditioned on the solved coefficients $\vv{\beta}_c$, which tell
+it where in the calendar it is correcting and how strongly each harmonic is currently
+expressed. Two backbones are candidates, and the choice between them is made once, on the validation loss
+of the reference systems, and transferred like every other tuned setting
+(Section~\ref{sec:setup}): the patch Transformer of PatchTST \cite{nie2023patchtst} (patches of 16 with stride 8, three encoder
+layers, a flatten-and-project head), where $\vv{\beta}_c$ enters as one prepended token; and
+the doubly-residual basis stack of N-BEATS \cite{oreshkin2020nbeats} (nine blocks of four
+layers, width 256), where $\vv{\beta}_c$ is projected onto the input sequence and added to it
+before the first block; a feature-wise affine modulation of every block's hidden state is the
+alternative tested in the ablation. Both are the corresponding baseline architecture at the width selected for PLANET
+(\appref{app:config}; the basis stack inside PLANET carries dropout, which the N-BEATS
+baseline does not, and plain instance normalisation), and the ablation runs ``backbone
+alone'' and ``backbone with the tier'' at that same width, so the pair is a controlled
+measurement of what the tier contributes on two architectures that
+share nothing else.
+
+The point forecast is reassembled by inverting the normalisation,
+$\hat{\vv{y}}=(\hat{\vv{s}}^{\text{fut}}_{c^\star}+\vv{r}^{\text{fut}}_{c^\star})\,\sigma_{c^\star}
++\mu_{c^\star}$. For probabilistic forecasts the residual head emits $Q$ quantile levels as a
+median plus non-negative increments, trained with the pinball loss and calibrated as in
+Section~\ref{sec:prob}.
+
+\subsection{A native covariate pathway: PLANET-X}
+\label{sec:planetx}
+The shared head of Section~\ref{sec:head} is deliberately small, so that it corrects a
+forecast rather than carries it, and PLANET receives the covariates through it like every
+other model without a native interface. On systems whose load is driven by weather rather
+than by the calendar, that pathway is a bottleneck that models with a native covariate
+encoder do not have. PLANET-X is the same model with the head replaced by a native pathway of
+the shape TiDE and N-BEATSx use for their exogenous inputs: a per-step linear map of the
+covariate block over lookback and horizon to four features, flattened and projected to a
+128-dimensional embedding, which is concatenated to the input of every block of the basis
+stack (or prepended as one token to the patch Transformer). The calendar tier, the
+normalisation and the conditioning on the seasonal state are unchanged. The variant was
+designed after the first two systems' sweeps showed where the shared-head model loses, and we
+say so; it is tuned and selected under the identical protocol and reported beside PLANET in
+every experiment, and PLANET remains the primary model and the subject of the ablation.
+
+\subsection{The shared exogenous head}
+\label{sec:head}
+Channel independence is what makes patch Transformers and basis stacks strong, but it also
+means the covariate block of Section~\ref{sec:regimes} cannot influence the target through
+them. Under our protocol every model without a native known-future interface receives the
+block through one head, shaped like the classical load--temperature response: a point-wise
+non-linearity applied to the covariates at every horizon step, a summary (mean, last, extrema)
+of their lookback for thermal inertia, a short depth-wise temporal convolution, and a linear
+output initialised near zero, so that a wrapped model starts exactly at its own forecast and
+learns the covariate correction from there. The head is small
+(\nv{proto.head.params_k}k parameters) and identical for every model it is attached to,
+including PLANET.
+
+\subsection{Complexity}
+Building $\vv{\Phi}_L^\top\mm{W}\vv{\Phi}_L$ costs $O(BCLK^2)$ and the solves $O(BCK^3)$; with
+$K\approx 35$ both are negligible beside either backbone. Under the load-only scoring of the
+national grids every channel-independent model in the study, ours included, is trained on the
+load channel alone, which yields the identical target forecast at a fraction of the cost;
+multivariate models keep all channels. Measured cost is reported in
+Section~\ref{sec:cost}.

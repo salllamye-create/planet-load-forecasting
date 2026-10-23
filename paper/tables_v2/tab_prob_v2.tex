@@ -1,0 +1,59 @@
+\begin{table}[!t]
+\centering
+\caption{Day-ahead probabilistic forecasting (nominal 90\% intervals, MW, seed mean). qCRPS (the quantile-weighted CRPS approximation over the seven levels) and pinball loss are those of the quantiles after conformalised quantile regression of every level pair; PICP is shown for the raw head, after CQR and after delayed-feedback adaptive conformal inference (the level of each step is updated only with outcomes observed by the forecast origin); width and Winkler score are for the ACI intervals. Best per block in \textbf{bold} (PICP is not ranked).}
+\label{tab:prob-v2}
+\setlength{\tabcolsep}{3pt}\footnotesize
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrrrr}
+\toprule
+ & & & \multicolumn{3}{c}{PICP (\%)} & & \\
+\cmidrule(lr){4-6}
+Method & qCRPS & Pinball & raw & CQR & ACI & MPIW & Winkler \\
+\midrule
+\multicolumn{8}{l}{\textit{DE, $H=24$\,h}} \\
+\quad N-BEATS & 747 & 296 & 74.2 & 79.9 & 89.9 & 4586 & 6004 \\
+\quad DLinear & 905 & 355 & 80.9 & 82.2 & 90.2 & 5242 & 6698 \\
+\quad PatchTST & 822 & 329 & 80.5 & 78.5 & 89.9 & 6080 & 7941 \\
+\quad PatchTST+Cal & 772 & 303 & 83.0 & 81.9 & 89.9 & 4585 & 6110 \\
+\quad \textbf{PLANET} & \textbf{704} & \textbf{275} & 78.9 & 86.0 & 90.0 & \textbf{4209} & \textbf{5589} \\
+\quad TFT & 851 & 337 & 65.4 & 78.6 & 89.9 & 5969 & 7668 \\
+\quad TiDE & \underline{733} & \underline{290} & 71.8 & 85.3 & 90.1 & \underline{4276} & \underline{5645} \\
+\quad N-HiTS & 808 & 319 & 67.4 & 82.1 & 89.9 & 5156 & 6742 \\
+\quad PLANET-X & 876 & 345 & 71.8 & 85.5 & 90.1 & 5321 & 6875 \\
+\midrule
+\multicolumn{8}{l}{\textit{FR, $H=24$\,h}} \\
+\quad N-BEATS & 699 & \underline{276} & 74.2 & 84.7 & 90.0 & \textbf{3962} & \underline{5257} \\
+\quad DLinear & 799 & 316 & 91.2 & 86.9 & 90.1 & 4492 & 6102 \\
+\quad PatchTST & 731 & 290 & 82.9 & 83.6 & 90.0 & 4201 & 5519 \\
+\quad PatchTST+Cal & \underline{699} & 278 & 82.9 & 84.6 & 90.0 & 4040 & \textbf{5225} \\
+\quad \textbf{PLANET} & \textbf{673} & \textbf{269} & 82.2 & 88.4 & 90.1 & \underline{4016} & 5467 \\
+\quad TFT & 796 & 316 & 76.0 & 84.8 & 90.0 & 4543 & 5929 \\
+\quad TiDE & 736 & 300 & 76.7 & 84.0 & 90.1 & 4287 & 5863 \\
+\quad N-HiTS & 718 & 284 & 72.9 & 85.3 & 90.0 & 4175 & 5613 \\
+\quad PLANET-X & 743 & 296 & 81.9 & 89.2 & 90.0 & 4514 & 6107 \\
+\midrule
+\multicolumn{8}{l}{\textit{GB, $H=24$\,h}} \\
+\quad N-BEATS & 1082 & 435 & 56.4 & 73.2 & 89.9 & 11379 & 13763 \\
+\quad DLinear & 1018 & \underline{403} & 68.7 & 82.2 & 89.9 & \underline{8006} & \underline{10543} \\
+\quad PatchTST & 1061 & 427 & 54.7 & 74.1 & 89.9 & 12742 & 15169 \\
+\quad PatchTST+Cal & 1042 & 419 & 58.6 & 74.8 & 89.9 & 11310 & 13790 \\
+\quad \textbf{PLANET} & \underline{1014} & 411 & 52.2 & 77.7 & 89.9 & 10192 & 12786 \\
+\quad TFT & 1143 & 456 & 52.7 & 76.5 & 90.0 & 12749 & 15083 \\
+\quad TiDE & \textbf{993} & \textbf{392} & 67.9 & 86.8 & 90.0 & \textbf{6198} & \textbf{8712} \\
+\quad N-HiTS & 1139 & 458 & 60.5 & 79.7 & 89.9 & 8120 & 11398 \\
+\quad PLANET-X & 1120 & 445 & 63.4 & 83.3 & 89.9 & 8164 & 10846 \\
+\midrule
+\multicolumn{8}{l}{\textit{ES, $H=24$\,h}} \\
+\quad N-BEATS & \underline{345} & \underline{141} & 65.7 & 76.8 & 90.1 & \underline{2229} & \underline{2944} \\
+\quad DLinear & 540 & 212 & 85.2 & 74.2 & 90.5 & 3289 & 3881 \\
+\quad PatchTST & 462 & 188 & 72.8 & 71.7 & 90.3 & 2967 & 3631 \\
+\quad PatchTST+Cal & 415 & 170 & 74.1 & 70.7 & 90.3 & 2793 & 3510 \\
+\quad \textbf{PLANET} & 382 & 155 & 71.9 & 75.4 & 90.1 & 2384 & 3033 \\
+\quad TFT & 442 & 180 & 66.8 & 74.8 & 90.0 & 2606 & 3408 \\
+\quad TiDE & \textbf{316} & \textbf{127} & 59.5 & 76.9 & 90.0 & \textbf{2054} & \textbf{2685} \\
+\quad N-HiTS & 402 & 162 & 57.8 & 77.7 & 90.0 & 2432 & 3184 \\
+\quad PLANET-X & 371 & 147 & 67.3 & 81.5 & 90.0 & 2344 & 3042 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

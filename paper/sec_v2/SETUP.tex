@@ -1,0 +1,225 @@
+% ======================================================================
+\section{Experimental Protocol}
+\label{sec:setup}
+
+\subsection{Corpus}
+\tabv{tab_datasets_v2}
+Eight national systems---Germany, France, Great Britain, Spain, Italy, the Netherlands,
+Poland and Belgium---are taken from the Open Power System Data time-series package
+\cite{opsd2020}, which carries ENTSO-E actual load and, for every system, the transmission
+operator's own published day-ahead load forecast; they are joined to ERA5 reanalysis weather
+\cite{hersbach2020era5}, obtained through the Open-Meteo historical-weather interface
+\cite{openmeteo} at one interior point per system near its geographic centre (2\,m
+temperature, relative humidity, shortwave radiation and 10\,m wind speed), and to solar and
+wind generation where present. A single point is a simplification: national load responds to
+population-weighted weather, and the two covariate pathways compared in this paper need not
+profit equally from a richer representation, so Section~\ref{sec:sensitivity} repeats the
+comparison of the two leading models with the population-weighted mean of six metropolitan
+points on three of the larger systems, France, Spain and Italy, where one point is least
+representative of the national weather. Each system carries local civil timestamps and its national
+public holidays from the \texttt{holidays} package (for Great Britain the England calendar,
+which covers most of the load). The eight systems were fixed before any experiment: the three
+largest western European systems and five further systems chosen for a spread of size,
+climate and holiday calendar; other systems in the package carry the same columns and can be
+added under the protocol unchanged. A generation series is dropped by two rules fixed in
+advance: any single internal gap longer than thirty days, or less than half of the load span
+present (Table~\ref{tab:datasets-v2}). Remaining gaps are interpolated linearly up to six
+hours and otherwise filled forward and backward; the counts are recorded with the data.
+Three features of the published series matter for reading the results and are documented with
+the data. The Dutch actual-load series steps up in January 2016 (mean load
+\nv{data.OPSD-NL.step_pct} higher in 2016 than in 2015, a change of reporting perimeter inside
+the training split), which any model with a linear trend extrapolates. The French series carries
+one physically impossible hour in the test split (\nv{data.OPSD-FR.bad_hour.value_gw}\,GW at
+\nv{data.OPSD-FR.bad_hour.stamp} between neighbours of
+\nv{data.OPSD-FR.bad_hour.lo_gw}--\nv{data.OPSD-FR.bad_hour.hi_gw}\,GW); the windows whose
+targets cover it are excluded from every French point score, the hour from the probabilistic
+scores and the day from the day-ahead protocol, and the record keeps the unmasked values. The
+British series has \nv{data.OPSD-GB.n_spikes} isolated single-hour spikes (an hour that departs
+from the mean of its neighbours by more than \nv{data.spike.rel_pct} of mean load while the
+neighbours agree within \nv{data.spike.neigh_pct}; the other systems have at most a handful),
+which are left in place and documented with the data.
+Splits are chronological, 70/10/20, so that the test span (August 2019 to September 2020)
+contains one year-end holiday period and the spring-2020 lockdowns; the validation span
+contains neither. For comparability with the literature we also report the 321-client
+Electricity benchmark \cite{lai2018lstnet}, rebuilt from the UCI record with true timestamps
+\cite{uciecl}, and the four ETT transformer-station series \cite{zhou2021informer}, on which
+the calendar prior is expected to fail.
+
+\subsection{Forecasters}
+\label{sec:baselines}
+\nv{n.models.learned} learned forecasters are compared: \nv{proto.n_neural} neural models, the
+seasonal-na\"ive reference among them, and two classical references (gradient-boosted trees,
+and Hong's regression in two fitting schemes that count as one model, plus the same regression
+with an autoregressive model of its residual, which counts as another). The neural models pass
+through one training loop on the same windows, normalisation, optimiser, budget and inputs
+(the seasonal-na\"ive reference has nothing to train; only its period is chosen on
+validation): \nv{proto.n_v1_models} compact re-implementations following the published
+architectures---Seasonal-Na\"ive; LSTM \cite{kong2019lstm} and TCN \cite{bai2018tcn}; N-BEATS
+\cite{oreshkin2020nbeats}; NLinear and DLinear \cite{zeng2023dlinear}, RLinear
+\cite{li2023rlinear} and FITS \cite{xu2024fits}; TimeMixer \cite{wang2024timemixer}; Informer
+\cite{zhou2021informer}, Autoformer \cite{wu2021autoformer}, PatchTST \cite{nie2023patchtst}
+and iTransformer \cite{liu2024itransformer}; the calendar-conditioned control PatchTST+Cal,
+which is handed PLANET's design matrix as tokens without the solver; PLANET; and its
+native-covariate variant PLANET-X (Section~\ref{sec:planetx})---and
+\nv{proto.n_nf_models} taken from the NeuralForecast library \cite{neuralforecast}: the
+Temporal Fusion Transformer \cite{lim2021tft}, TiDE \cite{das2023tide}, N-HiTS
+\cite{challu2023nhits}, N-BEATSx \cite{olivares2023nbeatsx},
+TimeXer \cite{wang2024timexer}, TSMixerx \cite{chen2023tsmixer} and XLinear
+\cite{xlinear2026}. Two classical references complete the set: gradient-boosted trees on lag,
+calendar and weather features \cite{friedman2001gbm}, and Hong's vanilla regression with the
+recency extension \cite{hong2016gefcom,wang2016recency}, reported fitted once, re-fitted
+monthly (the fitting window, expanding or the last 36 or 24 months, and the linear trend
+chosen on validation), and re-fitted monthly with an autoregressive model of the residual: the
+regression with AR errors of the forecasting literature \cite{hyndman2021fpp3}, whose AR
+coefficients are estimated once on the training residuals and whose order is chosen on
+validation among 0, 24, 48, 168 and 240 hours (240 hours of residuals plus the 72 hours of
+recency lags they need is the most the common lookback of 336 hours admits; the bound is
+selected on most systems, and the validation loss changes little between 168 and 240 hours),
+so that the classical reference also has access to the recent load history that every neural
+model reads. Two zero-shot foundation models, Chronos-2
+\cite{chronos2} and TimesFM-2.0 \cite{das2024timesfm}, are run without training as reference
+points, with the caveat that their pre-training corpora may overlap the public series used
+here.
+
+Every model sees per-window instance-normalised inputs: reversible instance normalisation in
+the re-implementations, PLANET's own normalisation, and, for the library models, which the
+harness calls directly rather than through the library's training loop, the same per-window
+standardisation of the lookback applied in the wrapper and inverted on the forecast. Two
+re-implementations depart from this: Informer and Autoformer run without instance
+normalisation, on the standardised block as their original architectures do, because the
+re-run with it added that the protocol called for did not fit the compute budget of the study;
+their cells should be read with that caveat, and the literature on the technique
+\cite{kim2022revin} suggests that it costs the two models accuracy rather than lends them any. The
+library models run at their published defaults with one exception: TiDE's layer
+normalisation is disabled, because the library applies it to the one-dimensional output of
+the temporal decoder, which collapses point forecasts to a constant. Under the regimes of
+Section~\ref{sec:regimes}, TFT, TiDE, N-HiTS, N-BEATSx, TSMixerx and XLinear consume the
+covariate block natively; TimeXer natively reads only its
+past part and receives the future part through the shared head; every other learned model
+receives the whole block through the head. One control variant isolates the pathway itself:
+TiDE run with its native covariate pathway switched off and the block routed through the shared
+head at TiDE's own selected settings (TiDE via head, Section~\ref{sec:mech}). Two architectures
+carry calendar information of their own in every regime, and the reader should know it: PLANET
+and PatchTST+Cal through the
+design matrix, and Informer and Autoformer through the timestamp embedding that is part of
+their architecture (hour, weekday, day, month and day of year, in UTC). The two classical
+references consume the subset of the block that their specification admits: Hong's regression
+the temperature only, the trees the lag-one past values and the values at the target step.
+
+Every model is run under the headline regime R2. Ten \emph{headline models}---N-BEATS,
+PatchTST, PatchTST+Cal, PLANET, PLANET-X, TFT, TiDE, N-HiTS, TimeXer and DLinear, chosen to
+span the architectural families---together with the trees are also run under R0 and R1 (Hong's
+regression cannot run without a calendar), and the zero-shot models under R0 and R2.
+
+\subsection{Windows, tuning and budget}
+Windows are indexed by their first lookback position; the lookback may reach into the previous
+split while targets stay inside it; training windows are subsampled with a stride of five
+hours on the grids (seven on Electricity, one on the hourly ETT series), coprime with the
+daily period so that every start hour is represented, and validation and test windows are
+taken at unit stride. Every neural model is trained with Adam under a cosine schedule to early
+stopping on validation loss (patience five, cap thirty epochs; the runs stopped after
+\nv{proto.epochs.mean} epochs on average and \nv{proto.epochs.frac_capped} of them reached the
+cap; Section~\ref{sec:discussion} reports a three-fold budget check), with mean squared error
+on the load channel as the training loss, at batch size 64 (16 on Electricity and for
+the four most expensive models at the longest lookbacks and horizon, halved after a memory
+failure).
+
+Tuning follows one budget for every model, the expensive ones included. On the two reference
+systems (DE, FR) every model with a width setting is trained at three widths---half,
+published and double its published size; the one-layer linear models and the
+seasonal-na\"ive reference have none---and five learning rates spanning two decades,
+$\{10^{-4},5\!\times\!10^{-4},10^{-3},3\!\times\!10^{-3},10^{-2}\}$; the width with the
+lowest mean validation loss is transferred to the other six systems, where the learning rate
+is re-selected from the same five values. PLANET and PLANET-X carry one further tuned
+setting, the residual backbone, searched on the reference systems jointly with the width
+(twice the configurations of any other model) and transferred; the ablation of
+Section~\ref{sec:ablation} reports both backbones. The lookback is then selected on validation
+from $\{168,336,512,720\}$ for every model on every system and horizon; the Electricity and ETT
+benchmarks and the day-ahead protocol use the protocol lookback of 336. \appref{app:config}
+lists every selection and how often it fell on an edge of a grid. The regimes R0 and R1 reuse
+the rate, width and lookback selected under R2; re-selecting the learning rate under R0 and R1
+on Germany changes the choice for \nv{lrsel.R0.n_changed} and \nv{lrsel.R1.n_changed} of the
+\nv{lrsel.R0.n_models} headline models and changes their validation loss by
+\nv{lrsel.R0.mean_val_dmse_pct} and \nv{lrsel.R1.mean_val_dmse_pct} on average, so the regime
+comparison is read with that margin in mind, and the cells concerned are re-run with their own
+rate as a sensitivity (Section~\ref{sec:sensitivity}). On Electricity and ETT the width is the one chosen
+on the reference systems and the learning rate is re-selected on each dataset's own validation
+split. The four most expensive models---TFT, TimeXer,
+Informer and Autoformer---cost between \nv{cost.expensive.ratio_min} and
+\nv{cost.expensive.ratio_max} times a PatchTST run (Table~\ref{tab:cost-v2}); they receive
+the same budget as every other model. TimesNet \cite{wu2023timesnet} is not in the set: under
+the same protocol each of its runs holds the card at full load for between one and three hours
+(two-dimensional convolutions over the period-folded input at hourly resolution), and the full
+tuning, lookback and headline schedule it would need lay beyond the compute budget of the
+study. Every selection is made on validation loss, never on
+test, and every reported cell is the mean of three training seeds, and the headline, ablation and
+benchmark tables print the seed standard deviation beside it. One rule, applied wherever seeds are
+averaged, excludes a seed whose training diverged at the selected learning rate: a validation
+loss that is non-finite or more than ten times the median of the other seeds of the cell. The
+cell then reports the remaining seeds and their number; this happened \nv{proto.n_diverged}
+times (\nv{proto.diverged_runs}). A run that fails twice on the 8\,GB card even at the smallest
+batch size is reported as an empty cell rather than re-run on other hardware.
+
+
+\subsection{Day-ahead operator protocol}
+\label{sec:dayahead-proto}
+Operators issue their day-ahead forecast before the noon market gate. To compare like with
+like, learned models are evaluated from windows whose last observed hour is 11:00 UTC on day
+$D-1$ and scored over 00:00--23:00 UTC of day $D$ (lead times 13--36\,h), and the operator's
+published forecast is scored on exactly the same target hours of the same days. Under regime
+R2 both sides then hold a day-ahead weather forecast. The learned models are 48-hour point models trained under the headline protocol (protocol
+lookback 336, tuned width and learning rate),
+trained once at the end of the training split and not refitted during the test period, which
+favours the operators; two complements measure that handicap: a seed ensemble (the mean of the
+three seed forecasts, the cheapest operational improvement) and, for PLANET and TiDE, a monthly
+refit from scratch on every row before the start of each test month with early stopping on the
+two preceding months (one seed). Because publication deadlines differ, the whole protocol is
+repeated with the cut-off at 08:00 UTC (lead times 16--39\,h). Every learned forecast is tested
+against the operator by a Diebold--Mariano test on the daily mean absolute errors (HAC variance,
+lag $n^{1/3}$), and the scores are also computed inside and outside the first-wave lockdown window (10 March
+to 31 May 2020) and on holiday days (Section~\ref{sec:dayahead}); the released summaries carry
+them by month as well. For two systems the
+published operator series sits well below the published actual load on the scored days, by
+\nv{da.OPSD-NL.TSO.bias_pct} for the Netherlands and \nv{da.OPSD-GB.TSO.bias_pct} for Great
+Britain, an offset far beyond any forecast error that reflects a difference of perimeter
+between the two ENTSO-E series and that varies over time, so it cannot be removed by a
+correction estimated on earlier data. The operator is therefore reported as published, with
+its bias beside it, and the comparison with the operators is read on the six systems whose
+published series is unbiased on the scored days (absolute bias at most \nv{da.grid.bias_tol_pct}
+of mean load, a threshold fixed after the biases were seen; it separates two series at
+\nv{da.OPSD-NL.TSO.bias_pct} and \nv{da.OPSD-GB.TSO.bias_pct} from six within one per cent).
+
+\subsection{Probabilistic protocol}
+\label{sec:prob}
+Nine headline models with a quantile head (PLANET, PLANET-X, N-BEATS, PatchTST,
+PatchTST+Cal, DLinear, TiDE, N-HiTS and TFT) emit seven quantile levels (5, 10, 25, 50, 75, 90
+and 95\,\%) trained with the pinball loss at the tuned width, learning rate, backbone and
+lookback of the point model, over three seeds, for the day-ahead horizon. Each symmetric pair
+of levels is calibrated by conformalised quantile regression on the validation split, per
+horizon step \cite{romano2019cqr}, and the calibrated quantiles are rearranged to be monotone.
+The 90\,\% interval is then adjusted online across the test split by adaptive conformal
+inference \cite{gibbs2021aci} in its delayed-feedback form: the working level of horizon step
+$k$ at a given origin is updated only with the outcome of the most recent window whose step $k$
+has already been observed, so the procedure uses nothing an operator would not have (the
+immediate-feedback form, which sees the whole horizon one hour later, is kept in the result
+files as a diagnostic: it reaches the same coverage, within
+\nv{prob.grid.lookahead_gap_pp} points on average, with intervals that differ by
+\nv{prob.grid.lookahead_width_pct} in width and by \nv{prob.grid.lookahead_winkler_pct} in
+Winkler score, which is the optimism the delayed form removes). The scores are the mean pinball loss over the seven levels; the quantile-weighted
+CRPS approximation (qCRPS), the trapezoidal integral of twice the pinball loss over the emitted
+levels, which does not score the tails beyond the outer levels and is not the CRPS of a
+continuous predictive distribution; and, for the 90\,\% interval, coverage, mean width and the
+Winkler score. Differences in sharpness therefore reflect the forecaster rather than the
+calibrator.
+
+\subsection{Reproducibility}
+Every table, figure and number in this paper is regenerated from the released result files by
+three scripts and one build command; the prose contains no hand-typed result, which is
+enforced by a check in the build. The released decision log records every protocol decision
+taken during development and every change to one, with the validation evidence that motivated
+it. Every neural and zero-shot run used a single 8\,GB Quadro RTX 4000 (driver 596.51) with
+Python 3.11.9, PyTorch 2.4.1 (CUDA 12.1, cuDNN 9.1), NeuralForecast 3.1.8, NumPy 1.26.4 and
+scikit-learn 1.8.0; the classical references ran on CPU. Seeds fix the initialisation, the
+window order and the weather-noise stream; cuDNN kernels are not forced deterministic, so a
+re-run reproduces each cell to within the seed spread printed beside it rather than bit for bit.
+Every result record carries its full configuration.

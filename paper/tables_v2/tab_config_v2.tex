@@ -1,0 +1,36 @@
+\begin{table*}[!t]
+\centering
+\caption{Configurations selected on validation under the protocol, regime R2: width multiplier relative to the published size (chosen on DE and FR), residual backbone (PLANET variants), learning rate per system, and the number of systems whose selected learning rate sits at an edge of the grid $\{10^{-4},10^{-2}\}$ and of (system, horizon) cells whose selected lookback sits at an edge of $\{168,720\}$. The lookbacks themselves are in the released result files.}
+\label{tab:config-v2}
+\setlength{\tabcolsep}{3pt}\footnotesize
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lcccccccccccc}
+\toprule
+Method & Width & Backbone & DE & FR & GB & ES & IT & NL & PL & BE & lr edge & $L$ edge \\
+\midrule
+LSTM & $2\times$ & -- & $10^{-2}$ & $10^{-2}$ & $10^{-2}$ & $10^{-2}$ & $10^{-2}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & 5/8 & 14/24 \\
+TCN & $2\times$ & -- & $3\times10^{-3}$ & $10^{-3}$ & $10^{-2}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $10^{-2}$ & 2/8 & 17/24 \\
+Informer & $0.5\times$ & -- & $10^{-2}$ & $10^{-2}$ & $10^{-3}$ & $10^{-2}$ & $3\times10^{-3}$ & $10^{-2}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & 4/8 & 12/24 \\
+Autoformer & $1\times$ & -- & $10^{-2}$ & $10^{-2}$ & $10^{-2}$ & $3\times10^{-3}$ & $10^{-3}$ & $5\times10^{-4}$ & $3\times10^{-3}$ & $10^{-2}$ & 4/8 & 14/24 \\
+N-BEATS & $0.5\times$ & -- & $10^{-2}$ & $10^{-2}$ & $10^{-2}$ & $10^{-3}$ & $3\times10^{-3}$ & $10^{-3}$ & $10^{-2}$ & $10^{-2}$ & 5/8 & 14/32 \\
+FITS & -- & -- & $3\times10^{-3}$ & $3\times10^{-3}$ & $10^{-2}$ & $10^{-3}$ & $3\times10^{-3}$ & $10^{-2}$ & $3\times10^{-3}$ & $10^{-2}$ & 3/8 & 11/24 \\
+NLinear & -- & -- & $3\times10^{-3}$ & $10^{-2}$ & $3\times10^{-3}$ & $10^{-3}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $10^{-3}$ & 1/8 & 13/24 \\
+DLinear & -- & -- & $3\times10^{-3}$ & $10^{-3}$ & $3\times10^{-3}$ & $10^{-3}$ & $10^{-3}$ & $3\times10^{-3}$ & $10^{-3}$ & $3\times10^{-3}$ & 0/8 & 11/32 \\
+RLinear & -- & -- & $10^{-2}$ & $10^{-3}$ & $10^{-3}$ & $10^{-3}$ & $10^{-2}$ & $3\times10^{-3}$ & $10^{-2}$ & $10^{-3}$ & 3/8 & 15/24 \\
+TimeMixer & $2\times$ & -- & $3\times10^{-3}$ & $3\times10^{-3}$ & $10^{-2}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $10^{-2}$ & $10^{-2}$ & 3/8 & 13/24 \\
+iTransformer & $2\times$ & -- & $10^{-3}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $10^{-3}$ & $10^{-3}$ & $10^{-3}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & 0/8 & 14/24 \\
+PatchTST & $0.5\times$ & -- & $3\times10^{-3}$ & $10^{-3}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $10^{-3}$ & $3\times10^{-3}$ & $10^{-3}$ & 0/8 & 16/32 \\
+PatchTST+Cal & $0.5\times$ & -- & $10^{-3}$ & $10^{-3}$ & $5\times10^{-4}$ & $3\times10^{-3}$ & $10^{-3}$ & $5\times10^{-4}$ & $3\times10^{-3}$ & $5\times10^{-4}$ & 0/8 & 14/32 \\
+\textbf{PLANET} & $0.5\times$ & basis & $3\times10^{-3}$ & $3\times10^{-3}$ & $10^{-2}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $10^{-3}$ & $3\times10^{-3}$ & 1/8 & 15/32 \\
+TFT & $0.5\times$ & -- & $3\times10^{-3}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $10^{-2}$ & $3\times10^{-3}$ & $5\times10^{-4}$ & $3\times10^{-3}$ & 1/8 & 10/32 \\
+TiDE & $0.5\times$ & -- & $10^{-3}$ & $3\times10^{-3}$ & $10^{-3}$ & $10^{-3}$ & $10^{-3}$ & $5\times10^{-4}$ & $3\times10^{-3}$ & $10^{-3}$ & 0/8 & 14/32 \\
+TimeXer & $1\times$ & -- & $10^{-3}$ & $10^{-3}$ & $10^{-3}$ & $10^{-3}$ & $5\times10^{-4}$ & $10^{-3}$ & $10^{-3}$ & $10^{-3}$ & 0/8 & 12/32 \\
+N-HiTS & $2\times$ & -- & $10^{-4}$ & $10^{-4}$ & $10^{-4}$ & $10^{-4}$ & $10^{-4}$ & $10^{-4}$ & $5\times10^{-4}$ & $10^{-4}$ & 7/8 & 22/32 \\
+N-BEATSx & $1\times$ & -- & $10^{-3}$ & $10^{-4}$ & $10^{-3}$ & $10^{-3}$ & $10^{-3}$ & $10^{-4}$ & $10^{-3}$ & $5\times10^{-4}$ & 2/8 & 23/24 \\
+PLANET-X & $1\times$ & basis & $3\times10^{-3}$ & $10^{-3}$ & $10^{-3}$ & $3\times10^{-3}$ & $3\times10^{-3}$ & $10^{-3}$ & $3\times10^{-3}$ & $10^{-3}$ & 0/8 & 16/32 \\
+TSMixerx & $2\times$ & -- & $5\times10^{-4}$ & $10^{-3}$ & $5\times10^{-4}$ & $5\times10^{-4}$ & $10^{-3}$ & $5\times10^{-4}$ & $5\times10^{-4}$ & $5\times10^{-4}$ & 0/8 & 7/24 \\
+XLinear & $2\times$ & -- & $5\times10^{-4}$ & $5\times10^{-4}$ & $10^{-4}$ & $5\times10^{-4}$ & $5\times10^{-4}$ & $3\times10^{-3}$ & $5\times10^{-4}$ & $5\times10^{-4}$ & 1/8 & 14/24 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table*}

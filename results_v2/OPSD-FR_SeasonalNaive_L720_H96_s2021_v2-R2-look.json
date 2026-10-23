@@ -1,0 +1,53 @@
+{
+  "dataset": "OPSD-FR",
+  "model": "SeasonalNaive",
+  "L": 720,
+  "H": 96,
+  "seed": 2021,
+  "lr": 0.001,
+  "batch": 64,
+  "params": 1,
+  "epochs_run": 1,
+  "n_year_slow": 3,
+  "train_stride": 5,
+  "val_mse": 0.12930961880941413,
+  "setting": "MS",
+  "regime": "R2",
+  "size": 1.0,
+  "basis_time": "local",
+  "exo_mode": "noisy",
+  "backbone": null,
+  "E": 14,
+  "K": 0,
+  "train_frac": 1.0,
+  "train_first": false,
+  "eval_data": null,
+  "bad_steps": 0,
+  "train_time_s": 1.3,
+  "infer_time_s": 1.6,
+  "amp": false,
+  "tag": "_v2-R2-look",
+  "extra": {},
+  "history": [
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.12930961880941413,
+      "period": 168
+    }
+  ],
+  "mse": 0.15950252133785772,
+  "mae": 0.25791062345393956,
+  "n_windows": 9984,
+  "per_channel_mse": [
+    0.159503
+  ],
+  "rmse_orig": 4702.735935251882,
+  "mae_orig": 3036.938823471721,
+  "wape": 6.0989922307664015,
+  "mape": 5.7972262979636335,
+  "ramp_mae": 432.7362236156798,
+  "peak_mae": 3749.09375,
+  "peak_mape": 6.185981631278992,
+  "peak_time_err": 3.003530740737915
+}

@@ -1,0 +1,41 @@
+\begin{table}[!t]
+\centering
+\caption{Computational cost on DE ($H=96$), one Quadro RTX 4000, seed mean with seed sd in grey. Training time is to the early-stopping point; zero-shot models report inference only.}
+\label{tab:cost-v2}
+\setlength{\tabcolsep}{4pt}\footnotesize
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrr}
+\toprule
+Method & Params (k) & Train (s) & Infer (s) & WAPE (\%) & MSE \\
+\midrule
+Seasonal-Na\"ive & 0 & 1{\scriptsize\color{gray}(0)} & 1.2{\scriptsize\color{gray}(0.1)} & 4.23{\scriptsize\color{gray}(0.00)} & 0.1512 \\
+LSTM & 823 & 347{\scriptsize\color{gray}(30)} & 5.9{\scriptsize\color{gray}(0.2)} & 2.43{\scriptsize\color{gray}(0.09)} & 0.0343 \\
+TCN & 216 & 62{\scriptsize\color{gray}(7)} & 1.4{\scriptsize\color{gray}(0.0)} & 2.43{\scriptsize\color{gray}(0.02)} & 0.0352 \\
+Informer & 528 & 280{\scriptsize\color{gray}(68)} & 13.7{\scriptsize\color{gray}(0.1)} & 5.30{\scriptsize\color{gray}(0.33)} & 0.1340 \\
+Autoformer & 1{,}867 & 1172{\scriptsize\color{gray}(848)} & 28.2{\scriptsize\color{gray}(0.1)} & 3.47{\scriptsize\color{gray}(0.70)} & 0.0653 \\
+N-BEATS & 1{,}749 & 122{\scriptsize\color{gray}(50)} & 2.6{\scriptsize\color{gray}(0.2)} & 2.48{\scriptsize\color{gray}(0.12)} & 0.0350 \\
+FITS & 45 & 69{\scriptsize\color{gray}(10)} & 2.0{\scriptsize\color{gray}(0.0)} & 2.48{\scriptsize\color{gray}(0.04)} & 0.0368 \\
+NLinear & 56 & 63{\scriptsize\color{gray}(0)} & 1.7{\scriptsize\color{gray}(0.1)} & 2.49{\scriptsize\color{gray}(0.01)} & 0.0367 \\
+DLinear & 105 & 66{\scriptsize\color{gray}(1)} & 1.8{\scriptsize\color{gray}(0.0)} & 3.16{\scriptsize\color{gray}(0.18)} & 0.0574 \\
+RLinear & 56 & 69{\scriptsize\color{gray}(1)} & 1.8{\scriptsize\color{gray}(0.0)} & 2.54{\scriptsize\color{gray}(0.02)} & 0.0373 \\
+TimeMixer & 252 & 109{\scriptsize\color{gray}(16)} & 2.1{\scriptsize\color{gray}(0.0)} & 2.33{\scriptsize\color{gray}(0.03)} & 0.0318 \\
+iTransformer & 1{,}744 & 87{\scriptsize\color{gray}(10)} & 1.8{\scriptsize\color{gray}(0.1)} & 2.62{\scriptsize\color{gray}(0.05)} & 0.0400 \\
+PatchTST & 232 & 79{\scriptsize\color{gray}(19)} & 1.5{\scriptsize\color{gray}(0.1)} & 2.43{\scriptsize\color{gray}(0.04)} & 0.0365 \\
+PatchTST+Cal & 639 & 114{\scriptsize\color{gray}(9)} & 2.5{\scriptsize\color{gray}(0.2)} & 2.33{\scriptsize\color{gray}(0.05)} & 0.0329 \\
+\textbf{PLANET} & 1{,}356 & 175{\scriptsize\color{gray}(39)} & 3.2{\scriptsize\color{gray}(0.0)} & \textbf{2.18}{\scriptsize\color{gray}(0.04)} & \textbf{0.0286} \\
+GBRT & 0 & 256{\scriptsize\color{gray}(30)} & 18.2{\scriptsize\color{gray}(2.3)} & 3.35{\scriptsize\color{gray}(0.00)} & 0.0629 \\
+Hong (once) & 0 & 18{\scriptsize\color{gray}(0)} & 0.2{\scriptsize\color{gray}(0.0)} & 7.26{\scriptsize\color{gray}(0.00)} & 0.2382 \\
+Hong (refit) & 0 & 29{\scriptsize\color{gray}(19)} & 0.4{\scriptsize\color{gray}(0.0)} & 5.66{\scriptsize\color{gray}(0.00)} & 0.1657 \\
+Hong (refit)+AR & 1 & 39{\scriptsize\color{gray}(24)} & 1.2{\scriptsize\color{gray}(0.1)} & 3.27{\scriptsize\color{gray}(0.00)} & 0.0671 \\
+TFT & 794 & 632{\scriptsize\color{gray}(317)} & 16.6{\scriptsize\color{gray}(0.2)} & 2.68{\scriptsize\color{gray}(0.11)} & 0.0425 \\
+TiDE & 1{,}623 & 64{\scriptsize\color{gray}(0)} & 1.5{\scriptsize\color{gray}(0.1)} & \underline{2.25}{\scriptsize\color{gray}(0.03)} & \underline{0.0295} \\
+TimeXer & 9{,}681 & 697{\scriptsize\color{gray}(1)} & 8.7{\scriptsize\color{gray}(0.5)} & 2.40{\scriptsize\color{gray}(0.03)} & 0.0328 \\
+N-HiTS & 18{,}052 & 85{\scriptsize\color{gray}(0)} & 1.5{\scriptsize\color{gray}(0.0)} & 2.53{\scriptsize\color{gray}(0.01)} & 0.0347 \\
+N-BEATSx & 8{,}634 & 79{\scriptsize\color{gray}(1)} & 1.5{\scriptsize\color{gray}(0.1)} & 2.59{\scriptsize\color{gray}(0.02)} & 0.0366 \\
+PLANET-X & 3{,}214 & 205{\scriptsize\color{gray}(1)} & 3.0{\scriptsize\color{gray}(0.1)} & 2.45{\scriptsize\color{gray}(0.03)} & 0.0351 \\
+TSMixerx & 516 & 73{\scriptsize\color{gray}(7)} & 1.7{\scriptsize\color{gray}(0.0)} & 2.54{\scriptsize\color{gray}(0.09)} & 0.0365 \\
+XLinear & 3{,}947 & 64{\scriptsize\color{gray}(0)} & 1.5{\scriptsize\color{gray}(0.1)} & 2.54{\scriptsize\color{gray}(0.02)} & 0.0362 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

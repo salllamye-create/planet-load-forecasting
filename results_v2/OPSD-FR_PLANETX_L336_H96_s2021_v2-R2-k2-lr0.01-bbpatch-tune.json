@@ -1,0 +1,112 @@
+{
+  "dataset": "OPSD-FR",
+  "model": "PLANETX",
+  "L": 336,
+  "H": 96,
+  "seed": 2021,
+  "lr": 0.01,
+  "batch": 64,
+  "params": 2918601,
+  "epochs_run": 13,
+  "n_year_slow": 3,
+  "train_stride": 5,
+  "val_mse": 0.09230429327121445,
+  "setting": "MS",
+  "regime": "R2",
+  "size": 2.0,
+  "basis_time": "local",
+  "exo_mode": "noisy",
+  "backbone": "patch",
+  "E": 14,
+  "K": 35,
+  "train_frac": 1.0,
+  "train_first": false,
+  "eval_data": null,
+  "bad_steps": 483,
+  "train_time_s": 53.3,
+  "infer_time_s": 2.49,
+  "amp": false,
+  "tag": "_v2-R2-k2-lr0.01-bbpatch-tune",
+  "extra": {},
+  "history": [
+    {
+      "epoch": 0,
+      "train": 207.51482897555385,
+      "val": 0.27966428338323984
+    },
+    {
+      "epoch": 1,
+      "train": 0.20415823023628304,
+      "val": 0.10461934097714023
+    },
+    {
+      "epoch": 2,
+      "train": 0.14883396167446067,
+      "val": 0.10911396855916405
+    },
+    {
+      "epoch": 3,
+      "train": 0.1323636619857064,
+      "val": 0.10002798451454316
+    },
+    {
+      "epoch": 4,
+      "train": 0.12657639867177717,
+      "val": 0.10423181012489842
+    },
+    {
+      "epoch": 5,
+      "train": 0.12216219719913271,
+      "val": 0.0945137806212632
+    },
+    {
+      "epoch": 6,
+      "train": 0.11863713421755367,
+      "val": 0.09486783049325534
+    },
+    {
+      "epoch": 7,
+      "train": 0.11642786384456688,
+      "val": 0.09230429327121445
+    },
+    {
+      "epoch": 8,
+      "train": 0.12639913773327544,
+      "val": NaN
+    },
+    {
+      "epoch": 9,
+      "train": 0.0,
+      "val": NaN
+    },
+    {
+      "epoch": 10,
+      "train": 0.0,
+      "val": NaN
+    },
+    {
+      "epoch": 11,
+      "train": 0.0,
+      "val": NaN
+    },
+    {
+      "epoch": 12,
+      "train": 0.0,
+      "val": NaN
+    }
+  ],
+  "mse": 0.21451318190576366,
+  "mae": 0.2557346983693349,
+  "n_windows": 9984,
+  "per_channel_mse": [
+    0.214513
+  ],
+  "rmse_orig": 5453.732201653325,
+  "mae_orig": 3011.316903921274,
+  "wape": 6.047536505985993,
+  "mape": 6.079998836876491,
+  "ramp_mae": 1271.533475929909,
+  "peak_mae": 4499.2705078125,
+  "peak_mape": 7.934114336967468,
+  "peak_time_err": 3.6700220108032227
+}

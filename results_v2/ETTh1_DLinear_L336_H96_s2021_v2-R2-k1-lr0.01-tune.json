@@ -1,0 +1,84 @@
+{
+  "dataset": "ETTh1",
+  "model": "DLinear",
+  "L": 336,
+  "H": 96,
+  "seed": 2021,
+  "lr": 0.01,
+  "batch": 64,
+  "params": 69991,
+  "epochs_run": 6,
+  "n_year_slow": 0,
+  "train_stride": 1,
+  "val_mse": 0.700464034572752,
+  "setting": "M",
+  "regime": "R2",
+  "size": 1.0,
+  "basis_time": "local",
+  "exo_mode": null,
+  "backbone": null,
+  "E": 8,
+  "K": 0,
+  "train_frac": 1.0,
+  "train_first": false,
+  "eval_data": null,
+  "splits": null,
+  "bad_steps": 0,
+  "train_time_s": 9.9,
+  "infer_time_s": 0.37,
+  "amp": false,
+  "tag": "_v2-R2-k1-lr0.01-tune",
+  "extra": {},
+  "history": [
+    {
+      "epoch": 0,
+      "train": 0.4943029049318284,
+      "val": 0.700464034572752
+    },
+    {
+      "epoch": 1,
+      "train": 0.3730950029566884,
+      "val": 0.7838841003618292
+    },
+    {
+      "epoch": 2,
+      "train": 0.36761609744280577,
+      "val": 0.7648005871627233
+    },
+    {
+      "epoch": 3,
+      "train": 0.3645429755561054,
+      "val": 0.7681317759373457
+    },
+    {
+      "epoch": 4,
+      "train": 0.3606055239215493,
+      "val": 0.7474212478371454
+    },
+    {
+      "epoch": 5,
+      "train": 0.36079205689020455,
+      "val": 0.724519257057505
+    }
+  ],
+  "mse": 0.4452233193164668,
+  "mae": 0.4621542150820179,
+  "n_windows": 2785,
+  "per_channel_mse": [
+    0.816694,
+    0.271704,
+    0.839173,
+    0.213996,
+    0.608829,
+    0.155918,
+    0.210249
+  ],
+  "rmse_orig": 4.207686927203049,
+  "mae_orig": 3.246656584725417,
+  "wape": 65.54291154377682,
+  "mape": 15323534.851701373,
+  "ramp_mae": 1.8354654575734668,
+  "peak_mae": 5.538113594055176,
+  "peak_mape": 21135845.3125,
+  "peak_time_err": 6.955386161804199
+}

@@ -1,0 +1,91 @@
+{
+  "name": "OPSD-FR-mp",
+  "channels": [
+    "solar",
+    "wind",
+    "temp",
+    "rhum",
+    "rad",
+    "wspd",
+    "load"
+  ],
+  "target": "load",
+  "target_idx": 6,
+  "freq": "1h",
+  "T": 50391,
+  "C": 7,
+  "start": "2015-01-01 08:00:00",
+  "end": "2020-09-30 22:00:00",
+  "splits": {
+    "train": [
+      0,
+      35273
+    ],
+    "val": [
+      35273,
+      40312
+    ],
+    "test": [
+      40312,
+      50391
+    ]
+  },
+  "aux": [
+    "tso_forecast"
+  ],
+  "notes": "ENTSO-E FR system load (OPSD time_series 60min, FR_load_actual_entsoe_transparency) + ERA5 weather (Open-Meteo). aux column holds the TSO's own published day-ahead load forecast (FR_load_forecast_entsoe_transparency, coverage 100.0%). exogenous-series rules: (1) a solar/wind series is dropped if its raw data has any single internal gap longer than 720 h (30 d); (2) then dropped if <50% present over the load span (v1). generation columns kept: {'solar': 'FR_solar_generation_actual (max internal gap 5 h)', 'wind': 'FR_wind_onshore_generation_actual (max internal gap 5 h)'}. dropped: [none]. span start trimmed from 2015-01-01 01:00:00 (first load row) to 2015-01-01 08:00:00 (first fully observed row). missing cells interpolated: 51 (per channel {'load': 41, 'solar': 5, 'wind': 5}; linear up to 6 h, then ffill/bfill). MULTI-POINT WEATHER VARIANT (revision 2026-10-19): the four weather channels are the population-weighted mean of ERA5 at 6 metropolitan areas (Paris 12.3M, Lyon 2.3M, Marseille 1.8M, Toulouse 1.4M, Lille 1.2M, Bordeaux 1.3M); 0 cells interpolated; every other column identical to OPSD-FR.",
+  "country": "FR",
+  "tz": "Europe/Paris",
+  "weather_idx": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "cal_flag_names": [
+    "holiday",
+    "bridge",
+    "xmas"
+  ],
+  "holiday_source": "holidays 0.96 FR",
+  "weather_points": [
+    {
+      "city": "Paris",
+      "lat": 48.86,
+      "lon": 2.35,
+      "weight_millions": 12.3
+    },
+    {
+      "city": "Lyon",
+      "lat": 45.76,
+      "lon": 4.84,
+      "weight_millions": 2.3
+    },
+    {
+      "city": "Marseille",
+      "lat": 43.3,
+      "lon": 5.37,
+      "weight_millions": 1.8
+    },
+    {
+      "city": "Toulouse",
+      "lat": 43.6,
+      "lon": 1.44,
+      "weight_millions": 1.4
+    },
+    {
+      "city": "Lille",
+      "lat": 50.63,
+      "lon": 3.06,
+      "weight_millions": 1.2
+    },
+    {
+      "city": "Bordeaux",
+      "lat": 44.84,
+      "lon": -0.58,
+      "weight_millions": 1.3
+    }
+  ]
+}

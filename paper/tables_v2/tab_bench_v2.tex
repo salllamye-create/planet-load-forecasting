@@ -1,0 +1,27 @@
+\begin{table*}[!t]
+\centering
+\caption{Long-horizon benchmark in the multivariate (\textsc{m}) setting, averaged over the evaluated horizons (z-scored data, protocol lookback 336, seed mean with seed sd in grey). Best in \textbf{bold}, second \underline{underlined}; the last column is the mean MSE rank over every (dataset, horizon) cell.}
+\label{tab:bench-v2}
+\setlength{\tabcolsep}{3pt}\footnotesize
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lccccccccccc}
+\toprule
+ & \multicolumn{2}{c}{ETTh1} & \multicolumn{2}{c}{ETTh2} & \multicolumn{2}{c}{ETTm1} & \multicolumn{2}{c}{ETTm2} & \multicolumn{2}{c}{Electricity} & Avg. \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(lr){8-9} \cmidrule(lr){10-11}
+Method & MSE & MAE & MSE & MAE & MSE & MAE & MSE & MAE & MSE & MAE & rank \\
+\midrule
+N-BEATS & \textbf{0.427}{\scriptsize\color{gray}(0.001)} & \textbf{0.440}{\scriptsize\color{gray}(0.000)} & 0.376{\scriptsize\color{gray}(0.005)} & \underline{0.412}{\scriptsize\color{gray}(0.004)} & \textbf{0.353}{\scriptsize\color{gray}(0.001)} & \textbf{0.388}{\scriptsize\color{gray}(0.000)} & \textbf{0.265}{\scriptsize\color{gray}(0.002)} & \underline{0.327}{\scriptsize\color{gray}(0.001)} & 0.146{\scriptsize\color{gray}(0.001)} & 0.248{\scriptsize\color{gray}(0.003)} & \underline{3.17} \\
+FITS & 0.439{\scriptsize\color{gray}(0.001)} & 0.447{\scriptsize\color{gray}(0.001)} & \textbf{0.364}{\scriptsize\color{gray}(0.002)} & 0.414{\scriptsize\color{gray}(0.001)} & 0.367{\scriptsize\color{gray}(0.002)} & 0.392{\scriptsize\color{gray}(0.000)} & 0.271{\scriptsize\color{gray}(0.001)} & 0.330{\scriptsize\color{gray}(0.000)} & -- & -- & 4.25 \\
+DLinear & 0.452{\scriptsize\color{gray}(0.003)} & 0.463{\scriptsize\color{gray}(0.002)} & 0.496{\scriptsize\color{gray}(0.017)} & 0.478{\scriptsize\color{gray}(0.006)} & 0.365{\scriptsize\color{gray}(0.004)} & 0.396{\scriptsize\color{gray}(0.005)} & 0.293{\scriptsize\color{gray}(0.007)} & 0.351{\scriptsize\color{gray}(0.006)} & 0.143{\scriptsize\color{gray}(0.001)} & 0.248{\scriptsize\color{gray}(0.003)} & 6.44 \\
+RLinear & \underline{0.428}{\scriptsize\color{gray}(0.001)} & 0.443{\scriptsize\color{gray}(0.000)} & 0.378{\scriptsize\color{gray}(0.002)} & 0.423{\scriptsize\color{gray}(0.001)} & 0.360{\scriptsize\color{gray}(0.002)} & \underline{0.389}{\scriptsize\color{gray}(0.002)} & \underline{0.266}{\scriptsize\color{gray}(0.001)} & 0.327{\scriptsize\color{gray}(0.001)} & -- & -- & \textbf{2.44} \\
+iTransformer & -- & -- & -- & -- & -- & -- & -- & -- & 0.144{\scriptsize\color{gray}(0.001)} & 0.249{\scriptsize\color{gray}(0.001)} & 5.00 \\
+PatchTST & 0.435{\scriptsize\color{gray}(0.001)} & 0.442{\scriptsize\color{gray}(0.000)} & 0.378{\scriptsize\color{gray}(0.003)} & 0.420{\scriptsize\color{gray}(0.001)} & 0.364{\scriptsize\color{gray}(0.002)} & 0.395{\scriptsize\color{gray}(0.000)} & 0.270{\scriptsize\color{gray}(0.002)} & 0.330{\scriptsize\color{gray}(0.002)} & \textbf{0.141}{\scriptsize\color{gray}(0.001)} & \textbf{0.244}{\scriptsize\color{gray}(0.002)} & 3.94 \\
+PatchTST+Cal & 0.432{\scriptsize\color{gray}(0.002)} & \underline{0.441}{\scriptsize\color{gray}(0.001)} & 0.409{\scriptsize\color{gray}(0.014)} & 0.435{\scriptsize\color{gray}(0.009)} & 0.383{\scriptsize\color{gray}(0.002)} & 0.411{\scriptsize\color{gray}(0.002)} & 0.287{\scriptsize\color{gray}(0.004)} & 0.338{\scriptsize\color{gray}(0.003)} & \underline{0.142}{\scriptsize\color{gray}(0.001)} & \underline{0.245}{\scriptsize\color{gray}(0.001)} & 6.61 \\
+\textbf{PLANET} & 0.451{\scriptsize\color{gray}(0.017)} & 0.456{\scriptsize\color{gray}(0.010)} & 0.388{\scriptsize\color{gray}(0.005)} & 0.418{\scriptsize\color{gray}(0.003)} & \underline{0.359}{\scriptsize\color{gray}(0.001)} & 0.392{\scriptsize\color{gray}(0.001)} & 0.276{\scriptsize\color{gray}(0.002)} & 0.333{\scriptsize\color{gray}(0.002)} & 0.144{\scriptsize\color{gray}(0.001)} & 0.245{\scriptsize\color{gray}(0.000)} & 4.56 \\
+TiDE & 0.464{\scriptsize\color{gray}(0.009)} & 0.460{\scriptsize\color{gray}(0.003)} & 0.386{\scriptsize\color{gray}(0.008)} & 0.417{\scriptsize\color{gray}(0.002)} & 0.374{\scriptsize\color{gray}(0.001)} & 0.394{\scriptsize\color{gray}(0.001)} & 0.279{\scriptsize\color{gray}(0.006)} & 0.330{\scriptsize\color{gray}(0.003)} & 0.145{\scriptsize\color{gray}(0.001)} & 0.245{\scriptsize\color{gray}(0.001)} & 7.17 \\
+N-HiTS & 0.538{\scriptsize\color{gray}(0.007)} & 0.497{\scriptsize\color{gray}(0.003)} & 0.438{\scriptsize\color{gray}(0.009)} & 0.441{\scriptsize\color{gray}(0.004)} & 0.390{\scriptsize\color{gray}(0.005)} & 0.410{\scriptsize\color{gray}(0.003)} & 0.304{\scriptsize\color{gray}(0.001)} & 0.345{\scriptsize\color{gray}(0.000)} & 0.151{\scriptsize\color{gray}(0.000)} & 0.253{\scriptsize\color{gray}(0.000)} & 9.56 \\
+PLANET-X & 0.468{\scriptsize\color{gray}(0.013)} & 0.464{\scriptsize\color{gray}(0.007)} & \underline{0.371}{\scriptsize\color{gray}(0.007)} & \textbf{0.399}{\scriptsize\color{gray}(0.005)} & 0.372{\scriptsize\color{gray}(0.003)} & 0.394{\scriptsize\color{gray}(0.001)} & 0.276{\scriptsize\color{gray}(0.003)} & \textbf{0.326}{\scriptsize\color{gray}(0.001)} & 0.149{\scriptsize\color{gray}(0.001)} & 0.248{\scriptsize\color{gray}(0.001)} & 5.94 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table*}

@@ -1,0 +1,103 @@
+\documentclass[journal]{IEEEtran}
+
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{adjustbox}   % generated tables: max width = line width
+\usepackage{multirow}
+\usepackage{array}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{subcaption}
+
+\graphicspath{{../figures_v2/}{../figures/}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\vv}[1]{\boldsymbol{#1}}
+\newcommand{\mm}[1]{\mathbf{#1}}
+\newcommand{\R}{\mathbb{R}}
+% Every quoted number is a macro generated from the result files by src/paper_numbers.py.
+% The prose contains no hand-typed result (checked by `paper_numbers.py --check`).
+\input{numbers}
+% Tables and figures are generated (src/make_tables_v2.py, src/fig_results_v2.py); a missing
+% file prints a placeholder so that a draft builds, and the release build refuses it.
+
+\newcommand{\tabv}[1]{\IfFileExists{tables_v2/#1.tex}{\input{tables_v2/#1}}{\typeout{MISSING TABLE #1}}}
+
+\newcommand{\figv}[2]{\IfFileExists{../figures_v2/#1.pdf}{\includegraphics[width=#2]{#1}}{\typeout{MISSING FIGURE #1}\fbox{\parbox{\dimexpr#2-2\fboxsep-2\fboxrule\relax}{\centering\vspace{3em}\texttt{\detokenize{#1}}\vspace{3em}}}}}
+
+\newcommand{\appref}[1]{Appendix~\ref{#1}}
+\begin{document}
+
+\title{Closed-Form Calendar Estimation in Deep Load Forecasting: An Information-Controlled Benchmark on Eight National Grids}
+
+\author{%
+\IEEEauthorblockN{Abdulwahed Salam}%
+\thanks{Manuscript prepared \today. A.~Salam is an independent researcher (e-mail: salllam.ye@gmail.com). This work was carried out independently and received no institutional or commercial support.}%
+\thanks{Code, the processed corpus, every result file and the scripts that regenerate every table, figure and quoted number are available at \url{https://github.com/<anonymised>}.}%
+}
+
+\markboth{IEEE Transactions on Smart Grid}%
+{Salam: Closed-Form Calendar Estimation in Deep Load Forecasting}
+
+\maketitle
+
+\begin{abstract}
+Electricity load is the aggregate of human schedules on a shared calendar, yet deep
+forecasters learn its periodicity from the lookback window. PLANET adds to a deep backbone a
+calendar tier: a harmonic design matrix with weekend and public-holiday day-types whose
+coefficients are re-estimated per window in closed form inside the forward pass, followed by
+a residual network and a covariate head shared by every model in the study. Removing the tier
+raises the error of two unrelated backbones by \nv{abl.patch.no_pl.mean_dwape_pct} and
+\nv{abl.basis.no_pl.mean_dwape_pct}, most on the German system and least on the
+French one; locking the basis to the calendar rather than the window is worth
+\nv{abl.patch.relative.mean_dwape_pct} and \nv{abl.basis.relative.mean_dwape_pct} on the two
+backbones, and the choice of local time over UTC nothing measurable. On an information-set-controlled benchmark of eight national systems with weather
+at forecast skill, holidays and the operators' published day-ahead forecasts,
+\nv{n.models.learned} learned forecasters and two zero-shot foundation models receive
+identical inputs under one tuning budget, three seeds and three information regimes, and are
+compared with model confidence sets. PLANET is the second most accurate point and
+probabilistic forecaster, retained in \nv{mcs.grid.PLANET.n_in} of \nv{mcs.grid.n_cells}
+confidence sets; the covariate-native TiDE is the most accurate, and a control that feeds
+TiDE through the shared head measures how much of its margin the covariate pathway accounts
+for. Against the learned-calendar control, the closed-form tier gains most with a short
+history and under transfer between systems. The seed ensemble of the two leading models is ahead of the operators' forecast on
+\nv{da.grid.Comb2-ens.n_beats_tso_unbiased} of the six systems whose published series is
+unbiased, significantly on \nv{da.grid.Comb2-ens.n_sig_beats_tso_unbiased}. Giving a fixed architecture the calendar and the weather changes
+its error by \nv{info.grid.R2_vs_R0.mean_dwape_pct}, more than the gap between the proposed model and the median learned method.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Load forecasting, smart grid, deep learning, seasonality, exogenous covariates,
+test-time adaptation, conformal prediction, foundation models.
+\end{IEEEkeywords}
+
+\input{sec_v2/INTRO}
+\input{sec_v2/RELATED}
+\input{sec_v2/PROBLEM}
+\input{sec_v2/METHOD}
+\input{sec_v2/SETUP}
+\input{sec_v2/RESULTS}
+\input{sec_v2/DISCUSSION}
+\input{sec_v2/CONCLUSION}
+
+\section*{Acknowledgment}
+In accordance with IEEE policy on artificial-intelligence-generated content, the author
+discloses that Claude (Anthropic) was used, under the author's direction, to draft and revise
+the text of this article and to write, run and check the experimental code and the scripts
+that generate its tables and figures. The author designed the study, reviewed every statement,
+result and line of code, and takes full responsibility for the content.
+
+\appendices
+\section{Selected configurations}
+\label{app:config}
+Table~\ref{tab:config-v2} lists, for every neural model, the width and residual backbone chosen on
+the two reference systems and the learning rate chosen on each system, together with the number
+of selections that fell on an edge of the search grid; the selected lookbacks, one per system and
+horizon, are in the released result files.
+\tabv{tab_config_v2}
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs,refs_v2,refs_rev}
+
+\end{document}

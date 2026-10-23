@@ -1,0 +1,82 @@
+{
+  "dataset": "OPSD-FR",
+  "model": "LSTM",
+  "L": 512,
+  "H": 336,
+  "seed": 2021,
+  "lr": 0.01,
+  "batch": 64,
+  "params": 884339,
+  "epochs_run": 7,
+  "n_year_slow": 3,
+  "train_stride": 5,
+  "val_mse": 0.05655404048509338,
+  "setting": "MS",
+  "regime": "R2",
+  "size": 2.0,
+  "basis_time": "local",
+  "exo_mode": "noisy",
+  "backbone": null,
+  "E": 14,
+  "K": 0,
+  "train_frac": 1.0,
+  "train_first": false,
+  "eval_data": null,
+  "bad_steps": 0,
+  "train_time_s": 111.5,
+  "infer_time_s": 7.35,
+  "amp": false,
+  "tag": "_v2-R2-look",
+  "extra": {},
+  "history": [
+    {
+      "epoch": 0,
+      "train": 0.14191227085958016,
+      "val": 0.06835178311179284
+    },
+    {
+      "epoch": 1,
+      "train": 0.05986742177438513,
+      "val": 0.05655404048509338
+    },
+    {
+      "epoch": 2,
+      "train": 0.05208327474995194,
+      "val": 0.06492363185095949
+    },
+    {
+      "epoch": 3,
+      "train": 0.04651020181791805,
+      "val": 0.06299357977854152
+    },
+    {
+      "epoch": 4,
+      "train": 0.0428166538476944,
+      "val": 0.061203284531223534
+    },
+    {
+      "epoch": 5,
+      "train": 0.039414261511274584,
+      "val": 0.06556804044818391
+    },
+    {
+      "epoch": 6,
+      "train": 0.0388093592825337,
+      "val": 0.05916043245518694
+    }
+  ],
+  "mse": 0.07874354309660853,
+  "mae": 0.19603840123452185,
+  "n_windows": 9744,
+  "per_channel_mse": [
+    0.078744
+  ],
+  "rmse_orig": 3304.260647476261,
+  "mae_orig": 2308.383541581144,
+  "wape": 4.618476634100582,
+  "mape": 4.663707406687321,
+  "ramp_mae": 949.228749417935,
+  "peak_mae": 2682.3779296875,
+  "peak_mape": 4.513847082853317,
+  "peak_time_err": 3.4307632446289062
+}

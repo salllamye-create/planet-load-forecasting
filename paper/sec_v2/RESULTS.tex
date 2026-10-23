@@ -1,0 +1,628 @@
+% ======================================================================
+\section{Results}
+\label{sec:results}
+Every number in this section is generated from the released result files; the prose quotes
+macros, never typed values.
+
+\subsection{Accuracy on eight national systems}
+\label{sec:grids}
+\tabv{tab_grids_v2}
+\tabv{tab_grids_v2_b}
+\begin{figure}[!t]
+\centering
+\figv{fig_horizon_v2}{\columnwidth}
+\caption{Mean absolute error by lead time of the two-week ($H=336$) models under regime R2,
+per system, in MW (seed means of the per-step test error of the headline methods).}
+\label{fig:horizon}
+\end{figure}
+\begin{figure*}[!t]
+\centering
+\figv{fig_mcs_v2}{\textwidth}
+\caption{Model Confidence Set membership ($\alpha=\nv{mcs.alpha}$, stationary bootstrap with
+$B=\nv{mcs.B}$ replicates, block length at least the horizon) for every system--horizon cell
+under R2. A filled cell means the method cannot be distinguished from the best in that cell;
+the number is the method's WAPE rank in that cell. Rows are ordered by the number of cells
+retained.}
+\label{fig:mcs}
+\end{figure*}
+
+Table~\ref{tab:grids-v2} reports the WAPE of every learned forecaster on every system and
+horizon under the headline regime R2: \nv{grid.n_models} methods on \nv{grid.n_cells}
+system--horizon cells, each a three-seed mean. Figure~\ref{fig:horizon} plots the headline
+methods against horizon and Fig.~\ref{fig:mcs} shows, cell by cell, which methods the Model
+Confidence Set retains. Four features of the table survive any reasonable reading of it.
+
+\paragraph{One method leads} TiDE, the covariate-native MLP, is the single most accurate
+method in \nv{grid.TiDE.n_best} of the \nv{grid.n_cells} cells, has a mean WAPE rank of
+\nv{grid.TiDE.meanrank_wape}, and is retained by the confidence set in
+\nv{mcs.grid.TiDE.n_in} cells. We state this first because the paper proposes a different
+model, and the reader should know at the outset that the proposed model is not the most
+accurate point forecaster in this benchmark. Section~\ref{sec:info} and the discussion locate
+the difference: the two models receive the same information and differ in the pathway by which
+the weather enters.
+
+\paragraph{The proposed model is second, and the top is a set} PLANET has the next mean rank,
+\nv{grid.PLANET.meanrank_wape}, and is retained by the confidence set in \nv{mcs.grid.PLANET.n_in} cells
+(\nv{mcs.grid.PLANET.H24.n_in} at one day, \nv{mcs.grid.PLANET.H96.n_in} at four days and
+\nv{mcs.grid.PLANET.H336.n_in} at two weeks, where the sets retain between
+\nv{mcs.grid.H336.size_min} and \nv{mcs.grid.H336.size_max} of the \nv{grid.n_models} methods
+against \nv{mcs.grid.H24.size_min} to \nv{mcs.grid.H24.size_max} at one day); it is followed
+by PatchTST+Cal
+(\nv{grid.CalTST.meanrank_wape}, retained in \nv{mcs.grid.CalTST.n_in} cells), PLANET-X
+(\nv{grid.PLANETX.meanrank_wape}, \nv{mcs.grid.PLANETX.n_in}), N-BEATS
+(\nv{grid.NBEATS.meanrank_wape}, \nv{mcs.grid.NBEATS.n_in}), TimeMixer
+(\nv{grid.TimeMixer.meanrank_wape}, \nv{mcs.grid.TimeMixer.n_in}), N-HiTS
+(\nv{grid.NHITS.meanrank_wape}, \nv{mcs.grid.NHITS.n_in}) and PatchTST
+(\nv{grid.PatchTST.meanrank_wape}, \nv{mcs.grid.PatchTST.n_in}). Pairwise, PLANET is
+significantly more accurate than the compared method in \nv{dm.total.wins} of
+\nv{dm.n_tests} Holm-adjusted Diebold--Mariano tests, indistinguishable in \nv{dm.total.ties}
+and significantly less accurate in \nv{dm.total.losses} (with the stationary-bootstrap
+variance of Section~\ref{sec:stats}: \nv{dm.total.wins_boot}, \nv{dm.total.ties_boot} and
+\nv{dm.total.losses_boot}; \nv{dm.total.wins_allseeds} of the wins and
+\nv{dm.total.losses_allseeds} of the losses hold in each of the three seeds taken separately);
+\nv{dm.TiDE.losses} of those losses
+are to TiDE, and no other method is significantly better than PLANET in more than
+\nv{dm.CalTST.losses} cells. Against the compact models nearest to it the record
+(wins/ties/losses) is \nv{dm.CalTST.wins}/\nv{dm.CalTST.ties}/\nv{dm.CalTST.losses} against
+PatchTST+Cal, \nv{dm.NBEATS.wins}/\nv{dm.NBEATS.ties}/\nv{dm.NBEATS.losses} against N-BEATS
+and \nv{dm.PatchTST.wins}/\nv{dm.PatchTST.ties}/\nv{dm.PatchTST.losses} against PatchTST;
+against TiDE it is \nv{dm.TiDE.wins}/\nv{dm.TiDE.ties}/\nv{dm.TiDE.losses}. The claim the table
+supports is therefore not that the tier dominates, but that a model built around it is, after
+TiDE, the most consistently accurate of \nv{grid.n_models} methods, ahead of every other
+Transformer, linear, basis-expansion and library model under the same inputs and the same
+budget.
+
+\paragraph{Where the margin lies} Relative to the strongest \emph{other} method in each cell,
+whichever it is, PLANET's WAPE is \nv{ref.grid.mean_gain_wape_pct} on average (positive means
+PLANET is better), between \nv{ref.grid.min_gain_wape_pct} and
+\nv{ref.grid.max_gain_wape_pct} across cells; by horizon the figure is
+\nv{ref.grid.H24.mean_gain_wape_pct} at one day, \nv{ref.grid.H96.mean_gain_wape_pct} at four
+days and \nv{ref.grid.H336.mean_gain_wape_pct} at two weeks, so the deficit to TiDE opens
+beyond one day rather than closing. Against TiDE directly, PLANET is ahead on Germany at all
+three horizons (\nv{ref.OPSD-DE.H24.vs.TiDE.gain_wape_pct},
+\nv{ref.OPSD-DE.H96.vs.TiDE.gain_wape_pct} and \nv{ref.OPSD-DE.H336.vs.TiDE.gain_wape_pct}),
+within three percent of it on France at one day (\nv{ref.OPSD-FR.H24.vs.TiDE.gain_wape_pct})
+and on Great Britain at every horizon (\nv{ref.OPSD-GB.H24.vs.TiDE.gain_wape_pct},
+\nv{ref.OPSD-GB.H96.vs.TiDE.gain_wape_pct}, \nv{ref.OPSD-GB.H336.vs.TiDE.gain_wape_pct}), and
+behind elsewhere, by the most on Poland at four days
+(\nv{ref.OPSD-PL.H96.vs.TiDE.gain_wape_pct}) and France at two weeks
+(\nv{ref.OPSD-FR.H336.vs.TiDE.gain_wape_pct}). Section~\ref{sec:discussion} relates this
+pattern to how much of each system's load the weather explains. Peak-height error, the
+operator's costliest error, orders the methods the same way: averaged over the cells the peak
+MAPE is \nv{grid.TiDE.mean_peak} for TiDE, \nv{grid.PLANET.mean_peak} for PLANET,
+\nv{grid.CalTST.mean_peak} for PatchTST+Cal, \nv{grid.NBEATS.mean_peak} for N-BEATS and
+\nv{grid.PatchTST.mean_peak} for PatchTST, with mean peak-timing errors of
+\nv{grid.TiDE.mean_dt}, \nv{grid.PLANET.mean_dt}, \nv{grid.CalTST.mean_dt},
+\nv{grid.NBEATS.mean_dt} and \nv{grid.PatchTST.mean_dt} hours.
+
+\paragraph{Seed stability} The mean seed standard deviation of WAPE over the cells is
+\nv{grid.PLANET.mean_wape_sd} for PLANET, \nv{grid.CalTST.mean_wape_sd} for PatchTST+Cal,
+\nv{grid.NBEATS.mean_wape_sd} for N-BEATS, \nv{grid.TiDE.mean_wape_sd} for TiDE,
+\nv{grid.PatchTST.mean_wape_sd} for PatchTST and \nv{grid.TFT.mean_wape_sd} for TFT: the compact models are all stable, PLANET marginally the most so, and TFT the least of the
+six. For an operator who trains one model and deploys it, the
+seed spread is part of the expected error, and the table reports it beside every mean for that
+reason.
+
+\paragraph{The rest of the field} The long-horizon Transformers of the first generation are
+not competitive on national load under the full-information regime, the only one they were
+run under: Informer and Autoformer have mean WAPE
+ranks of \nv{grid.Informer.meanrank_wape} and \nv{grid.Autoformer.meanrank_wape} of
+\nv{grid.n_models}, and Informer is on average behind the seasonal-na\"ive reference
+(\nv{grid.SeasonalNaive.meanrank_wape}). The one-layer linear family sits in the middle of the
+field (NLinear \nv{grid.NLinear.meanrank_wape}, RLinear \nv{grid.RLinear.meanrank_wape}, FITS
+\nv{grid.FITS.meanrank_wape}); DLinear, whose moving-average decomposition is mis-specified
+for a signal whose ``trend'' is the weekly cycle, is the weakest of them
+(\nv{grid.DLinear.meanrank_wape}). Among the covariate-native library models TiDE
+(\nv{grid.TiDE.meanrank_wape}) and N-HiTS (\nv{grid.NHITS.meanrank_wape}) are the strongest and
+TFT (\nv{grid.TFT.meanrank_wape}) and TimeXer (\nv{grid.TimeXer.meanrank_wape}) the weakest,
+under the same tuning budget as every other model. Among the classical methods, Hong's regression with an autoregressive model of its
+residual ranks highest (mean rank \nv{grid.TaoRefitAR.meanrank_wape}; grid-mean WAPE
+\nv{grid.TaoRefitAR.mean_wape} against \nv{grid.PLANET.mean_wape} for PLANET), the
+gradient-boosted trees, given the same information as the shared head, come next
+(\nv{grid.GBRT.meanrank_wape}), and the same regression fitted once or monthly without the
+residual model is the weakest learned method in the study (grid-mean WAPE
+\nv{grid.TaoRefit.mean_wape}), below the seasonal naive on several systems because its trend
+term extrapolates a level that the test span does not follow (Section~\ref{sec:setup}). The
+regression with the residual model is therefore the classical benchmark the deep models have
+to beat; it remains behind the leading deep models in every cell, which is the case for the deep methods that
+Section~\ref{sec:info} makes on information-controlled terms.
+
+\subsection{Value of information}
+\label{sec:info}
+\tabv{tab_regimes_v2}
+\tabv{tab_regimes_v2_b}
+\begin{figure*}[!t]
+\centering
+\figv{fig_regimes_v2}{\textwidth}
+\caption{WAPE of each headline method under the three information regimes, one panel per
+horizon, mean over systems (dots: individual systems). PLANET and PatchTST+Cal carry the
+calendar in their design matrix, so for them R0 is not a past-only regime and the R0--R1 step
+measures only what the shared head adds beyond the built-in basis.}
+\label{fig:regimes}
+\end{figure*}
+
+Table~\ref{tab:regimes-v2} and Fig.~\ref{fig:regimes} report the headline methods under the
+three regimes. Two readings matter. The first is the size of the effect: over the headline
+methods without a built-in calendar, the calendar block reduces WAPE by
+\nv{info.grid.R1_vs_R0.mean_dwape_pct} on average and the weather block by a further
+\nv{info.grid.R2_vs_R1.mean_dwape_pct}, for a combined \nv{info.grid.R2_vs_R0.mean_dwape_pct}
+from R0 to R2 (N-BEATS \nv{info.grid.NBEATS.R2_vs_R0.mean_dwape_pct}, PatchTST
+\nv{info.grid.PatchTST.R2_vs_R0.mean_dwape_pct}, DLinear
+\nv{info.grid.DLinear.R2_vs_R0.mean_dwape_pct}, TiDE \nv{info.grid.TiDE.R2_vs_R0.mean_dwape_pct},
+N-HiTS \nv{info.grid.NHITS.R2_vs_R0.mean_dwape_pct}, TFT
+\nv{info.grid.TFT.R2_vs_R0.mean_dwape_pct}, TimeXer \nv{info.grid.TimeXer.R2_vs_R0.mean_dwape_pct},
+gradient-boosted trees \nv{info.grid.GBRT.R2_vs_R0.mean_dwape_pct}). That change, obtained by
+handing a fixed architecture the inputs an operator already has, is larger than the gap between
+PLANET and the median learned method within R2 (\nv{grid.median_gap_wape_pct}, PLANET relative
+to the median). A benchmark that lets each method consume whatever its interface accepts is
+therefore mostly measuring interfaces.
+
+The second reading concerns the two calendar-aware models and TiDE. PLANET's basis already
+encodes local time, the weekly cycle and the holiday day-types, so under R0 it is not a
+past-only forecaster: on Germany at four days its R0 error is \nv{R0.OPSD-DE.PLANET.H96.wape}
+against \nv{R0.OPSD-DE.NBEATS.H96.wape} for N-BEATS, \nv{R0.OPSD-DE.PatchTST.H96.wape} for
+PatchTST and \nv{R0.OPSD-DE.TiDE.H96.wape} for TiDE, which measures the value of the built-in
+calendar itself, and PatchTST+Cal, which learns the same design matrix globally, reaches
+\nv{R0.OPSD-DE.CalTST.H96.wape}. The R0--R1 step then adds the calendar block through the shared head: averaged over the
+grid, \nv{info.grid.PLANET.R1_vs_R0.mean_dwape_pct} for PLANET and
+\nv{info.grid.CalTST.R1_vs_R0.mean_dwape_pct} for PatchTST+Cal, so a globally learned calendar
+correction still adds to the per-window fit, while a model that already learns the calendar
+map globally gains nothing from a second copy. The weather step is where TiDE separates: it is
+\nv{info.grid.PLANET.R2_vs_R1.mean_dwape_pct} for PLANET, close to the
+\nv{info.grid.R2_vs_R1.mean_dwape_pct} mean of the models that receive the block through the
+head, and \nv{info.grid.TiDE.R2_vs_R1.mean_dwape_pct} for TiDE, which reads it natively; on
+France at four days the two figures are \nv{info.OPSD-FR.PLANET.H96.R2_vs_R1.dwape_pct} and
+\nv{info.OPSD-FR.TiDE.H96.R2_vs_R1.dwape_pct}, on Germany
+\nv{info.OPSD-DE.PLANET.H96.R2_vs_R1.dwape_pct} and
+\nv{info.OPSD-DE.TiDE.H96.R2_vs_R1.dwape_pct}. The tier does not compete with the covariates,
+it models what they do not explain; the covariate pathway decides how much is left to explain,
+and that is the gap of Table~\ref{tab:grids-v2}. The weather block is not a gain for every model on the calendar-driven systems: DLinear is
+worse with it on Germany at every horizon (\nv{info.OPSD-DE.DLinear.H24.R2_vs_R1.dwape_pct},
+\nv{info.OPSD-DE.DLinear.H96.R2_vs_R1.dwape_pct} and
+\nv{info.OPSD-DE.DLinear.H336.R2_vs_R1.dwape_pct}) and N-HiTS on the Netherlands, and one
+model is harmed outright. Hong's regression is fitted on observed temperatures and forecasts with the degraded ones, as an
+operator uses it, whereas the neural models are trained on the degraded block and learn to
+discount it; on Germany, where the temperature carries little load, the forecast error that
+its cubic temperature terms amplify exceeds the signal they add, and the regression is more
+accurate without them (\nv{R1.OPSD-DE.TaoVanilla.H24.wape} against
+\nv{OPSD-DE.TaoVanilla.H24.wape} WAPE at one day fitted once,
+\nv{R1.OPSD-DE.TaoRefitAR.H24.wape} against \nv{OPSD-DE.TaoRefitAR.H24.wape} with the
+residual model), while on France the same block nearly halves the error of the once-fitted
+model (\nv{R1.OPSD-FR.TaoVanilla.H24.wape} against \nv{OPSD-FR.TaoVanilla.H24.wape}).
+
+\subsection{Day-ahead forecasts against the operators}
+\label{sec:dayahead}
+\tabv{tab_dayahead_v2}
+\tabv{tab_dayahead_v2_b}
+\tabv{tab_dayahead_v2_c}
+\begin{figure}[!t]
+\centering
+\figv{fig_dayahead_v2}{\columnwidth}
+\caption{Day-ahead WAPE of each learned model (seed mean of the single-seed models at the
+protocol lookback) and of the transmission operator's own published forecast (bar) on the same
+days and target hours, per system, systems sorted by the operator's error. Origin 11:00 UTC on
+day $D-1$, scored 00:00--23:00 UTC of day $D$.}
+\label{fig:dayahead}
+\end{figure}
+
+Table~\ref{tab:dayahead-v2} holds every learned model to the operator's information cut-off
+and scores the operator's published forecast on the same days and hours. The published series
+of \nv{da.grid.biased_systems} sit \nv{da.OPSD-GB.TSO.bias_pct} and
+\nv{da.OPSD-NL.TSO.bias_pct} below the published actual load on the scored days
+(Section~\ref{sec:dayahead-proto}), so the comparison is read on the \nv{da.grid.n_unbiased}
+systems whose operator bias is within \nv{da.grid.bias_tol_pct}. On those PLANET is more
+accurate than the operator on \nv{da.grid.PLANET.n_beats_tso_unbiased}: Germany, where the
+operator's WAPE over the \nv{da.OPSD-DE.n_days} scored days is \nv{tso.OPSD-DE.wape} against
+\nv{da.OPSD-DE.PLANET.wape} for PLANET, a change of \nv{da.OPSD-DE.PLANET.gain_wape_pct} with
+the peak-height error changed by \nv{da.OPSD-DE.PLANET.gain_peak_pct}; Poland
+(\nv{da.OPSD-PL.PLANET.gain_wape_pct}); and Belgium (\nv{da.OPSD-BE.PLANET.gain_wape_pct}). The
+operator is ahead on France (\nv{da.OPSD-FR.PLANET.gain_wape_pct}), Italy
+(\nv{da.OPSD-IT.PLANET.gain_wape_pct}) and, by a wide margin, Spain
+(\nv{da.OPSD-ES.PLANET.gain_wape_pct}), whose published forecast is the most accurate in the
+corpus (\nv{tso.OPSD-ES.wape} WAPE). TiDE beats the operator on
+\nv{da.grid.TiDE.n_beats_tso_unbiased} of the six, adding Italy
+(\nv{da.OPSD-IT.TiDE.gain_wape_pct}); N-BEATS and PatchTST+Cal on
+\nv{da.grid.NBEATS.n_beats_tso_unbiased} and \nv{da.grid.CalTST.n_beats_tso_unbiased}; and on \nv{da.grid.any.n_beats_tso_unbiased} of the six at least one learned model or seed
+ensemble does (single models reach \nv{da.grid.TiDE.n_beats_tso_unbiased} at most). The
+equal-weight mean of the PLANET and TiDE seed ensembles beats the operator on
+\nv{da.grid.Comb2-ens.n_beats_tso_unbiased} of the six (significantly on
+\nv{da.grid.Comb2-ens.n_sig_beats_tso_unbiased}), against
+\nv{da.grid.PLANET-ens.n_beats_tso_unbiased} for the PLANET ensemble and
+\nv{da.grid.TiDE-ens.n_beats_tso_unbiased} for TiDE's (\nv{da.grid.PLANET-ens.n_sig_beats_tso_unbiased}
+and \nv{da.grid.TiDE-ens.n_sig_beats_tso_unbiased} significantly; combination rows of
+Table~\ref{tab:dayahead-v2}). Refitting PLANET and TiDE from scratch at the start of every
+test month (refit rows) changes their WAPE on the six by
+\nv{da.grid.PLANET-refit.mean_dwape_vs_once_unbiased_pct} and
+\nv{da.grid.TiDE-refit.mean_dwape_vs_once_unbiased_pct} on average against the once-trained run
+of the same seed and leaves them ahead of the operator on
+\nv{da.grid.PLANET-refit.n_beats_tso_unbiased} and \nv{da.grid.TiDE-refit.n_beats_tso_unbiased}
+systems, so training once is not what separates the learned models from the operators. On the
+holiday days of the test span the PLANET and TiDE ensembles are ahead of the operator on
+\nv{da.grid.PLANET-ens.n_beats_tso_hol_unbiased} and \nv{da.grid.TiDE-ens.n_beats_tso_hol_unbiased}
+of the six systems, inside the first-wave lockdown window on
+\nv{da.grid.PLANET-ens.n_beats_tso_lock_unbiased} and \nv{da.grid.TiDE-ens.n_beats_tso_lock_unbiased},
+and outside it on \nv{da.grid.PLANET-ens.n_beats_tso_xlock_unbiased} and
+\nv{da.grid.TiDE-ens.n_beats_tso_xlock_unbiased}: what the operators keep is concentrated on
+the holiday days, where their mean WAPE over the six is \nv{da.grid.tso.mean_wape_hol_unbiased}
+against \nv{da.grid.PLANET-ens.mean_wape_hol_unbiased} and
+\nv{da.grid.TiDE-ens.mean_wape_hol_unbiased} for the two ensembles, against
+\nv{da.grid.tso.mean_wape_xlock_unbiased}, \nv{da.grid.PLANET-ens.mean_wape_xlock_unbiased} and
+\nv{da.grid.TiDE-ens.mean_wape_xlock_unbiased} on the ordinary days outside the lockdown
+window. On the two
+biased systems every learned model is far ahead of the published series, which says nothing
+about the operators. The operators' forecasts are the product of a process we do not
+reproduce, with access to the latest weather run and, in some systems, to manual adjustment
+for known events, while the learned models hold degraded reanalysis rather than an archived
+operational forecast. We read the result as evidence that the protocol is fair, and that the
+accuracy an operator obtains is reachable by a model trained under it on half of the systems,
+not as a claim to replace the operator.
+
+\subsection{Component ablation}
+\label{sec:ablation}
+\tabv{tab_ablation_wape_v2}
+\begin{figure}[!t]
+\centering
+\figv{fig_ablation_v2}{\columnwidth}
+\caption{Relative change in test WAPE when each component of PLANET is removed, on both
+residual backbones: mean over the six DE and FR system--horizon cells with a 95\,\%
+confidence interval over cells; small markers are the individual cells. Positive means the
+component helps.}
+\label{fig:ablation}
+\end{figure}
+
+Table~\ref{tab:ablation-wape-v2} removes one component at a time on both residual backbones,
+on the two reference systems, at three horizons and over three seeds (five for the full model
+and the four principal variants on the patch backbone), each run paired with the full model of
+the same seed on the same backbone (\nv{abl.n_runs} runs). The first row is the component the
+paper proposes. Removing the phase-locked tier, which leaves the backbone alone with the
+shared head, the instance normalisation and the climatological tier, raises WAPE by
+\nv{abl.patch.no_pl.mean_dwape_pct} on the patch Transformer and by
+\nv{abl.basis.no_pl.mean_dwape_pct} on the basis stack, averaged over the six cells. The average
+hides a structure that the per-cell numbers show and that the rest of the paper confirms: on
+Germany the tier is worth \nv{abl.patch.OPSD-DE.no_pl.H24.dwape_pct} and
+\nv{abl.patch.OPSD-DE.no_pl.H96.dwape_pct} at one and four days on the patch backbone
+(\nv{abl.basis.OPSD-DE.no_pl.H24.dwape_pct} and \nv{abl.basis.OPSD-DE.no_pl.H96.dwape_pct} on
+the basis stack), on France \nv{abl.patch.OPSD-FR.no_pl.H24.dwape_pct} and
+\nv{abl.patch.OPSD-FR.no_pl.H96.dwape_pct} (\nv{abl.basis.OPSD-FR.no_pl.H24.dwape_pct} and
+\nv{abl.basis.OPSD-FR.no_pl.H96.dwape_pct}), and at two weeks it is worth
+\nv{abl.patch.OPSD-DE.no_pl.H336.dwape_pct} and \nv{abl.patch.OPSD-FR.no_pl.H336.dwape_pct}
+on the patch backbone. The two backbones share no code, no inductive bias and no
+hyper-parameter, and the component moves both in the same direction in every cell but two, France at one
+day on the basis stack (\nv{abl.basis.OPSD-FR.no_pl.H24.dwape_pct}) and at two weeks on the
+patch backbone (\nv{abl.patch.OPSD-FR.no_pl.H336.dwape_pct}), where its effect on that
+backbone is within a point of zero, so it is doing something neither does on its
+own; what it does is worth most on the German system and, on the patch backbone, at the
+horizons short enough for the per-window coefficients to hold, and
+Section~\ref{sec:discussion} shows that the systems' weather dependence does not predict where
+it pays. The
+converse row is as informative: the closed form alone, without any residual network, costs
+\nv{abl.patch.no_resid.mean_dwape_pct} and \nv{abl.basis.no_resid.mean_dwape_pct}, so the two
+parts are complementary, and the residual network is the larger of the two.
+
+The design choices of Section~\ref{sec:basis} are then tested against their nearest
+alternatives, and here the ablation is less kind to the introduction than we expected. Locking
+the basis to the window instead of the calendar costs \nv{abl.patch.relative.mean_dwape_pct}
+and \nv{abl.basis.relative.mean_dwape_pct} on average, and
+\nv{abl.patch.OPSD-DE.relative.H96.dwape_pct} and
+\nv{abl.basis.OPSD-DE.relative.H96.dwape_pct} on Germany at four days, the cell where the tier
+itself is worth most; on France the choice is immaterial. Evaluating the basis on UTC instead
+of local civil time changes WAPE by \nv{abl.patch.utc.mean_dwape_pct} and
+\nv{abl.basis.utc.mean_dwape_pct}: the one-hour phase error of half the year is repaired by
+the residual network, and the local-time argument of the introduction, while correct, has no
+measurable consequence at hourly resolution. Removing the day-type interactions costs
+\nv{abl.patch.no_daytype.mean_dwape_pct} on the patch backbone and
+\nv{abl.basis.no_daytype.mean_dwape_pct} on the basis stack; removing only the holiday
+day-type costs \nv{abl.patch.daytype_wk.mean_dwape_pct} and
+\nv{abl.basis.daytype_wk.mean_dwape_pct}. Conditioning the residual network on the solved
+coefficients changes WAPE by \nv{abl.patch.no_beta_token.mean_dwape_pct} and
+\nv{abl.basis.no_beta_token.mean_dwape_pct} when removed, and on the basis backbone the
+feature-wise affine form of that conditioning is \nv{abl.basis.basis_film.mean_dwape_pct}
+relative to the projected form.
+
+Three optional components are decided here rather than assumed, and none of them earns its
+place. Replacing the learned observation weights by uniform weights changes WAPE by
+\nv{abl.patch.uniform_w.mean_dwape_pct} and \nv{abl.basis.uniform_w.mean_dwape_pct}, removing
+the climatological tier by \nv{abl.patch.no_slow.mean_dwape_pct} and
+\nv{abl.basis.no_slow.mean_dwape_pct}, and removing the local trend column by
+\nv{abl.patch.no_trend.mean_dwape_pct} and \nv{abl.basis.no_trend.mean_dwape_pct}; the lean
+composition without all three is within \nv{abl.patch.lean.mean_dwape_pct} and
+\nv{abl.basis.lean.mean_dwape_pct} of the full model. The headline model is the full
+composition, fixed before the grid was run; the ablation reports which parts could be removed
+without loss, and the composition is not re-selected on the test set.
+
+\subsection{When per-window estimation pays}
+\label{sec:mech}
+\begin{figure*}[!t]
+\centering
+\figv{fig_mech_v2}{\textwidth}
+\caption{The three conditions under which a closed-form per-window fit should differ from a
+learned calendar map, $H=96$. \textbf{(a)} Learning curves: test WAPE against the fraction of
+the training split used (most recent windows), mean over DE, FR and ES. \textbf{(b)} Temporal
+drift: monthly test WAPE of a model trained on the \emph{oldest} half of the split, against
+the months elapsed since the end of its training data. \textbf{(c)} Zero-shot cross-grid
+transfer: a model trained on one system (row) and evaluated, without fine-tuning, on another
+(column); cells are WAPE, the diagonal is the in-domain model.}
+\label{fig:mech}
+\end{figure*}
+
+The second contribution is a claim about \emph{when} the tier pays, made as three experiments
+that could each have gone the other way (Fig.~\ref{fig:mech}). All three use the four-day
+horizon, the tuned configuration of every model, three seeds, and seven of the headline
+methods spanning the architectural families, N-BEATS, PatchTST, PatchTST+Cal, PLANET,
+PLANET-X, TFT and TiDE, on Germany, France and Spain. The controlled comparison inside each is
+PLANET against PatchTST+Cal, which receives the same design matrix and learns its coefficients
+globally instead of solving them per window.
+
+\paragraph{Scarce training data} With one tenth of the training split, about five months,
+every method loses much of its accuracy: PLANET's WAPE rises by
+\nv{mech.lc.grid.PLANET.f0.1.mean_dwape_pct} over its full-data value, PatchTST+Cal's by
+\nv{mech.lc.grid.CalTST.f0.1.mean_dwape_pct}, PatchTST's by
+\nv{mech.lc.grid.PatchTST.f0.1.mean_dwape_pct}, N-BEATS's by
+\nv{mech.lc.grid.NBEATS.f0.1.mean_dwape_pct}, TFT's by
+\nv{mech.lc.grid.TFT.f0.1.mean_dwape_pct}, TiDE's by \nv{mech.lc.grid.TiDE.f0.1.mean_dwape_pct}
+and PLANET-X's by \nv{mech.lc.grid.PLANETX.f0.1.mean_dwape_pct}, averaged over the three
+systems. At one quarter the figures are \nv{mech.lc.grid.PLANET.f0.25.mean_dwape_pct},
+\nv{mech.lc.grid.CalTST.f0.25.mean_dwape_pct}, \nv{mech.lc.grid.PatchTST.f0.25.mean_dwape_pct},
+\nv{mech.lc.grid.NBEATS.f0.25.mean_dwape_pct}, \nv{mech.lc.grid.TFT.f0.25.mean_dwape_pct},
+\nv{mech.lc.grid.TiDE.f0.25.mean_dwape_pct} and \nv{mech.lc.grid.PLANETX.f0.25.mean_dwape_pct},
+and at one half \nv{mech.lc.grid.PLANET.f0.5.mean_dwape_pct},
+\nv{mech.lc.grid.CalTST.f0.5.mean_dwape_pct}, \nv{mech.lc.grid.PatchTST.f0.5.mean_dwape_pct},
+\nv{mech.lc.grid.NBEATS.f0.5.mean_dwape_pct}, \nv{mech.lc.grid.TFT.f0.5.mean_dwape_pct},
+\nv{mech.lc.grid.TiDE.f0.5.mean_dwape_pct} and \nv{mech.lc.grid.PLANETX.f0.5.mean_dwape_pct}.
+PLANET degrades least of the seven from one quarter upwards; at one tenth the two lightest
+architectures, PatchTST and N-BEATS, degrade least, and TiDE and PLANET-X most. In absolute
+terms the picture is the one the headline table would predict: on Germany and Spain PLANET
+has the lowest WAPE of the seven at one quarter (\nv{mech.lc.OPSD-DE.PLANET.H96.f0.25.wape}
+against \nv{mech.lc.OPSD-DE.TiDE.H96.f0.25.wape} for TiDE on Germany,
+\nv{mech.lc.OPSD-ES.PLANET.H96.f0.25.wape} against \nv{mech.lc.OPSD-ES.TiDE.H96.f0.25.wape} on
+Spain), while on France TiDE keeps its lead at every fraction
+(\nv{mech.lc.OPSD-FR.TiDE.H96.f0.25.wape} against \nv{mech.lc.OPSD-FR.PLANET.H96.f0.25.wape}
+at one quarter). A calendar map has to be learned from examples of every day-type at every
+hour, and a fortnight of holidays appears once per year of training data; a basis evaluated
+at the calendar position needs no example of a holiday to know that one is coming, and only
+the few coefficients of Eq.~\eqref{eq:solution} to know how the system responds to it. The advantage over the learned-calendar control is present on all three systems at both
+fractions and clearest with half the history on Germany
+(\nv{mech.lc.OPSD-DE.PLANET.H96.f0.25.wape} against \nv{mech.lc.OPSD-DE.CalTST.H96.f0.25.wape}
+WAPE at a quarter, \nv{mech.lc.OPSD-DE.PLANET.H96.f0.5.wape} against
+\nv{mech.lc.OPSD-DE.CalTST.H96.f0.5.wape} at a half); in absolute terms PLANET, which leads TiDE
+on Germany with the full history, stays ahead of it there, passes it on Spain with a quarter
+of the history, and does not on France, whose weather response no calendar basis supplies.
+
+\paragraph{Transfer to an unseen system} A model trained on one national system and applied,
+without any fine-tuning, to another sees a different level, a different daily shape, a
+different holiday calendar and a different weather response. The target system's training
+mean and scale are used for normalisation, as an operator deploying the model would have
+them; the per-window solve absorbs what normalisation leaves of the level and the daily shape
+by construction, the holiday day-types absorb the calendar, and only the weather response must
+be learned. Averaged over the six ordered pairs of DE, FR and ES, the WAPE of the transferred
+PLANET is \nv{mech.xfer.grid.PLANET.mean_dwape_pct} above the value its in-domain counterpart
+reaches on the target, against \nv{mech.xfer.grid.TiDE.mean_dwape_pct} for TiDE,
+\nv{mech.xfer.grid.CalTST.mean_dwape_pct} for PatchTST+Cal,
+\nv{mech.xfer.grid.PatchTST.mean_dwape_pct} for PatchTST,
+\nv{mech.xfer.grid.TFT.mean_dwape_pct} for TFT and \nv{mech.xfer.grid.NBEATS.mean_dwape_pct}
+for N-BEATS; PLANET-X, which is not better than PLANET in domain, transfers best of all at
+\nv{mech.xfer.grid.PLANETX.mean_dwape_pct}, a result we report as observed. PLANET and TiDE
+lose the least of the established methods; PatchTST+Cal, which learned the same design matrix
+on the source, loses more; and the models with no calendar representation beyond the head lose
+most. The controlled pair, PLANET against PatchTST+Cal, is the mechanism claim in its cleanest
+form, and TiDE's result says that a native covariate pathway transfers about as well as a solved
+calendar does in relative terms (\nv{mech.xfer.grid.TiDE.mean_dwape_pct} against
+\nv{mech.xfer.grid.PLANET.mean_dwape_pct}) and to a lower absolute error
+(\nv{mech.xfer.grid.TiDE.mean_wape} against \nv{mech.xfer.grid.PLANET.mean_wape} WAPE). The
+transferred PLANET thus reaches \nv{mech.xfer.grid.PLANET.mean_wape} WAPE at four days without seeing a single target window in
+training, which is better than the in-domain value of Informer and of Hong's regression
+without the residual model on the same systems in Table~\ref{tab:grids-v2}.
+
+\paragraph{Temporal drift without retraining} The third experiment trains on the oldest
+fraction of the split and evaluates on the same test span, so the model is, in effect, stale
+by up to four years. With the oldest tenth PLANET's WAPE rises by
+\nv{mech.drift.grid.PLANET.f0.1.mean_dwape_pct}, PatchTST+Cal's by
+\nv{mech.drift.grid.CalTST.f0.1.mean_dwape_pct}, PatchTST's by
+\nv{mech.drift.grid.PatchTST.f0.1.mean_dwape_pct}, N-BEATS's by
+\nv{mech.drift.grid.NBEATS.f0.1.mean_dwape_pct}, TFT's by
+\nv{mech.drift.grid.TFT.f0.1.mean_dwape_pct} and TiDE's by
+\nv{mech.drift.grid.TiDE.f0.1.mean_dwape_pct}; with the oldest half the figures are
+\nv{mech.drift.grid.PLANET.f0.5.mean_dwape_pct}, \nv{mech.drift.grid.CalTST.f0.5.mean_dwape_pct},
+\nv{mech.drift.grid.PatchTST.f0.5.mean_dwape_pct},
+\nv{mech.drift.grid.NBEATS.f0.5.mean_dwape_pct}, \nv{mech.drift.grid.TFT.f0.5.mean_dwape_pct}
+and \nv{mech.drift.grid.TiDE.f0.5.mean_dwape_pct}, and the full-data ordering of
+Table~\ref{tab:grids-v2} returns. Under the harshest condition, little and old data, the two
+calendar-tier models are the most robust and TiDE the least; with half the history every
+method degrades by a comparable amount. The per-window solve follows the level and the
+seasonal shape of the current window, but the weather response and the residual network are
+frozen, and it is the residual that drifts: the lockdown weeks of spring 2020 are not a
+calendar effect. This is the condition that the hypothesis of gradient-free test-time
+adaptation was meant to address, and the tier alone does not address it; we report this as the
+boundary of the mechanism, not as a failure of the model.
+
+\paragraph{The covariate pathway, isolated} The leading model and the proposed one differ in
+two things at once: the architecture and the way the covariate block enters it (TiDE's native
+per-step encoder against the shared head). Running TiDE with its native pathway switched off and
+the block routed through the same head as PLANET, at TiDE's own selected settings, isolates the
+pathway. TiDE via head changes TiDE's WAPE by \nv{path.grid.TiDEh.mean_dwape_vs_TiDE_pct} on
+average over the \nv{path.grid.TiDEh.n_cells_vs_TiDE} grid cells (worse in
+\nv{path.grid.TiDEh.n_worse_vs_TiDE}, significantly so in \nv{path.grid.TiDEh.n_sig_worse}) and sits \nv{path.grid.TiDEh.mean_dwape_vs_PLANET_pct} behind PLANET on average (worse in
+\nv{path.grid.TiDEh.n_worse_vs_PLANET} of \nv{path.grid.TiDEh.n_cells_vs_PLANET} cells): the
+part of TiDE's margin that the native pathway accounts for is the first number, and the second
+says that once both models read the covariates through the same head, the model with the tier
+is ahead.
+
+\subsection{Sensitivity analyses}
+\label{sec:sensitivity}
+Five checks probe the protocol choices that the referees of the study could reasonably question.
+\emph{Correlated weather error.} The headline proxy for a day-ahead weather forecast adds
+independent noise at every hour, which is kinder than a real forecast whose errors persist along
+the horizon (the daily mean of white noise nearly averages out). Repeating the R2 cells of TiDE
+and PLANET on DE, FR and ES with an AR(1) error path (correlation time 12\,h, the same marginal
+standard deviation at every lead) raises their WAPE by \nv{exo.ar.grid.TiDE.mean_dwape_pct}
+and \nv{exo.ar.grid.PLANET.mean_dwape_pct} on average over \nv{exo.ar.grid.TiDE.n_cells} cells
+each, most on France at two weeks (\nv{exo.ar.OPSD-FR.TiDE.H336.dwape_pct} for TiDE,
+\nv{exo.ar.OPSD-FR.PLANET.H336.dwape_pct} for PLANET): the model that leans harder on the
+weather loses more when its errors persist, and PLANET's deficit against TiDE on these cells
+narrows from \nv{exo.ar.grid.gap_white_mean_pct} under white noise to
+\nv{exo.ar.grid.gap_PLANET_vs_TiDE_mean_pct} under correlated noise. If the white-noise proxy
+of the headline favours either model, it favours the baseline.
+\emph{Weather representation.} With the population-weighted mean of six metropolitan points in
+place of the single interior point, on the three systems where the weather carries the most
+load (FR, ES, IT), both models gain on average, TiDE by \nv{mp.grid.TiDE.mean_dwape_pct} and
+PLANET by \nv{mp.grid.PLANET.mean_dwape_pct} over \nv{mp.grid.TiDE.n_cells} cells each (at most
+\nv{mp.grid.TiDE.min_dwape_pct} and \nv{mp.grid.PLANET.min_dwape_pct}), so PLANET's deficit
+against TiDE on these three systems widens from \nv{mp.grid.gap_single_mean_pct} to
+\nv{mp.grid.gap_PLANET_vs_TiDE_mean_pct}: a richer weather input helps the model that reads it
+natively more, and the single point of the headline understates the baseline's margin on the
+weather-driven systems rather than PLANET's.
+\emph{Learning rate per regime.} Re-selecting the learning rate under R0 and R1 on Germany
+(Section~\ref{sec:setup}) changes the choice for \nv{lrsel.R0.n_changed} and
+\nv{lrsel.R1.n_changed} of \nv{lrsel.R0.n_models} headline models and changes their validation
+loss by \nv{lrsel.R0.mean_val_dmse_pct} and \nv{lrsel.R1.mean_val_dmse_pct} on average (at most
+\nv{lrsel.R0.min_val_dmse_pct} and \nv{lrsel.R1.min_val_dmse_pct}). Re-running the Germany
+cells of the models whose choice changed with their own rate changes their test WAPE by
+\nv{lrsel.R0.grid.mean_dwape_own_pct} under R0 and \nv{lrsel.R1.grid.mean_dwape_own_pct} under
+R1 (\nv{lrsel.R0.grid.n_better_own} of \nv{lrsel.R0.grid.n_cells_own} and
+\nv{lrsel.R1.grid.n_better_own} of \nv{lrsel.R1.grid.n_cells_own} cells improve), and the regime
+steps over those models move from \nv{lrsel.r2.OPSD-DE.R1_vs_R0.mean_dwape_pct} and
+\nv{lrsel.r2.OPSD-DE.R2_vs_R1.mean_dwape_pct} at the R2 rate to
+\nv{lrsel.own.OPSD-DE.R1_vs_R0.mean_dwape_pct} and
+\nv{lrsel.own.OPSD-DE.R2_vs_R1.mean_dwape_pct} with the own rates. The reading of
+Section~\ref{sec:info} survives: the calendar step shrinks once every model trains at its own
+rate but remains several times the weather step on this calendar-driven system, and the
+combined change from R0 to R2 over the same cells,
+\nv{lrsel.own.OPSD-DE.R2_vs_R0.mean_dwape_pct} against
+\nv{lrsel.r2.OPSD-DE.R2_vs_R0.mean_dwape_pct} at the R2 rate, still exceeds the gap between
+PLANET and the median learned method within R2 (\nv{grid.median_gap_wape_pct} over the eight
+systems).
+\emph{Training budget.} Tripling the budget (cap 90 epochs, patience 10) for the headline
+models on Germany changes WAPE by \nv{budget.OPSD-DE.mean_dwape_pct} on average over
+\nv{budget.OPSD-DE.n_cells} cells (range \nv{budget.OPSD-DE.min_dwape_pct} to
+\nv{budget.OPSD-DE.max_dwape_pct}), leaves the per-horizon ranking at a Spearman correlation of
+\nv{budget.OPSD-DE.mean_spearman} with the headline ranking and changes the best model in
+\nv{budget.OPSD-DE.n_best_changed} of \nv{budget.OPSD-DE.n_horizons} horizons; on France the
+corresponding figures are \nv{budget.OPSD-FR.mean_dwape_pct} over \nv{budget.OPSD-FR.n_cells}
+cells, \nv{budget.OPSD-FR.mean_spearman} and \nv{budget.OPSD-FR.n_best_changed} of
+\nv{budget.OPSD-FR.n_horizons}, the change being at one day, where
+\nv{budget.OPSD-FR.H24.best_large} overtakes \nv{budget.OPSD-FR.H24.best_small}.
+\emph{Forecast combination.} Whether the two best models are complementary is a question a
+benchmark should answer. At the seed whose test forecasts are stored (\nv{comb.seed}), the
+equal-weight mean of PLANET and TiDE has a lower WAPE than TiDE alone in
+\nv{comb.grid.Comb2.n_better_TiDE} of \nv{comb.grid.n_cells} cells, significantly so in
+\nv{comb.grid.Comb2.n_sig_better_TiDE} (Diebold--Mariano with the bootstrap standard error),
+by \nv{comb.grid.Comb2.mean_dwape_vs_TiDE_pct} on average, and than PLANET alone in
+\nv{comb.grid.Comb2.n_better_PLANET}. The mean of the three models with the lowest validation
+loss in each cell, chosen without the test data, changes TiDE's WAPE by
+\nv{comb.grid.CombTop3.mean_dwape_vs_TiDE_pct} and includes PLANET in
+\nv{comb.grid.CombTop3.n_cells_with_PLANET} cells; the mean of all ten headline models changes
+it by \nv{comb.grid.CombAll.mean_dwape_vs_TiDE_pct}. The combinations are not entered in the
+headline table, since a single-seed combination cannot be compared with the three-seed means
+of its members; the day-ahead table reports the combination of the seed ensembles under the
+operator protocol (Section~\ref{sec:dayahead}).
+
+\subsection{Probabilistic forecasts}
+\label{sec:prob-results}
+\tabv{tab_prob_v2}
+\tabv{tab_prob_v2_b}
+\begin{figure}[!t]
+\centering
+\figv{fig_prob_v2}{\columnwidth}
+\caption{Day-ahead probabilistic forecasts under R2: CRPS of the seven-level quantile head
+(bars; calibration adjusts only the interval bounds) and empirical coverage of the nominal
+90\,\% interval before calibration, after CQR and after adaptive conformal inference
+(markers), per system.}
+\label{fig:prob}
+\end{figure}
+
+Every headline model with a quantile head is calibrated by the same two-stage procedure, so
+Table~\ref{tab:prob-v2} compares forecasters rather than calibrators. Adaptive conformal
+inference brings every method to nominal coverage (PICP after ACI between
+\nv{prob.grid.min_picp_aci} and \nv{prob.grid.max_picp_aci} across methods and systems); what
+differs is sharpness at that coverage, and it orders the methods as the point grid does. TiDE
+has the lowest CRPS on \nv{prob.grid.TiDE.n_best_crps} of \nv{prob.grid.n_systems} systems and
+PLANET on \nv{prob.grid.PLANET.n_best_crps}, Germany and France. The mean interval width after
+calibration is \nv{prob.grid.TiDE.mean_mpiw_aci}\,MW for TiDE,
+\nv{prob.grid.PLANET.mean_mpiw_aci} for PLANET, \nv{prob.grid.NBEATS.mean_mpiw_aci} for
+N-BEATS and \nv{prob.grid.CalTST.mean_mpiw_aci} for PatchTST+Cal, and the Winkler scores order
+them the same way (\nv{prob.grid.TiDE.mean_winkler_aci}, \nv{prob.grid.PLANET.mean_winkler_aci},
+\nv{prob.grid.NBEATS.mean_winkler_aci}, \nv{prob.grid.CalTST.mean_winkler_aci}). TFT, the one
+model of the set designed around quantile output, ends with DLinear at the highest CRPS
+(\nv{prob.grid.TFT.mean_crps_cqr} and \nv{prob.grid.DLinear.mean_crps_cqr}\,MW) and, with
+PatchTST, the widest calibrated intervals (\nv{prob.grid.TFT.mean_mpiw_aci} and
+\nv{prob.grid.PatchTST.mean_mpiw_aci}\,MW): its cost buys nothing here either. The raw
+quantile heads are under-covered before calibration for every method
+(\nv{prob.grid.PLANET.mean_picp_raw} for PLANET), a reminder that pinball-trained quantiles on
+a drifting series are not intervals until they are conformalised, and that the calibrator is
+what makes the comparison fair.
+
+\subsection{Zero-shot foundation models}
+\label{sec:fm}
+\tabv{tab_fm_v2}
+\begin{figure}[!t]
+\centering
+\figv{fig_fm_v2}{\columnwidth}
+\caption{Zero-shot foundation models against the best learned model of each cell, WAPE
+relative to that model. Both foundation models may have seen the public series in
+pre-training; the comparison is a reference, not a contest.}
+\label{fig:fm}
+\end{figure}
+
+Table~\ref{tab:fm-v2} places the two foundation models beside the best learned model of every
+cell under R2, with the covariates supplied through Chronos-2's native past- and
+future-covariate interface (run in half precision) and, for TimesFM-2.0, through a NumPy port
+of the library's in-context regression on covariates. With the protocol lookback of 336 hours
+Chronos-2 is more accurate than the best learned model in
+\nv{fm.grid.Chronos2.H24.n_beats_best} of \nv{fm.grid.Chronos2.H24.n_cells} systems at one day
+and its WAPE is \nv{fm.grid.Chronos2.H24.mean_dwape_vs_best_pct} relative to it on average;
+given a context of 1024 hours, longer than any trained model was allowed, it is ahead in
+\nv{fm.grid.L1024.Chronos2.H24.n_beats_best} systems and within
+\nv{fm.grid.L1024.Chronos2.H24.mean_dwape_vs_best_pct} on average. The gap then opens with the
+horizon, \nv{fm.grid.L1024.Chronos2.H96.mean_dwape_vs_best_pct} at four days and
+\nv{fm.grid.L1024.Chronos2.H336.mean_dwape_vs_best_pct} at two weeks with the long context
+(\nv{fm.grid.Chronos2.H336.mean_dwape_vs_best_pct} with the short), exactly as it does for the
+learned calendar maps, which is consistent with a foundation model being a very well trained
+window-relative forecaster. TimesFM-2.0 is behind the best learned model in every cell
+(\nv{fm.grid.TimesFM2.H24.mean_dwape_vs_best_pct} at one day and
+\nv{fm.grid.TimesFM2.H336.mean_dwape_vs_best_pct} at two weeks with the protocol lookback), and
+its R2 error exceeds its own R0 error in every cell of Table~\ref{tab:fm-v2}, which points at
+the NumPy covariate port rather than at the model; its R0 rows are the ones to read.
+Because the pre-training corpora of both models include public electricity series, any
+advantage they show is an upper bound on what a clean zero-shot model would achieve, and any
+deficit is a lower bound.
+
+\subsection{Multivariate benchmarks}
+\label{sec:bench}
+\tabv{tab_bench_v2}
+On the Electricity panel, scored as the literature scores it (z-scored MSE, all 321 clients,
+regime R1 since the panel has no weather), PLANET's mean MSE rank is
+\nv{R1.ECL.PLANET.meanrank} over \nv{R1.ECL.n_cells} horizon cells of
+\nv{R1.ECL.n_models} methods, against \nv{R1.ECL.PatchTST.meanrank} for PatchTST,
+\nv{R1.ECL.CalTST.meanrank} for PatchTST+Cal, \nv{R1.ECL.DLinear.meanrank} for DLinear,
+\nv{R1.ECL.iTransformer.meanrank} for iTransformer, \nv{R1.ECL.TiDE.meanrank} for TiDE and
+\nv{R1.ECL.NBEATS.meanrank} for N-BEATS, and it is retained by the confidence set in
+\nv{R1.mcs.ECL.PLANET.n_in} of those cells; the compact models are within a few percent of one
+another in MSE at four days, and the calendar tier is neither help nor harm on this panel. On
+the four ETT transformer-station series, which carry an industrial load with weak calendar
+structure and a Chinese holiday calendar, the tier is expected to add little and does not: the
+best mean ranks over the \nv{R1.ett.n_cells} station--horizon cells belong to the linear RLinear
+(\nv{R1.ett.RLinear.meanrank}) and to N-BEATS (\nv{R1.ett.NBEATS.meanrank}), and PLANET's
+(\nv{R1.ett.PLANET.meanrank}) sits with PatchTST (\nv{R1.ett.PatchTST.meanrank}) and the
+frequency-domain FITS (\nv{R1.ett.FITS.meanrank}), ahead of TiDE (\nv{R1.ett.TiDE.meanrank}).
+We report the panel because the field expects it and the stations because a calendar prior
+that helped everywhere would be suspicious.
+
+\subsection{Cost}
+\label{sec:cost}
+\tabv{tab_cost_v2}
+Table~\ref{tab:cost-v2} reports parameters, training and inference time on the German
+system at four days. The tier adds \nv{cost.tier.params_k}k parameters (the per-channel
+penalties, the weight network and the state projection) and a Cholesky solve of a $K\times K$
+system per window and channel; the \nv{proto.head.params_k}k-parameter head is attached to
+every model. Measured against the standalone N-BEATS row of the table, which is wider than the backbone
+inside PLANET (PLANET has \nv{cost.PLANET_vs_backbone.params_pct} parameters relative to it),
+the overhead is \nv{cost.PLANET_vs_backbone.train_pct} in training time and
+\nv{cost.PLANET_vs_backbone.infer_pct} in inference; the tier's own parameter count above is
+from the ablation pair at equal width. PLANET trains in
+\nv{OPSD-DE.PLANET.H96.train_s}\,s against \nv{OPSD-DE.TiDE.H96.train_s}\,s for TiDE,
+\nv{OPSD-DE.TFT.H96.train_s}\,s for TFT and \nv{OPSD-DE.TimeXer.H96.train_s}\,s for TimeXer: the
+most accurate model of the benchmark is also among the cheapest, and the proposed model sits
+with it rather than with the expensive Transformers. Under the load-only scoring every
+channel-independent model, PLANET included, is trained on the load channel alone, which
+yields the identical forecast at $1/C$ of the cost of training all channels; the multivariate
+models keep all channels because their forecasts depend on them.

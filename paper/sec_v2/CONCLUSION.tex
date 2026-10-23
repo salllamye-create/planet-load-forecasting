@@ -1,0 +1,36 @@
+% ======================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+Electricity load is a calendar signal, and this paper has asked what a forecaster gains by
+treating it as one. A harmonic and day-type design matrix indexed by wall-clock time, with
+coefficients re-estimated for every window by a closed-form weighted ridge solve inside the
+forward pass, is worth \nv{abl.patch.no_pl.mean_dwape_pct} and
+\nv{abl.basis.no_pl.mean_dwape_pct} on average to two unrelated residual backbones, which it moves in the same direction in every cell but two, most on the German system at one day and least on the French one, where at one horizon on each backbone it is
+worth nothing. The model built
+around it is retained by the Model Confidence Set in \nv{mcs.grid.PLANET.n_in} of
+\nv{mcs.grid.n_cells} system--horizon cells on eight national grids
+(\nv{mcs.grid.PLANET.H24.n_in}, \nv{mcs.grid.PLANET.H96.n_in} and \nv{mcs.grid.PLANET.H336.n_in}
+at one day, four days and two weeks), is the second most
+accurate of \nv{grid.n_models} methods, and earns its margin over the learned-calendar control
+where the mechanism predicts it: with a short history and under transfer to an unseen system
+without retraining. It is not the most accurate forecaster in its own benchmark. A
+covariate-native MLP, TiDE, is ahead on seven of the eight systems and overall, by margins that
+the systems' weather dependence does not predict; routing TiDE's covariates through the shared
+head changes its error by \nv{path.grid.TiDEh.mean_dwape_vs_TiDE_pct}, which is the part of
+the difference that the covariate pathway accounts for. On plentiful stationary data a learned
+calendar map is as good as a solved one, and under temporal drift nothing in the seasonal
+representation helps. All of this is reported as found. Around the model the paper supplies
+what its evaluation needed and the field lacked: an eight-system benchmark on which every
+method, from Hong's regression to zero-shot foundation models, receives the identical
+information, with three explicit information regimes for the headline models, is tuned under
+one budget, is compared with multiple-comparison control and against the operators' own
+forecasts, and is scored on calibrated intervals as well as points. The corpus, every result
+file and the scripts that regenerate every table, figure and number are released with the
+paper.
+
+Two directions follow directly. The weather pathway is what separates the two best models, so
+a tier whose covariate response is estimated per window in the same closed form as the
+seasonal state, entering the model where TiDE's temporal decoder does, is the next design, and
+the pre-registered failure of the dense variant says how not to build it. And the residual is
+what drifts, so an adaptive residual that re-estimates a low-dimensional weather response per
+window would extend the mechanism to the condition in which it currently fails.

@@ -1,0 +1,51 @@
+{
+  "name": "OPSD-NL",
+  "channels": [
+    "wind",
+    "temp",
+    "rhum",
+    "rad",
+    "wspd",
+    "load"
+  ],
+  "target": "load",
+  "target_idx": 5,
+  "freq": "1h",
+  "T": 50400,
+  "C": 6,
+  "start": "2015-01-01 00:00:00",
+  "end": "2020-09-30 23:00:00",
+  "splits": {
+    "train": [
+      0,
+      35280
+    ],
+    "val": [
+      35280,
+      40320
+    ],
+    "test": [
+      40320,
+      50400
+    ]
+  },
+  "aux": [
+    "tso_forecast"
+  ],
+  "notes": "ENTSO-E NL system load (OPSD time_series 60min, NL_load_actual_entsoe_transparency) + ERA5 weather (Open-Meteo). aux column holds the TSO's own published day-ahead load forecast (NL_load_forecast_entsoe_transparency, coverage 100.0%). exogenous-series rules: (1) a solar/wind series is dropped if its raw data has any single internal gap longer than 720 h (30 d); (2) then dropped if <50% present over the load span (v1). generation columns kept: {'wind': 'NL_wind_onshore_generation_actual (max internal gap 49 h)'}. dropped: [solar=NL_solar_generation_actual (internal gap of 2904 h > 720 h)]. missing cells interpolated: 174 (per channel {'wind': 174}; linear up to 6 h, then ffill/bfill).",
+  "country": "NL",
+  "tz": "Europe/Amsterdam",
+  "weather_idx": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "cal_flag_names": [
+    "holiday",
+    "bridge",
+    "xmas"
+  ],
+  "holiday_source": "holidays 0.96 NL"
+}

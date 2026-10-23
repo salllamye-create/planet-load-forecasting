@@ -1,0 +1,51 @@
+{
+  "name": "OPSD-IT",
+  "channels": [
+    "solar",
+    "temp",
+    "rhum",
+    "rad",
+    "wspd",
+    "load"
+  ],
+  "target": "load",
+  "target_idx": 5,
+  "freq": "1h",
+  "T": 43817,
+  "C": 6,
+  "start": "2015-10-02 06:00:00",
+  "end": "2020-09-30 22:00:00",
+  "splits": {
+    "train": [
+      0,
+      30671
+    ],
+    "val": [
+      30671,
+      35052
+    ],
+    "test": [
+      35052,
+      43817
+    ]
+  },
+  "aux": [
+    "tso_forecast"
+  ],
+  "notes": "ENTSO-E IT system load (OPSD time_series 60min, IT_load_actual_entsoe_transparency) + ERA5 weather (Open-Meteo). aux column holds the TSO's own published day-ahead load forecast (IT_load_forecast_entsoe_transparency, coverage 99.9%). exogenous-series rules: (1) a solar/wind series is dropped if its raw data has any single internal gap longer than 720 h (30 d); (2) then dropped if <50% present over the load span (v1). generation columns kept: {'solar': 'IT_solar_generation_actual (max internal gap 9 h)'}. dropped: [wind=IT_wind_onshore_generation_actual (internal gap of 1608 h > 720 h)]. span start trimmed from 2015-01-01 01:00:00 (first load row) to 2015-10-02 06:00:00 (first fully observed row). missing cells interpolated: 16 (per channel {'solar': 16}; linear up to 6 h, then ffill/bfill).",
+  "country": "IT",
+  "tz": "Europe/Rome",
+  "weather_idx": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "cal_flag_names": [
+    "holiday",
+    "bridge",
+    "xmas"
+  ],
+  "holiday_source": "holidays 0.96 IT"
+}

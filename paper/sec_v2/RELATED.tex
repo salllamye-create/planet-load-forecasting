@@ -1,0 +1,105 @@
+% ======================================================================
+\section{Related Work}
+
+\subsection{Load forecasting in power systems}
+Operational load forecasting has long been built on explicit calendar structure: regression on
+hour-of-day, day-of-week and holiday indicators interacted with a smooth nonlinear temperature
+response is the backbone of practice and of the models that win forecasting competitions
+\cite{hong2016gefcom,hong2016tutorial,wang2016recency,hong2019gefcom2017}, and the
+comparative studies of the statistical era already found that seasonal exponential smoothing
+and regression with a well-chosen weather input are hard to beat on European national load
+\cite{taylor2007stlf}. Which weather to feed such a model is itself a modelling decision
+\cite{hong2015weather}, which is why the weather representation is one of the sensitivity
+analyses of this paper. Adaptivity after deployment is handled in practice by re-estimation:
+the adaptive additive models and state-space corrections that tracked French demand through
+the 2020 lockdown are the clearest recent example \cite{obst2021covid}, and the monthly refit
+of our regression baseline and of the day-ahead comparison follows that practice.
+Gradient-boosted trees on engineered lag, calendar and weather features are the modern
+workhorse \cite{friedman2001gbm}. Deep learning entered the field through recurrent
+architectures \cite{kong2019lstm}, probabilistic sequence-to-sequence forecasters
+\cite{salinas2020deepar,wen2017mqrnn} and deep residual networks \cite{chen2019resnet}; recent
+surveys \cite{hong2020review,eaai2025survey,haben2021lv} document a proliferation of hybrid
+architectures, and their reported gains are difficult to compare because inputs, splits and
+tuning budgets differ from paper to paper, a diagnosis made in the same terms for electricity
+price forecasting \cite{lago2021epf}. Benchmark studies that hold the protocol fixed
+\cite{fets2026,household2026} find that the ordering of methods changes with the task, the
+sampling rate and the covariates supplied. This paper can be read as putting the calendar
+regression of classical practice back inside a deep network, solved per instance and in closed
+form, and as a benchmark in which the information given to every method is the same by
+construction.
+
+\subsection{Long-horizon deep forecasting and exogenous inputs}
+Informer \cite{zhou2021informer} established the long-horizon benchmark protocol; Autoformer
+\cite{wu2021autoformer} and FEDformer \cite{zhou2022fedformer} added decomposition and
+frequency-domain attention; Zeng \emph{et al.} \cite{zeng2023dlinear} showed that a single
+linear layer is competitive, prompting strong linear and frequency-interpolation models
+\cite{li2023rlinear,xu2024fits}. PatchTST \cite{nie2023patchtst} recovered the Transformer's
+advantage through patching and channel independence, iTransformer \cite{liu2024itransformer}
+by treating variates as tokens, and TimeMixer \cite{wang2024timemixer} through multi-scale
+mixing. Basis-expansion models---N-BEATS \cite{oreshkin2020nbeats}, N-HiTS
+\cite{challu2023nhits}---forecast by combining basis functions, but their bases are indexed by
+position within the window and their coefficients are produced by a network, whereas ours are
+indexed by wall-clock time and obtained by solving a regularised least-squares problem. The
+closest relative is DeepTime \cite{woo2023deeptime}, which also fits a ridge regression in
+closed form per window, over meta-learned time-index features: our design fixes the features
+to the calendar (harmonics of the day, week and year with weekend and holiday day-types),
+weights the observations, and lets a residual network model what the calendar does not,
+which is the combination the ablation tests. CycleNet \cite{lin2024cyclenet} learns one
+periodic template per series indexed by cycle position and forecasts the residual, a learned
+and global analogue of the per-window estimate used here; the ES-RNN that won the M4
+competition \cite{smyl2020esrnn} combines per-series exponential-smoothing seasonality with a
+global recurrent network and is the earlier hybrid of a classical seasonal state and a deep
+residual model; dynamic harmonic regression \cite{young1999dhr} and Prophet
+\cite{taylor2018prophet} are the statistical ancestors, harmonic regressors on calendar time
+with holiday terms and slowly varying coefficients. The classical forms of adaptation that the
+per-window solve replaces are regression with autoregressive errors, the dynamic regression of
+the forecasting textbooks \cite{hyndman2021fpp3}, and the hourly state-space models with
+time-varying regression coefficients built for French national load \cite{dordonnat2008load};
+the monthly-refit and AR-error variants of Hong's regression in the benchmark stand for that
+family.
+
+Known-future covariates are consumed natively by a smaller family: the Temporal Fusion
+Transformer \cite{lim2021tft}, N-BEATSx \cite{olivares2023nbeatsx}, TiDE \cite{das2023tide},
+TSMixer with auxiliary inputs \cite{chen2023tsmixer}, TimeXer \cite{wang2024timexer} and
+XLinear \cite{xlinear2026}. Most of the strongest long-horizon models cannot accept them at
+all. We compare both families under identical inputs by giving every model without a native
+covariate interface one shared exogenous head (Section~\ref{sec:head}), the same head our
+own model uses.
+
+\subsection{Time-series foundation models}
+Pre-trained forecasters such as Chronos \cite{ansari2024chronos,chronos2}, TimesFM
+\cite{das2024timesfm} and Moirai \cite{woo2024moirai} forecast zero-shot, and the latest
+generation accepts covariates. Benchmarks on energy load find them competitive with
+task-specific trained models when covariates are supplied \cite{fets2026}, and with
+statistical baselines at day-ahead horizons on modest hardware \cite{tsfm2026energy}. They are reference points rather than
+competitors under our protocol---their training corpora may contain the public electricity
+series used here---and we report them as such.
+
+\subsection{Distribution shift and test-time adaptation}
+Reversible instance normalisation \cite{kim2022revin} and non-stationary Transformers
+\cite{liu2022nonstationary} remove first- and second-moment shift at the input; slice-wise and
+frequency-adaptive normalisation \cite{liu2023san,ye2024fan} and Dish-TS \cite{fan2023dishts}
+extend the idea to periodic and horizon-dependent components, removing per-instance dominant
+frequencies before the backbone and restoring them after it, which is the window-relative
+counterpart of the calendar-indexed basis used here. Online and continual learning methods
+\cite{pham2023fsnet,wen2023onenet} and test-time adaptation \cite{kim2025tta} continue to
+update parameters after deployment. The adaptive part of our model is instead a convex problem
+with a closed-form solution, so adaptation is exact, instantaneous and cannot diverge, at the
+price of adapting only the calendar coefficients. Differentiable optimisation layers of this
+general form have been studied elsewhere \cite{amos2017optnet,bertinetto2019closedform,%
+gould2022ddn}; to our knowledge they have not been used to carry calendar structure in
+forecasting.
+
+\subsection{Evaluation and calibration}
+Operational reserve decisions need distributions \cite{hong2016tutorial,gneiting2007scoring}.
+Conformalised quantile regression \cite{romano2019cqr} supplies finite-sample coverage under
+exchangeability and adaptive conformal inference \cite{gibbs2021aci} restores it under drift;
+its use on time series, including the choice of step size and the delay with which outcomes
+become available, is studied in \cite{zaffran2022aci}. Calibrated quantiles that cross are
+rearranged \cite{chernozhukov2010rearrangement}, and a quantile set is scored by
+quantile-weighted rules \cite{gneiting2011quantile}, of which the quantile-weighted CRPS
+approximation used here is the uniformly weighted case over the emitted levels. For point
+forecasts, the Diebold--Mariano test \cite{diebold1995dm,harvey1997dm} compares two
+methods; when many methods are compared across many cells the Model Confidence Set
+\cite{hansen2011mcs} identifies the subset not significantly worse than the best while
+controlling the family-wise error. We use both, with a multiple-comparison correction.

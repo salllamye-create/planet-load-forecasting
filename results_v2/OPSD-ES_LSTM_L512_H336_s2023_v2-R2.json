@@ -1,0 +1,72 @@
+{
+  "dataset": "OPSD-ES",
+  "model": "LSTM",
+  "L": 512,
+  "H": 336,
+  "seed": 2023,
+  "lr": 0.01,
+  "batch": 64,
+  "params": 884339,
+  "epochs_run": 5,
+  "n_year_slow": 3,
+  "train_stride": 5,
+  "val_mse": Infinity,
+  "setting": "MS",
+  "regime": "R2",
+  "size": 2.0,
+  "basis_time": "local",
+  "exo_mode": "noisy",
+  "backbone": null,
+  "E": 14,
+  "K": 0,
+  "train_frac": 1.0,
+  "train_first": false,
+  "eval_data": null,
+  "bad_steps": 468,
+  "train_time_s": 47.3,
+  "infer_time_s": 7.37,
+  "amp": false,
+  "tag": "_v2-R2",
+  "extra": {},
+  "history": [
+    {
+      "epoch": 0,
+      "train": 0.4727266708861536,
+      "val": NaN
+    },
+    {
+      "epoch": 1,
+      "train": 0.0,
+      "val": NaN
+    },
+    {
+      "epoch": 2,
+      "train": 0.0,
+      "val": NaN
+    },
+    {
+      "epoch": 3,
+      "train": 0.0,
+      "val": NaN
+    },
+    {
+      "epoch": 4,
+      "train": 0.0,
+      "val": NaN
+    }
+  ],
+  "mse": NaN,
+  "mae": NaN,
+  "n_windows": 9746,
+  "per_channel_mse": [
+    NaN
+  ],
+  "rmse_orig": NaN,
+  "mae_orig": NaN,
+  "wape": NaN,
+  "mape": NaN,
+  "ramp_mae": NaN,
+  "peak_mae": NaN,
+  "peak_mape": NaN,
+  "peak_time_err": 11.260296821594238
+}

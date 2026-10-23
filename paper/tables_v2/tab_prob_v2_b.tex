@@ -1,0 +1,59 @@
+\begin{table}[!t]
+\centering
+\caption{Day-ahead probabilistic forecasting, continued (Table~\ref{tab:prob-v2}; same protocol and notation).}
+\label{tab:prob-v2-b}
+\setlength{\tabcolsep}{3pt}\footnotesize
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lrrrrrrr}
+\toprule
+ & & & \multicolumn{3}{c}{PICP (\%)} & & \\
+\cmidrule(lr){4-6}
+Method & qCRPS & Pinball & raw & CQR & ACI & MPIW & Winkler \\
+\midrule
+\multicolumn{8}{l}{\textit{IT, $H=24$\,h}} \\
+\quad N-BEATS & 508 & 201 & 79.1 & 91.2 & 90.2 & 2963 & \underline{3956} \\
+\quad DLinear & 693 & 273 & 88.9 & 87.4 & 90.4 & 3987 & 5075 \\
+\quad PatchTST & 640 & 252 & 82.4 & 89.2 & 90.3 & 3601 & 4805 \\
+\quad PatchTST+Cal & 590 & 232 & 82.8 & 84.1 & 90.2 & 3329 & 4282 \\
+\quad \textbf{PLANET} & 523 & 209 & 82.0 & 88.2 & 90.0 & 3264 & 4384 \\
+\quad TFT & 620 & 245 & 75.3 & 87.5 & 90.0 & 3479 & 4654 \\
+\quad TiDE & \textbf{426} & \textbf{168} & 81.0 & 90.3 & 90.1 & \textbf{2414} & \textbf{3400} \\
+\quad N-HiTS & 514 & 201 & 68.2 & 88.5 & 90.0 & \underline{2933} & 3959 \\
+\quad PLANET-X & \underline{505} & \underline{200} & 81.3 & 91.2 & 90.0 & 2976 & 4101 \\
+\midrule
+\multicolumn{8}{l}{\textit{NL, $H=24$\,h}} \\
+\quad N-BEATS & 267 & 109 & 83.2 & 79.4 & 89.9 & \underline{1521} & \underline{2163} \\
+\quad DLinear & 295 & 117 & 74.5 & 81.4 & 89.9 & 1643 & 2226 \\
+\quad PatchTST & 377 & 152 & 78.8 & 75.0 & 90.0 & 2028 & 2609 \\
+\quad PatchTST+Cal & 317 & 127 & 84.9 & 77.1 & 89.9 & 1742 & 2325 \\
+\quad \textbf{PLANET} & 257 & 106 & 82.6 & 81.4 & 89.8 & 1581 & 2240 \\
+\quad TFT & 392 & 163 & 72.3 & 71.9 & 89.7 & 1918 & 2646 \\
+\quad TiDE & \textbf{227} & \textbf{92} & 91.4 & 81.5 & 89.8 & \textbf{1361} & \textbf{1977} \\
+\quad N-HiTS & 311 & 126 & 77.9 & 80.8 & 89.9 & 1804 & 2448 \\
+\quad PLANET-X & \underline{253} & \underline{105} & 80.9 & 81.9 & 89.9 & 1656 & 2316 \\
+\midrule
+\multicolumn{8}{l}{\textit{PL, $H=24$\,h}} \\
+\quad N-BEATS & 211 & 85 & 76.6 & 81.7 & 90.0 & 1243 & 1646 \\
+\quad DLinear & 242 & 95 & 90.6 & 88.4 & 90.1 & 1355 & 1869 \\
+\quad PatchTST & 244 & 99 & 84.5 & 78.8 & 90.1 & 1558 & 2022 \\
+\quad PatchTST+Cal & 208 & 82 & 83.4 & 79.2 & 90.0 & 1255 & 1623 \\
+\quad \textbf{PLANET} & 214 & 85 & 78.9 & 86.1 & 90.0 & 1310 & 1805 \\
+\quad TFT & 252 & 99 & 69.5 & 86.0 & 90.0 & 1512 & 1935 \\
+\quad TiDE & \textbf{179} & \textbf{71} & 74.9 & 84.3 & 90.0 & \textbf{1060} & \textbf{1417} \\
+\quad N-HiTS & 223 & 88 & 66.2 & 83.3 & 90.0 & 1353 & 1761 \\
+\quad PLANET-X & \underline{200} & \underline{78} & 71.6 & 86.6 & 90.0 & \underline{1199} & \underline{1620} \\
+\midrule
+\multicolumn{8}{l}{\textit{BE, $H=24$\,h}} \\
+\quad N-BEATS & 139 & 55 & 63.6 & 79.8 & 89.9 & 869 & 1078 \\
+\quad DLinear & 145 & 56 & 78.6 & 87.3 & 89.9 & 846 & 1064 \\
+\quad PatchTST & 142 & 56 & 74.4 & 80.1 & 90.0 & 903 & 1107 \\
+\quad PatchTST+Cal & 134 & 53 & 71.7 & 80.0 & 89.9 & 832 & 1045 \\
+\quad \textbf{PLANET} & \underline{133} & \underline{52} & 70.0 & 85.0 & 89.9 & \underline{791} & \underline{996} \\
+\quad TFT & 146 & 57 & 68.2 & 80.7 & 89.9 & 882 & 1110 \\
+\quad TiDE & \textbf{117} & \textbf{46} & 69.8 & 85.5 & 89.9 & \textbf{692} & \textbf{903} \\
+\quad N-HiTS & 139 & 54 & 58.3 & 83.5 & 89.9 & 795 & 1017 \\
+\quad PLANET-X & 147 & 57 & 67.0 & 84.7 & 89.9 & 865 & 1111 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

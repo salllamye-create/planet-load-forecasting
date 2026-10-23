@@ -1,0 +1,107 @@
+{
+  "dataset": "OPSD-GB",
+  "model": "LSTM",
+  "L": 720,
+  "H": 24,
+  "seed": 2021,
+  "lr": 0.01,
+  "batch": 64,
+  "params": 804155,
+  "epochs_run": 12,
+  "n_year_slow": 3,
+  "train_stride": 5,
+  "val_mse": 0.11430019007600618,
+  "setting": "MS",
+  "regime": "R2",
+  "size": 2.0,
+  "basis_time": "local",
+  "exo_mode": "noisy",
+  "backbone": null,
+  "E": 14,
+  "K": 0,
+  "train_frac": 1.0,
+  "train_first": false,
+  "eval_data": null,
+  "bad_steps": 416,
+  "train_time_s": 220.7,
+  "infer_time_s": 9.95,
+  "amp": false,
+  "tag": "_v2-R2-look",
+  "extra": {},
+  "history": [
+    {
+      "epoch": 0,
+      "train": 0.14647454079066483,
+      "val": 0.12542999311806294
+    },
+    {
+      "epoch": 1,
+      "train": 0.050204553719714426,
+      "val": 0.11944691746820958
+    },
+    {
+      "epoch": 2,
+      "train": 0.040942886043514044,
+      "val": 0.11642986894889691
+    },
+    {
+      "epoch": 3,
+      "train": 0.03852479386134682,
+      "val": 0.11497419441424821
+    },
+    {
+      "epoch": 4,
+      "train": 0.04261149937791802,
+      "val": 0.11949218916402242
+    },
+    {
+      "epoch": 5,
+      "train": 0.03642484982645957,
+      "val": 0.11917416303696339
+    },
+    {
+      "epoch": 6,
+      "train": 0.0339122985742081,
+      "val": 0.11430019007600618
+    },
+    {
+      "epoch": 7,
+      "train": 0.03683837588493512,
+      "val": 0.12434632451447289
+    },
+    {
+      "epoch": 8,
+      "train": 0.043042317808916174,
+      "val": NaN
+    },
+    {
+      "epoch": 9,
+      "train": 0.0,
+      "val": NaN
+    },
+    {
+      "epoch": 10,
+      "train": 0.0,
+      "val": NaN
+    },
+    {
+      "epoch": 11,
+      "train": 0.0,
+      "val": NaN
+    }
+  ],
+  "mse": 0.07358519337010365,
+  "mae": 0.1952301087176506,
+  "n_windows": 10056,
+  "per_channel_mse": [
+    0.073585
+  ],
+  "rmse_orig": 2102.43434688823,
+  "mae_orig": 1513.1222373458631,
+  "wape": 4.743338695660177,
+  "mape": 5.3592373887919145,
+  "ramp_mae": 797.5653454783646,
+  "peak_mae": 1287.9696044921875,
+  "peak_mape": 3.2887011766433716,
+  "peak_time_err": 3.2859983444213867
+}

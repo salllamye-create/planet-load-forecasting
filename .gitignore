@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.blg
+paper/*.bbl
+paper/*.toc
+paper/*.spl
+paper/release/
+results_v2/errors/
+results_v2/prob/
+logs/
+checkpoints*/

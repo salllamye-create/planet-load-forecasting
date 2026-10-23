@@ -1,0 +1,142 @@
+% Elsevier submission version (Energy and AI): same section files, numbers, tables and figures as
+% main_v2.tex; only the class, the front matter and the declarations differ.  Build with
+% build_els.sh.  The IEEEtran file main_v2.tex remains the working draft.
+\documentclass[preprint,12pt]{elsarticle}
+
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{adjustbox}   % generated tables: max width = line width
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{lmodern}   % Type-1 T1 fonts (the EC fonts of the class would be bitmapped here)
+\usepackage{subcaption}
+\usepackage{lineno}
+% The class's preprint text block (548 x 390 pt) is far smaller than the IEEE page the generated
+% tables are sized for; A4 with 2.5 cm margins (702 x 455 pt) holds them. Format-free submission.
+\usepackage[a4paper,left=2cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+\journal{Energy and AI}
+\setlength{\emergencystretch}{2em}   % lines with unbreakable inline mathematics
+
+\graphicspath{{../figures_v2/}{../figures/}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\vv}[1]{\boldsymbol{#1}}
+\newcommand{\mm}[1]{\mathbf{#1}}
+\newcommand{\R}{\mathbb{R}}
+% IEEEtran idioms used by the shared section files
+\newcommand{\IEEEPARstart}[2]{#1#2}
+% Every quoted number is a macro generated from the result files by src/paper_numbers.py.
+\input{numbers}
+% Generated tables are set at IEEE's sizes (\footnotesize 8 pt, \scriptsize 7 pt at the 10 pt base);
+% the same sizes are used here so that the tables keep their IEEE size and fit the page.
+\newcommand{\tabv}[1]{\IfFileExists{tables_v2/#1.tex}{\begingroup\renewcommand{\footnotesize}{\fontsize{8}{9.5}\selectfont}\renewcommand{\scriptsize}{\fontsize{7}{8}\selectfont}\input{tables_v2/#1}\endgroup}{\typeout{MISSING TABLE #1}}}
+% Figure widths: the section files pass IEEE column or page widths; in the single-column
+% layout the page-wide figures keep the text width and the column figures take a fixed share.
+\newcommand{\figwidth}[2]{\ifcsname fw@#1\endcsname\csname fw@#1\endcsname\else#2\fi}
+\expandafter\def\csname fw@fig_horizon_v2\endcsname{0.62\textwidth}
+\expandafter\def\csname fw@fig_dayahead_v2\endcsname{0.62\textwidth}
+\expandafter\def\csname fw@fig_ablation_v2\endcsname{0.62\textwidth}
+\expandafter\def\csname fw@fig_prob_v2\endcsname{0.62\textwidth}
+\expandafter\def\csname fw@fig_fm_v2\endcsname{0.62\textwidth}
+\newcommand{\figv}[2]{\IfFileExists{../figures_v2/#1.pdf}{\includegraphics[width=\figwidth{#1}{#2}]{#1}}{\typeout{MISSING FIGURE #1}\fbox{\parbox{\dimexpr#2-2\fboxsep-2\fboxrule\relax}{\centering\vspace{3em}\texttt{\detokenize{#1}}\vspace{3em}}}}}
+
+\newcommand{\appref}[1]{\ref{#1}}
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Closed-Form Calendar Estimation in Deep Load Forecasting: An Information-Controlled Benchmark on Eight National Grids}
+
+\author[a]{Abdulwahed Salam\corref{cor1}}
+\ead{salllam.ye@gmail.com}
+\cortext[cor1]{Corresponding author.}
+\affiliation[a]{organization={Independent researcher}, country={Yemen}}
+
+\begin{abstract}
+Electricity load is the aggregate of human schedules on a shared calendar, yet deep
+forecasters learn its periodicity from the lookback window. PLANET adds to a deep backbone a
+calendar tier: a harmonic design matrix with weekend and public-holiday day-types whose
+coefficients are re-estimated per window in closed form inside the forward pass, followed by
+a residual network and a covariate head shared by every model in the study. Removing the tier
+raises the error of two unrelated backbones by \nv{abl.patch.no_pl.mean_dwape_pct} and
+\nv{abl.basis.no_pl.mean_dwape_pct}, most on the German system and least on the
+French one; locking the basis to the calendar rather than the window is worth
+\nv{abl.patch.relative.mean_dwape_pct} and \nv{abl.basis.relative.mean_dwape_pct} on the two
+backbones, and the choice of local time over UTC nothing measurable. On an information-set-controlled benchmark of eight national systems with weather
+at forecast skill, holidays and the operators' published day-ahead forecasts,
+\nv{n.models.learned} learned forecasters and two zero-shot foundation models receive
+identical inputs under one tuning budget, three seeds and three information regimes, and are
+compared with model confidence sets. PLANET is the second most accurate point and
+probabilistic forecaster, retained in \nv{mcs.grid.PLANET.n_in} of \nv{mcs.grid.n_cells}
+confidence sets; the covariate-native TiDE is the most accurate, and a control that feeds
+TiDE through the shared head measures how much of its margin the covariate pathway accounts
+for. Against the learned-calendar control, the closed-form tier gains most with a short
+history and under transfer between systems. The seed ensemble of the two leading models is ahead of the operators' forecast on
+\nv{da.grid.Comb2-ens.n_beats_tso_unbiased} of the six systems whose published series is
+unbiased, significantly on \nv{da.grid.Comb2-ens.n_sig_beats_tso_unbiased}. Giving a fixed architecture the calendar and the weather changes
+its error by \nv{info.grid.R2_vs_R0.mean_dwape_pct}, more than the gap between the proposed model and the median learned method.
+\end{abstract}
+
+\begin{keyword}
+Load forecasting \sep smart grid \sep deep learning \sep seasonality \sep exogenous covariates
+\sep test-time adaptation \sep conformal prediction \sep foundation models
+\end{keyword}
+
+\end{frontmatter}
+
+\linenumbers
+
+\input{sec_v2/INTRO}
+\input{sec_v2/RELATED}
+\input{sec_v2/PROBLEM}
+\input{sec_v2/METHOD}
+\input{sec_v2/SETUP}
+\input{sec_v2/RESULTS}
+\input{sec_v2/DISCUSSION}
+\input{sec_v2/CONCLUSION}
+
+\section*{CRediT authorship contribution statement}
+\textbf{Abdulwahed Salam:} Conceptualization, Methodology, Software, Validation, Formal
+analysis, Investigation, Data curation, Writing -- original draft, Writing -- review \&
+editing, Visualization.
+
+\section*{Declaration of competing interest}
+The author declares that he has no known competing financial interests or personal
+relationships that could have appeared to influence the work reported in this paper.
+
+\section*{Funding}
+This research did not receive any specific grant from funding agencies in the public,
+commercial, or not-for-profit sectors.
+
+\section*{Data availability}
+The processed corpus, every result file, the trained-model records and the scripts that
+regenerate every table, figure and quoted number of this article are available at
+\url{ELSREPOSITORY}. The raw sources are public: Open Power System Data and the ENTSO-E
+Transparency Platform for load and the operators' day-ahead forecasts, ERA5 through the
+Open-Meteo archive for weather, and the public-holiday calendars named in the text.
+
+\section*{Declaration of generative AI and AI-assisted technologies in the writing process}
+During the preparation of this work the author used Claude (Anthropic), under the author's
+direction, to draft and revise the text and to write, run and check the experimental code and
+the scripts that generate the tables and figures. After using this tool, the author reviewed
+and edited the content as needed and takes full responsibility for the content of the
+publication. The author designed the study and reviewed every statement, result and line of
+code.
+
+\appendix
+\section{Selected configurations}
+\label{app:config}
+Table~\ref{tab:config-v2} lists, for every neural model, the width and residual backbone chosen on
+the two reference systems and the learning rate chosen on each system, together with the number
+of selections that fell on an edge of the search grid; the selected lookbacks, one per system and
+horizon, are in the released result files.
+\tabv{tab_config_v2}
+
+\bibliographystyle{elsarticle-num}
+\bibliography{refs,refs_v2,refs_rev}
+
+\end{document}

@@ -1,0 +1,73 @@
+{
+  "dataset": "OPSD-IT",
+  "model": "TaoVanilla",
+  "L": 336,
+  "H": 96,
+  "seed": 2021,
+  "lr": 0.0,
+  "batch": 0,
+  "params": 180,
+  "epochs_run": 0,
+  "n_year_slow": null,
+  "train_stride": 1,
+  "val_mse": 0.15276085805078132,
+  "setting": "MS",
+  "regime": "R1",
+  "size": 1.0,
+  "basis_time": "local",
+  "exo_mode": null,
+  "backbone": null,
+  "l_selected": false,
+  "E": 8,
+  "K": 0,
+  "train_frac": 1.0,
+  "train_first": false,
+  "eval_data": null,
+  "bad_steps": 0,
+  "train_time_s": 0.2,
+  "infer_time_s": 0.01,
+  "amp": false,
+  "tag": "_v2-R1",
+  "extra": {},
+  "history": [
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.15276085805078132,
+      "recency_days": 0,
+      "recency_hours": 0,
+      "trend": true
+    },
+    {
+      "epoch": 0,
+      "train": NaN,
+      "val": 0.16790703439113402,
+      "recency_days": 0,
+      "recency_hours": 0,
+      "trend": false
+    }
+  ],
+  "recency": {
+    "days": 0,
+    "hours": 0
+  },
+  "n_train": 30599,
+  "ridge": 1e-06,
+  "trend": true,
+  "refit": null,
+  "n_refits": 0,
+  "mse": 0.47232660117470804,
+  "mae": 0.5441391918203597,
+  "n_windows": 8670,
+  "per_channel_mse": [
+    0.472327
+  ],
+  "rmse_orig": 5184.948102700751,
+  "mae_orig": 4105.1895839038,
+  "wape": 13.187078747674914,
+  "mape": 14.756598497764358,
+  "ramp_mae": 567.6526278805949,
+  "peak_mae": 3905.0560076894153,
+  "peak_mape": 11.330057479837969,
+  "peak_time_err": 4.70242214532872
+}

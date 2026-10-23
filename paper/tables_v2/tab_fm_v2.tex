@@ -1,0 +1,49 @@
+\begin{table*}[!t]
+\centering
+\caption{Zero-shot foundation models (inference only, no fine-tuning) beside the best learned model of each cell (regime R2; the learned model's name in grey). WAPE (\%). Rows at $L{=}1024$ use a longer context than the protocol lookback and form a separate block. Training-corpus contamination is discussed in the text.}
+\label{tab:fm-v2}
+\setlength{\tabcolsep}{3.5pt}\footnotesize
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lcccccccc}
+\toprule
+Method & DE & FR & GB & ES & IT & NL & PL & BE \\
+\midrule
+\multicolumn{9}{l}{\textit{$H=24$\,h}} \\
+Chronos-2 (R0) & \underline{2.28} & 2.32 & 4.56 & \underline{1.94} & 2.63 & 2.95 & 1.97 & 2.60 \\
+Chronos-2 (R2) & 2.29 & \underline{2.13} & \underline{4.40} & 1.98 & \underline{2.61} & \underline{2.67} & \underline{1.91} & \underline{2.35} \\
+TimesFM-2.0 (R0) & 2.44 & 2.71 & 4.67 & 2.31 & 3.20 & 3.27 & 2.30 & 2.70 \\
+TimesFM-2.0 (R2) & 4.43 & 4.04 & 5.43 & 4.05 & 6.17 & 3.91 & 3.83 & 3.56 \\
+Best learned model & \textbf{1.70}{\scriptsize\color{gray}{PLANET}} & \textbf{1.84}{\scriptsize\color{gray}{PLANET}} & \textbf{4.06}{\scriptsize\color{gray}TiDE} & \textbf{1.53}{\scriptsize\color{gray}TiDE} & \textbf{1.83}{\scriptsize\color{gray}TiDE} & \textbf{2.28}{\scriptsize\color{gray}TiDE} & \textbf{1.28}{\scriptsize\color{gray}TiDE} & \textbf{1.72}{\scriptsize\color{gray}TiDE} \\
+\cmidrule(lr){1-9}
+Chronos-2 (R0) ($L{=}1024$) & 2.03 & 2.13 & 4.29 & -- & -- & -- & -- & -- \\
+Chronos-2 (R2) ($L{=}1024$) & \underline{1.85} & \textbf{1.79} & \textbf{3.82} & \underline{1.66} & \underline{2.23} & \textbf{2.15} & \underline{1.57} & \underline{1.97} \\
+TimesFM-2.0 (R0) ($L{=}1024$) & 2.29 & 2.57 & 4.49 & -- & -- & -- & -- & -- \\
+TimesFM-2.0 (R2) ($L{=}1024$) & 3.41 & 3.80 & 5.12 & 3.58 & 5.51 & 3.41 & 2.95 & 3.13 \\
+\midrule
+\multicolumn{9}{l}{\textit{$H=96$\,h}} \\
+Chronos-2 (R0) & 3.26 & 4.20 & 5.60 & 3.36 & 4.33 & 3.63 & 2.98 & 3.67 \\
+Chronos-2 (R2) & \underline{3.21} & \underline{3.59} & \underline{5.44} & \underline{3.30} & \underline{4.29} & \underline{3.31} & \underline{2.80} & \underline{3.15} \\
+TimesFM-2.0 (R0) & 3.55 & 4.65 & 5.66 & 3.71 & 5.22 & 4.05 & 3.55 & 3.76 \\
+TimesFM-2.0 (R2) & 5.94 & 5.60 & 7.26 & 5.67 & 8.37 & 5.45 & 5.07 & 4.82 \\
+Best learned model & \textbf{2.18}{\scriptsize\color{gray}{PLANET}} & \textbf{2.30}{\scriptsize\color{gray}TiDE} & \textbf{4.68}{\scriptsize\color{gray}{PLANET}} & \textbf{2.30}{\scriptsize\color{gray}TiDE} & \textbf{2.73}{\scriptsize\color{gray}TiDE} & \textbf{2.74}{\scriptsize\color{gray}TiDE} & \textbf{1.63}{\scriptsize\color{gray}TiDE} & \textbf{2.12}{\scriptsize\color{gray}TiDE} \\
+\cmidrule(lr){1-9}
+Chronos-2 (R0) ($L{=}1024$) & 2.97 & 3.94 & 5.21 & -- & -- & -- & -- & -- \\
+Chronos-2 (R2) ($L{=}1024$) & \underline{2.65} & \underline{3.03} & \underline{4.68} & \underline{2.81} & \underline{3.65} & \underline{2.93} & \underline{2.29} & \underline{2.77} \\
+TimesFM-2.0 (R0) ($L{=}1024$) & 3.25 & 4.41 & 5.50 & -- & -- & -- & -- & -- \\
+TimesFM-2.0 (R2) ($L{=}1024$) & 4.49 & 5.17 & 6.71 & 4.88 & 7.54 & 4.73 & 3.83 & 4.16 \\
+\midrule
+\multicolumn{9}{l}{\textit{$H=336$\,h}} \\
+Chronos-2 (R0) & \underline{4.32} & 6.44 & 6.62 & 5.33 & 7.02 & 4.42 & 3.94 & 4.70 \\
+Chronos-2 (R2) & 4.33 & \underline{5.45} & \underline{6.31} & \underline{4.96} & \underline{7.00} & \underline{4.17} & \underline{3.65} & \underline{4.12} \\
+TimesFM-2.0 (R0) & 4.67 & 6.44 & 6.58 & 5.37 & 7.50 & 4.77 & 4.55 & 4.83 \\
+TimesFM-2.0 (R2) & 8.16 & 7.87 & 10.48 & 8.00 & 11.91 & 8.22 & 6.88 & 6.82 \\
+Best learned model & \textbf{2.64}{\scriptsize\color{gray}{PLANET}} & \textbf{3.01}{\scriptsize\color{gray}TiDE} & \textbf{5.08}{\scriptsize\color{gray}TiDE} & \textbf{3.16}{\scriptsize\color{gray}TiDE} & \textbf{4.21}{\scriptsize\color{gray}TiDE} & \textbf{3.41}{\scriptsize\color{gray}TiDE} & \textbf{2.05}{\scriptsize\color{gray}TiDE} & \textbf{2.89}{\scriptsize\color{gray}TiDE} \\
+\cmidrule(lr){1-9}
+Chronos-2 (R0) ($L{=}1024$) & 3.88 & 6.08 & 6.12 & -- & -- & -- & -- & -- \\
+Chronos-2 (R2) ($L{=}1024$) & \underline{3.73} & \underline{4.91} & \underline{5.59} & \underline{4.29} & \underline{6.10} & \underline{3.98} & \underline{3.11} & \underline{3.80} \\
+TimesFM-2.0 (R0) ($L{=}1024$) & 4.22 & 6.29 & 6.54 & -- & -- & -- & -- & -- \\
+TimesFM-2.0 (R2) ($L{=}1024$) & 6.28 & 7.49 & 9.47 & 7.01 & 10.78 & 7.23 & 5.27 & 5.91 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table*}

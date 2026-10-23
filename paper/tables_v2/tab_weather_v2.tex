@@ -1,0 +1,22 @@
+\begin{table}[!t]
+\centering
+\caption{Weather dependence of each system and the standing of the proposed model. $R^2$: share of the variance of weekday daily mean load explained by a quadratic in daily mean temperature on the training split; W/S: ratio of winter (DJF) to summer (JJA) monthly mean load; $\Delta$: relative difference of PLANET's WAPE to TiDE's and to PatchTST+Cal's under regime R2, mean over the three horizons (negative: PLANET lower). Systems are ordered by weather dependence.}
+\label{tab:weather-v2}
+\setlength{\tabcolsep}{4pt}\footnotesize
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{lcccc}
+\toprule
+System & $R^2$ & W/S & $\Delta$ vs TiDE (\%) & $\Delta$ vs PatchTST+Cal (\%) \\
+\midrule
+FR & 0.84 & 1.51 & \ensuremath{+16.5} & \ensuremath{-1.1} \\
+GB & 0.62 & 1.22 & \ensuremath{+1.2} & \ensuremath{+0.6} \\
+BE & 0.59 & 1.17 & \ensuremath{+6.6} & \ensuremath{-3.0} \\
+ES & 0.42 & 1.02 & \ensuremath{+9.6} & \ensuremath{-7.3} \\
+PL & 0.36 & 1.12 & \ensuremath{+22.7} & \ensuremath{+9.8} \\
+DE & 0.27 & 1.09 & \ensuremath{-2.1} & \ensuremath{-6.0} \\
+NL & 0.26 & 1.14 & \ensuremath{+7.8} & \ensuremath{-14.9} \\
+IT & 0.16 & 1.00 & \ensuremath{+13.3} & \ensuremath{-1.8} \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

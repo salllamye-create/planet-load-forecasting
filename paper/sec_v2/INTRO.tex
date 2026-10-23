@@ -1,0 +1,94 @@
+% ======================================================================
+\section{Introduction}
+\IEEEPARstart{L}{oad} forecasting underpins almost every decision a system operator makes:
+unit commitment, reserve procurement, market clearing, network switching and demand-response
+dispatch all consume a forecast of demand over horizons from one hour to several weeks
+\cite{hong2016tutorial,hong2020review}. Errors are expensive and asymmetric. On a system the size of Germany's a percentage point of
+day-ahead error is several hundred megawatts, and errors concentrated at the daily peak are
+costlier still, because that is where the marginal generator is most expensive and the network most
+stressed.
+
+The field has adopted deep sequence models wholesale. Recurrent and convolutional hybrids
+built for load \cite{kong2019lstm,salam2021inception}, Transformer variants designed for
+long-horizon forecasting \cite{zhou2021informer,wu2021autoformer,nie2023patchtst,%
+liu2024itransformer,wang2024timexer}, deliberately simple linear models
+\cite{zeng2023dlinear,li2023rlinear,xu2024fits}, multi-scale and all-MLP mixers
+\cite{wang2024timemixer,chen2023tsmixer}, basis-expansion networks
+\cite{oreshkin2020nbeats,challu2023nhits} and, most recently, pre-trained time-series
+foundation models \cite{ansari2024chronos,das2024timesfm} now define the state of the art on
+the standard electricity benchmarks. This literature inherits an assumption from generic
+sequence modelling that is false for electricity demand: that the periodic structure of the
+signal is unknown and must be learned from data, in coordinates relative to whatever window
+the model happens to be looking at.
+
+Electricity load is not a generic sequence. It is the aggregate of millions of human
+schedules synchronised to a shared clock and a shared calendar. Its dominant spectral mass
+sits at frequencies that are known exactly---one cycle per day, per week, per year---and the
+calendar of the forecast horizon, including its public holidays, is known before the forecast
+is made. So, in every control room, is a numerical weather forecast. Three consequences follow.
+
+\emph{Phase.} A model that encodes time as an offset from the start of its lookback window has
+no way to distinguish 08:00 on a Monday from 08:00 on a Sunday except by inferring it from the
+data, and a small error in that inference compounds across the cycles a long forecast must
+span. Frequency-domain methods \cite{zhou2022fedformer,xu2024fits} inherit the same problem
+in a different guise: the discrete Fourier basis of a finite window is anchored to the window,
+not to the calendar.
+
+\emph{Adaptation.} The amplitude and shape of the daily profile drift with efficiency
+programmes, electrification and photovoltaic self-consumption, and they move abruptly every
+December, when a fortnight of holidays makes weekdays behave like Sundays. A seasonal
+representation baked into network weights at training time cannot follow either kind of move
+without continued training after deployment \cite{kim2025tta}.
+
+\emph{Evaluation.} Progress is measured in mean squared error on z-scored data, on a fixed
+lookback, with each method given whatever inputs its architecture happens to accept. On
+national load that practice compares information sets rather than methods: a model that
+consumes weather is not comparable with one that cannot, and neither is comparable with the
+operator's forecast, which consumes both weather and calendar. It also ignores uncertainty,
+even though reserve sizing is a decision about a distribution \cite{gneiting2007scoring}.
+
+\smallskip\noindent\textbf{Contributions.} This paper makes three, each tied to an experiment
+that could have falsified it.
+
+\begin{enumerate}
+\item \textbf{A calendar tier estimated per window in closed form.} A harmonic design matrix
+indexed by wall-clock time and extended with weekend and public-holiday day-types has its
+coefficients obtained per window and channel by a weighted ridge problem solved in closed
+form inside the forward pass; a residual network models what the tier leaves. The tier is
+independent of that network: the same tier improves both a patch Transformer and a
+doubly-residual basis stack, by amounts that differ sharply between the two reference systems and, on the German
+one, shrink with the horizon (Section~\ref{sec:ablation}). Two details of the first design,
+locking the basis to the calendar rather than to the window and evaluating it at local civil
+time rather than UTC, are measured rather than claimed: the first is worth about one per
+cent, the second nothing at hourly resolution.
+
+\item \textbf{Where per-window estimation pays over a learned calendar map.} A learned
+calendar embedding and a closed-form per-window fit are statistically indistinguishable when
+training data are plentiful and stationary. We test the three conditions under which the
+solver should differ---scarce training data, transfer to an unseen system without
+fine-tuning, and temporal drift without retraining---against a controlled competitor that
+receives the same design matrix as learned tokens, and report where it does and does not
+(Section~\ref{sec:mech}); a second control, the leading model fed through the same covariate
+head as ours, separates the covariate pathway from the architecture.
+
+\item \textbf{An information-set-controlled operational benchmark.} Eight national systems
+(DE, FR, GB, ES, IT, NL, PL, BE), 2015--2020, with ERA5 weather, national holidays and each
+operator's own published day-ahead forecast. Every model---\nv{n.models.learned} learned
+forecasters spanning classical, linear, recurrent, convolutional, Transformer, basis-expansion
+and covariate-native families, wrapped from their official implementations where those exist,
+plus two zero-shot foundation models---receives the identical inputs, is tuned under one
+budget, and is reported over three seeds with Model Confidence Sets; the headline models are
+run under three information regimes (load only; plus calendar and holidays; plus weather
+degraded to operational forecast skill). The same protocol yields calibrated intervals under adaptive conformal
+inference and a like-for-like comparison against eight transmission operators.
+\end{enumerate}
+
+We also report what did not hold. Two hypotheses we held at the outset---that the closed-form
+solve beats a learned calendar map on plentiful data, and that gradient-free adaptation alone
+delivers robustness to regime shift---are not supported by the experiments and are reported
+as negative results rather than dropped; the ablation that decides the model's own
+composition is run to the standard the rest of the paper demands; and the proposed model is
+not the most accurate point forecaster in its own benchmark. A covariate-native MLP is, for a
+reason the regime experiments make specific: the two models receive the same weather forecast
+and differ in the pathway by which it enters, and the paper says so in its first results
+paragraph rather than its last.

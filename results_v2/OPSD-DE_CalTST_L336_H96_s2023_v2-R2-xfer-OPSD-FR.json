@@ -1,0 +1,77 @@
+{
+  "dataset": "OPSD-DE",
+  "model": "CalTST",
+  "L": 336,
+  "H": 96,
+  "seed": 2023,
+  "lr": 0.001,
+  "batch": 64,
+  "params": 502659,
+  "epochs_run": 6,
+  "n_year_slow": 3,
+  "train_stride": 5,
+  "val_mse": 0.09859304911303289,
+  "setting": "MS",
+  "regime": "R2",
+  "size": 0.5,
+  "basis_time": "local",
+  "exo_mode": "noisy",
+  "backbone": null,
+  "E": 14,
+  "K": 35,
+  "train_frac": 1.0,
+  "train_first": false,
+  "eval_data": "OPSD-FR",
+  "bad_steps": 0,
+  "train_time_s": 27.0,
+  "infer_time_s": 2.61,
+  "amp": false,
+  "tag": "_v2-R2-xfer-OPSD-FR",
+  "extra": {},
+  "history": [
+    {
+      "epoch": 0,
+      "train": 0.22618259993140344,
+      "val": 0.09859304911303289
+    },
+    {
+      "epoch": 1,
+      "train": 0.06668745298628453,
+      "val": 0.11238196207674576
+    },
+    {
+      "epoch": 2,
+      "train": 0.04774912236327374,
+      "val": 0.12231265698050219
+    },
+    {
+      "epoch": 3,
+      "train": 0.03887798092155545,
+      "val": 0.12379370451359302
+    },
+    {
+      "epoch": 4,
+      "train": 0.03432062283779184,
+      "val": 0.13152012412216285
+    },
+    {
+      "epoch": 5,
+      "train": 0.030950321057052525,
+      "val": 0.13580882501062067
+    }
+  ],
+  "mse": 0.11574182465959054,
+  "mae": 0.24644396138878968,
+  "n_windows": 9984,
+  "per_channel_mse": [
+    0.115742
+  ],
+  "rmse_orig": 4006.009562167755,
+  "mae_orig": 2901.917005750868,
+  "wape": 5.8278320049169885,
+  "mape": 5.736018451424236,
+  "ramp_mae": 1175.2948501813428,
+  "peak_mae": 3154.608154296875,
+  "peak_mape": 5.216604098677635,
+  "peak_time_err": 3.7405598163604736
+}

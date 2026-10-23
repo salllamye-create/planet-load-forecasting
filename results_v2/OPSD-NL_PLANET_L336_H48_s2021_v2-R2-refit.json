@@ -1,0 +1,210 @@
+{
+  "dataset": "OPSD-NL",
+  "model": "PLANET-refit",
+  "L": 336,
+  "H": 48,
+  "seed": 2021,
+  "lr": 0.003,
+  "size": 0.5,
+  "backbone": "basis",
+  "val_hours": 1464,
+  "months": [
+    {
+      "month": "201908",
+      "train_rows": 38856,
+      "val_rows": [
+        38856,
+        40320
+      ],
+      "origins": [
+        40320,
+        40896
+      ],
+      "n_windows": 576,
+      "seconds": 50.1
+    },
+    {
+      "month": "201909",
+      "train_rows": 39432,
+      "val_rows": [
+        39432,
+        40896
+      ],
+      "origins": [
+        40896,
+        41616
+      ],
+      "n_windows": 720,
+      "seconds": 63.1
+    },
+    {
+      "month": "201910",
+      "train_rows": 40152,
+      "val_rows": [
+        40152,
+        41616
+      ],
+      "origins": [
+        41616,
+        42360
+      ],
+      "n_windows": 744,
+      "seconds": 77.4
+    },
+    {
+      "month": "201911",
+      "train_rows": 40896,
+      "val_rows": [
+        40896,
+        42360
+      ],
+      "origins": [
+        42360,
+        43080
+      ],
+      "n_windows": 720,
+      "seconds": 104.0
+    },
+    {
+      "month": "201912",
+      "train_rows": 41616,
+      "val_rows": [
+        41616,
+        43080
+      ],
+      "origins": [
+        43080,
+        43824
+      ],
+      "n_windows": 744,
+      "seconds": 145.9
+    },
+    {
+      "month": "202001",
+      "train_rows": 42360,
+      "val_rows": [
+        42360,
+        43824
+      ],
+      "origins": [
+        43824,
+        44568
+      ],
+      "n_windows": 744,
+      "seconds": 167.6
+    },
+    {
+      "month": "202002",
+      "train_rows": 43104,
+      "val_rows": [
+        43104,
+        44568
+      ],
+      "origins": [
+        44568,
+        45264
+      ],
+      "n_windows": 696,
+      "seconds": 123.8
+    },
+    {
+      "month": "202003",
+      "train_rows": 43800,
+      "val_rows": [
+        43800,
+        45264
+      ],
+      "origins": [
+        45264,
+        46008
+      ],
+      "n_windows": 744,
+      "seconds": 153.5
+    },
+    {
+      "month": "202004",
+      "train_rows": 44544,
+      "val_rows": [
+        44544,
+        46008
+      ],
+      "origins": [
+        46008,
+        46728
+      ],
+      "n_windows": 720,
+      "seconds": 206.6
+    },
+    {
+      "month": "202005",
+      "train_rows": 45264,
+      "val_rows": [
+        45264,
+        46728
+      ],
+      "origins": [
+        46728,
+        47472
+      ],
+      "n_windows": 744,
+      "seconds": 164.7
+    },
+    {
+      "month": "202006",
+      "train_rows": 46008,
+      "val_rows": [
+        46008,
+        47472
+      ],
+      "origins": [
+        47472,
+        48192
+      ],
+      "n_windows": 720,
+      "seconds": 131.6
+    },
+    {
+      "month": "202007",
+      "train_rows": 46728,
+      "val_rows": [
+        46728,
+        48192
+      ],
+      "origins": [
+        48192,
+        48936
+      ],
+      "n_windows": 744,
+      "seconds": 103.4
+    },
+    {
+      "month": "202008",
+      "train_rows": 47472,
+      "val_rows": [
+        47472,
+        48936
+      ],
+      "origins": [
+        48936,
+        49680
+      ],
+      "n_windows": 744,
+      "seconds": 202.9
+    },
+    {
+      "month": "202009",
+      "train_rows": 48216,
+      "val_rows": [
+        48216,
+        49680
+      ],
+      "origins": [
+        49680,
+        50400
+      ],
+      "n_windows": 672,
+      "seconds": 122.3
+    }
+  ],
+  "protocol": "monthly refit from scratch; see refit_dayahead.py"
+}
