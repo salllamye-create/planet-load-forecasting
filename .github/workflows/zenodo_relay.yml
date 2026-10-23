@@ -1,0 +1,56 @@
+name: Relay the result archives from the GitHub release to the Zenodo draft
+
+# The archives of the "data-v1.0" release (per-window error files, probabilistic runs and
+# superseded records, 11.7 GB in 11 zip files) are copied one at a time into the Zenodo draft
+# record of the paper. A GitHub-hosted runner has a fast route to Zenodo's servers; the author's
+# own connection to them is throttled. The Zenodo token is the repository secret ZENODO_TOKEN;
+# nothing is published by this workflow, the record stays a draft. Run by hand (workflow_dispatch).
+
+on:
+  workflow_dispatch:
+    inputs:
+      bucket:
+        description: "Zenodo file bucket URL of the draft (links.bucket)"
+        required: true
+      tag:
+        description: "release tag holding the archives"
+        required: true
+        default: "data-v1.0"
+      files:
+        description: "space-separated archive names (default: all eleven)"
+        required: false
+        default: "errors_DE_FR.zip errors_ES_PL_NL.zip errors_BE_GB_IT.zip errors_other.zip prob_DE_FR.zip prob_ES_PL.zip prob_NL_BE.zip prob_GB_IT_other.zip discarded.zip discarded_ep10.zip discarded_wspd.zip"
+
+jobs:
+  relay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - name: Copy each archive from the release into the Zenodo bucket
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ZENODO_TOKEN: ${{ secrets.ZENODO_TOKEN }}
+          BUCKET: ${{ github.event.inputs.bucket }}
+          TAG: ${{ github.event.inputs.tag }}
+          FILES: ${{ github.event.inputs.files }}
+        run: |
+          set -e
+          df -h / | tail -1
+          for f in $FILES; do
+            echo "::group::$f"
+            gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern "$f" --clobber
+            ls -l "$f"
+            local_md5=$(md5sum "$f" | cut -d' ' -f1)
+            ok=0
+            for attempt in 1 2 3; do
+              resp=$(curl -sS --retry 2 -H "Authorization: Bearer $ZENODO_TOKEN" -T "$f" "$BUCKET/$f") || true
+              remote_md5=$(echo "$resp" | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get("checksum","").replace("md5:",""))' 2>/dev/null || true)
+              if [ "$remote_md5" = "$local_md5" ]; then echo "OK $f md5 $local_md5"; ok=1; break; fi
+              echo "attempt $attempt failed for $f (remote md5 '$remote_md5'); response: $(echo "$resp" | head -c 300)"
+              sleep 30
+            done
+            rm -f "$f"
+            echo "::endgroup::"
+            [ "$ok" = "1" ] || { echo "giving up on $f"; exit 1; }
+          done
+          echo "all archives confirmed on Zenodo"
