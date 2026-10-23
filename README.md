@@ -97,7 +97,7 @@ Each run writes `results_v2/<tag>.json` (metrics and selection fields) and
 `results_v2/errors/<tag>.npz` (per-window losses, used by the tests); the probabilistic runs
 write `results_v2/prob/`. The JSON records and the corpus are in this repository; the large
 folders, `results_v2/errors/` (4.4 GB), `results_v2/prob/` (4.5 GB) and `results_v2_discarded*/`
-(2.7 GB), are archived at ZENODO_DOI and are needed only for the significance tests and the probabilistic tables.
+(2.7 GB), are archived at https://doi.org/10.5281/zenodo.23601236 and are needed only for the significance tests and the probabilistic tables.
 
 ### 3. Numbers, tables, figures, manuscript
 
